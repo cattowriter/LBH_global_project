@@ -80,40 +80,49 @@ function setLang(l) {
 
 // --- Country code to flag emoji + name mapping ---
 const COUNTRY_DATA = {
-  AU: { flag: '🇦🇺', name: 'Australia' },
-  TH: { flag: '🇹🇭', name: 'Thailand' },
-  JP: { flag: '🇯🇵', name: 'Japan' },
-  KR: { flag: '🇰🇷', name: 'South Korea' },
-  US: { flag: '🇺🇸', name: 'USA' },
-  FR: { flag: '🇫🇷', name: 'France' },
-  ES: { flag: '🇪🇸', name: 'Spain' },
-  IT: { flag: '🇮🇹', name: 'Italy' },
-  GB: { flag: '🇬🇧', name: 'UK' },
-  DE: { flag: '🇩🇪', name: 'Germany' },
-  CA: { flag: '🇨🇦', name: 'Canada' },
-  BR: { flag: '🇧🇷', name: 'Brazil' },
-  MX: { flag: '🇲🇽', name: 'Mexico' },
-  IN: { flag: '🇮🇳', name: 'India' },
-  CN: { flag: '🇨🇳', name: 'China' },
-  PH: { flag: '🇵🇭', name: 'Philippines' },
-  ID: { flag: '🇮🇩', name: 'Indonesia' },
-  MY: { flag: '🇲🇾', name: 'Malaysia' },
-  SG: { flag: '🇸🇬', name: 'Singapore' },
-  VN: { flag: '🇻🇳', name: 'Vietnam' },
-  NZ: { flag: '🇳🇿', name: 'New Zealand' },
-  SE: { flag: '🇸🇪', name: 'Sweden' },
-  NL: { flag: '🇳🇱', name: 'Netherlands' },
-  PT: { flag: '🇵🇹', name: 'Portugal' },
-  RU: { flag: '🇷🇺', name: 'Russia' },
-  AR: { flag: '🇦🇷', name: 'Argentina' },
-  CL: { flag: '🇨🇱', name: 'Chile' },
-  CO: { flag: '🇨🇴', name: 'Colombia' },
-  PL: { flag: '🇵🇱', name: 'Poland' },
-  TR: { flag: '🇹🇷', name: 'Turkey' },
-  SA: { flag: '🇸🇦', name: 'Saudi Arabia' },
-  AE: { flag: '🇦🇪', name: 'UAE' },
-  TW: { flag: '🇹🇼', name: 'Taiwan' },
-  HK: { flag: '🇭🇰', name: 'Hong Kong' },
+  AF:{flag:'🇦🇫',name:'Afghanistan'}, AL:{flag:'🇦🇱',name:'Albania'}, DZ:{flag:'🇩🇿',name:'Algeria'},
+  AO:{flag:'🇦🇴',name:'Angola'}, AR:{flag:'🇦🇷',name:'Argentina'}, AM:{flag:'🇦🇲',name:'Armenia'},
+  AU:{flag:'🇦🇺',name:'Australia'}, AT:{flag:'🇦🇹',name:'Austria'}, AZ:{flag:'🇦🇿',name:'Azerbaijan'},
+  BH:{flag:'🇧🇭',name:'Bahrain'}, BD:{flag:'🇧🇩',name:'Bangladesh'}, BY:{flag:'🇧🇾',name:'Belarus'},
+  BE:{flag:'🇧🇪',name:'Belgium'}, BO:{flag:'🇧🇴',name:'Bolivia'}, BA:{flag:'🇧🇦',name:'Bosnia and Herzegovina'},
+  BR:{flag:'🇧🇷',name:'Brazil'}, BN:{flag:'🇧🇳',name:'Brunei'}, BG:{flag:'🇧🇬',name:'Bulgaria'},
+  KH:{flag:'🇰🇭',name:'Cambodia'}, CM:{flag:'🇨🇲',name:'Cameroon'}, CA:{flag:'🇨🇦',name:'Canada'},
+  CL:{flag:'🇨🇱',name:'Chile'}, CN:{flag:'🇨🇳',name:'China'}, CO:{flag:'🇨🇴',name:'Colombia'},
+  CR:{flag:'🇨🇷',name:'Costa Rica'}, HR:{flag:'🇭🇷',name:'Croatia'}, CU:{flag:'🇨🇺',name:'Cuba'},
+  CZ:{flag:'🇨🇿',name:'Czech Republic'}, DK:{flag:'🇩🇰',name:'Denmark'}, DO:{flag:'🇩🇴',name:'Dominican Republic'},
+  EC:{flag:'🇪🇨',name:'Ecuador'}, EG:{flag:'🇪🇬',name:'Egypt'}, SV:{flag:'🇸🇻',name:'El Salvador'},
+  EE:{flag:'🇪🇪',name:'Estonia'}, ET:{flag:'🇪🇹',name:'Ethiopia'}, FI:{flag:'🇫🇮',name:'Finland'},
+  FR:{flag:'🇫🇷',name:'France'}, GE:{flag:'🇬🇪',name:'Georgia'}, DE:{flag:'🇩🇪',name:'Germany'},
+  GH:{flag:'🇬🇭',name:'Ghana'}, GR:{flag:'🇬🇷',name:'Greece'}, GT:{flag:'🇬🇹',name:'Guatemala'},
+  HN:{flag:'🇭🇳',name:'Honduras'}, HK:{flag:'🇭🇰',name:'Hong Kong'}, HU:{flag:'🇭🇺',name:'Hungary'},
+  IS:{flag:'🇮🇸',name:'Iceland'}, IN:{flag:'🇮🇳',name:'India'}, ID:{flag:'🇮🇩',name:'Indonesia'},
+  IR:{flag:'🇮🇷',name:'Iran'}, IQ:{flag:'🇮🇶',name:'Iraq'}, IE:{flag:'🇮🇪',name:'Ireland'},
+  IL:{flag:'🇮🇱',name:'Israel'}, IT:{flag:'🇮🇹',name:'Italy'}, CI:{flag:'🇨🇮',name:'Ivory Coast'},
+  JM:{flag:'🇯🇲',name:'Jamaica'}, JP:{flag:'🇯🇵',name:'Japan'}, JO:{flag:'🇯🇴',name:'Jordan'},
+  KZ:{flag:'🇰🇿',name:'Kazakhstan'}, KE:{flag:'🇰🇪',name:'Kenya'}, KW:{flag:'🇰🇼',name:'Kuwait'},
+  KG:{flag:'🇰🇬',name:'Kyrgyzstan'}, LA:{flag:'🇱🇦',name:'Laos'}, LV:{flag:'🇱🇻',name:'Latvia'},
+  LB:{flag:'🇱🇧',name:'Lebanon'}, LY:{flag:'🇱🇾',name:'Libya'}, LT:{flag:'🇱🇹',name:'Lithuania'},
+  LU:{flag:'🇱🇺',name:'Luxembourg'}, MG:{flag:'🇲🇬',name:'Madagascar'}, MY:{flag:'🇲🇾',name:'Malaysia'},
+  MV:{flag:'🇲🇻',name:'Maldives'}, MT:{flag:'🇲🇹',name:'Malta'}, MU:{flag:'🇲🇺',name:'Mauritius'},
+  MX:{flag:'🇲🇽',name:'Mexico'}, MD:{flag:'🇲🇩',name:'Moldova'}, MN:{flag:'🇲🇳',name:'Mongolia'},
+  ME:{flag:'🇲🇪',name:'Montenegro'}, MA:{flag:'🇲🇦',name:'Morocco'}, MZ:{flag:'🇲🇿',name:'Mozambique'},
+  MM:{flag:'🇲🇲',name:'Myanmar'}, NA:{flag:'🇳🇦',name:'Namibia'}, NP:{flag:'🇳🇵',name:'Nepal'},
+  NL:{flag:'🇳🇱',name:'Netherlands'}, NZ:{flag:'🇳🇿',name:'New Zealand'}, NI:{flag:'🇳🇮',name:'Nicaragua'},
+  NG:{flag:'🇳🇬',name:'Nigeria'}, MK:{flag:'🇲🇰',name:'North Macedonia'}, NO:{flag:'🇳🇴',name:'Norway'},
+  OM:{flag:'🇴🇲',name:'Oman'}, PK:{flag:'🇵🇰',name:'Pakistan'}, PA:{flag:'🇵🇦',name:'Panama'},
+  PY:{flag:'🇵🇾',name:'Paraguay'}, PE:{flag:'🇵🇪',name:'Peru'}, PH:{flag:'🇵🇭',name:'Philippines'},
+  PL:{flag:'🇵🇱',name:'Poland'}, PT:{flag:'🇵🇹',name:'Portugal'}, QA:{flag:'🇶🇦',name:'Qatar'},
+  RO:{flag:'🇷🇴',name:'Romania'}, RU:{flag:'🇷🇺',name:'Russia'}, RW:{flag:'🇷🇼',name:'Rwanda'},
+  SA:{flag:'🇸🇦',name:'Saudi Arabia'}, SN:{flag:'🇸🇳',name:'Senegal'}, RS:{flag:'🇷🇸',name:'Serbia'},
+  SG:{flag:'🇸🇬',name:'Singapore'}, SK:{flag:'🇸🇰',name:'Slovakia'}, SI:{flag:'🇸🇮',name:'Slovenia'},
+  ZA:{flag:'🇿🇦',name:'South Africa'}, KR:{flag:'🇰🇷',name:'South Korea'}, ES:{flag:'🇪🇸',name:'Spain'},
+  LK:{flag:'🇱🇰',name:'Sri Lanka'}, SE:{flag:'🇸🇪',name:'Sweden'}, CH:{flag:'🇨🇭',name:'Switzerland'},
+  TW:{flag:'🇹🇼',name:'Taiwan'}, TZ:{flag:'🇹🇿',name:'Tanzania'}, TH:{flag:'🇹🇭',name:'Thailand'},
+  TT:{flag:'🇹🇹',name:'Trinidad and Tobago'}, TN:{flag:'🇹🇳',name:'Tunisia'}, TR:{flag:'🇹🇷',name:'Turkey'},
+  UG:{flag:'🇺🇬',name:'Uganda'}, UA:{flag:'🇺🇦',name:'Ukraine'}, AE:{flag:'🇦🇪',name:'UAE'},
+  GB:{flag:'🇬🇧',name:'UK'}, US:{flag:'🇺🇸',name:'USA'}, UY:{flag:'🇺🇾',name:'Uruguay'},
+  UZ:{flag:'🇺🇿',name:'Uzbekistan'}, VE:{flag:'🇻🇪',name:'Venezuela'}, VN:{flag:'🇻🇳',name:'Vietnam'},
+  YE:{flag:'🇾🇪',name:'Yemen'}, ZM:{flag:'🇿🇲',name:'Zambia'}, ZW:{flag:'🇿🇼',name:'Zimbabwe'},
 };
 
 // --- State ---
@@ -150,13 +159,13 @@ async function loadMessageWall() {
     // Only replace examples if real submissions exist
     if (!submissions.length) return;
 
-    const COUNTRY_FLAGS = { AU:'🇦🇺',TH:'🇹🇭',JP:'🇯🇵',KR:'🇰🇷',US:'🇺🇸',FR:'🇫🇷',ES:'🇪🇸',IT:'🇮🇹',GB:'🇬🇧',DE:'🇩🇪',CA:'🇨🇦',BR:'🇧🇷',MX:'🇲🇽',IN:'🇮🇳',CN:'🇨🇳',PH:'🇵🇭',ID:'🇮🇩',MY:'🇲🇾',SG:'🇸🇬',VN:'🇻🇳',NZ:'🇳🇿',SE:'🇸🇪',NL:'🇳🇱',PT:'🇵🇹',RU:'🇷🇺',AR:'🇦🇷',CL:'🇨🇱',CO:'🇨🇴',PL:'🇵🇱',TR:'🇹🇷',SA:'🇸🇦',AE:'🇦🇪',TW:'🇹🇼',HK:'🇭🇰',OTHER:'🌍' };
-    const COUNTRY_NAMES = { AU:'Australia',TH:'Thailand',JP:'Japan',KR:'South Korea',US:'USA',FR:'France',ES:'Spain',IT:'Italy',GB:'UK',DE:'Germany',CA:'Canada',BR:'Brazil',MX:'Mexico',IN:'India',CN:'China',PH:'Philippines',ID:'Indonesia',MY:'Malaysia',SG:'Singapore',VN:'Vietnam',NZ:'New Zealand',SE:'Sweden',NL:'Netherlands',PT:'Portugal',RU:'Russia',AR:'Argentina',CL:'Chile',CO:'Colombia',PL:'Poland',TR:'Turkey',SA:'Saudi Arabia',AE:'UAE',TW:'Taiwan',HK:'Hong Kong',OTHER:'Other' };
+    // Reuse global COUNTRY_DATA for flag + name lookup
 
     const delays = ['delay-1','delay-2','delay-3'];
     wall.innerHTML = submissions.map((s, i) => {
-      const flag = COUNTRY_FLAGS[s.country] || '🌍';
-      const country = s.country === 'OTHER' ? (s.country_other || 'Other') : (COUNTRY_NAMES[s.country] || s.country);
+      const _ci = COUNTRY_DATA[s.country];
+      const flag = _ci ? _ci.flag : '🌍';
+      const country = s.country === 'OTHER' ? (s.country_other || 'Other') : (_ci ? _ci.name : s.country);
       const author = `— ${s.name} · ${flag} ${country}`;
       const d = delays[i % 3];
       const translationHtml = s.message_en
