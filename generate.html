@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZFZ14BLNX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-WZFZ14BLNX");
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#eae7e2">
+  <title>Generate Photobook Pages — LBH Fan Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lato:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Export libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha384-PlRSzpewlarQuj5alIadXwjNUX+2eNMKwr0f07ShWYLy8B6TjEbm7ZlcN/ScSbwy" crossorigin="anonymous"></script>
+
+  <style>
+    /* ==========================================
+       ADMIN UI
+       ========================================== */
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Lato',sans-serif;background:#eae7e2;color:#2c2c2c;min-height:100vh}
+
+    /* Top bar */
+    .topbar{position:sticky;top:0;background:#fff;padding:14px 24px;box-shadow:0 2px 12px rgba(0,0,0,.08);z-index:100;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .topbar h1{font-family:'Cormorant Garamond',serif;font-size:1.3rem;white-space:nowrap}
+    .topbar .sep{width:1px;height:28px;background:#ddd;flex-shrink:0}
+    .url-input{flex:1;min-width:200px;padding:8px 14px;border:1.5px solid #d4cfc8;border-radius:8px;font-size:.82rem;font-family:inherit;outline:none;transition:border .2s}
+    .url-input:focus{border-color:#8b7355}
+    .btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;transition:all .2s;white-space:nowrap}
+    .btn-brown{background:#6b5335;color:#fff}.btn-brown:hover{background:#8b7355}
+    .btn-sand{background:#e8e2d8;color:#6b5335}.btn-sand:hover{background:#d4cfc8}
+    .btn-green{background:#27ae60;color:#fff}.btn-green:hover{background:#2ecc71}
+    .btn:disabled{opacity:.4;cursor:not-allowed}
+
+    /* Status bar */
+    .statusbar{background:#fff;padding:10px 24px;border-bottom:1px solid #e8e2d8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:.82rem;color:#888}
+    .statusbar strong{color:#6b5335}
+    .prog-wrap{width:180px;height:5px;background:#e8e2d8;border-radius:3px;overflow:hidden}
+    .prog-fill{height:100%;background:#6b5335;width:0;transition:width .3s}
+    .status-text{flex:1}
+
+    /* Page grid */
+    .grid{padding:28px;display:flex;flex-wrap:wrap;gap:28px;justify-content:center}
+    .grid:empty::after{content:'กดปุ่ม Load Data หรือ Use Demo เพื่อเริ่มต้น';display:block;padding:80px 24px;color:#aaa;font-size:.95rem;text-align:center;width:100%}
+
+    /* Page card (preview) */
+    .card{position:relative;width:450px;height:600px;overflow:hidden;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,.1);flex-shrink:0}
+    .card:hover .card-overlay{opacity:1}
+    .card-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.55);color:#fff;padding:3px 10px;border-radius:5px;font-size:.68rem;z-index:5;letter-spacing:.02em}
+    .card-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .25s;z-index:5}
+
+    /* ==========================================
+       PAGE CANVAS — 1200×1600 (3:4) scaled to 450×600
+       ========================================== */
+    .page{width:1200px;height:1600px;transform:scale(0.375);transform-origin:top left;background:#fff;position:absolute;top:0;left:0;overflow:hidden}
+
+    /* ==========================================
+       TEMPLATE 1 — Text entries (by country)
+       ========================================== */
+    .tpl-text{padding:80px 72px}
+    .tpl-text .t-country{
+      font-family:'Cormorant Garamond',serif;
+      font-size:56px;font-weight:400;font-style:italic;
+      text-align:center;margin-bottom:20px;color:#2c2c2c;letter-spacing:.02em
+    }
+    .tpl-text .t-flag{text-align:center;margin-bottom:56px}
+    .tpl-text .t-flag img{height:36px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+    .tpl-text .t-entry{display:flex;align-items:center;gap:48px;margin-bottom:52px;padding:0 20px}
+    .tpl-text .t-left{flex-shrink:0;text-align:center;width:200px}
+    .tpl-text .t-avatar{
+      width:180px;height:180px;border-radius:50%;overflow:hidden;
+      background:#f0ece6;border:3px solid #e0d9cf;
+      box-shadow:0 6px 24px rgba(0,0,0,.08);
+      display:flex;align-items:center;justify-content:center;margin:0 auto
+    }
+    .tpl-text .t-avatar img{width:100%;height:100%;object-fit:cover}
+    .tpl-text .t-avatar-ph{font-size:56px;color:#c4b89e}
+    .tpl-text .t-user{display:block;margin-top:14px;font-size:19px;color:#999;font-weight:400}
+    .tpl-text .t-right{flex:1}
+    .tpl-text .t-msg{font-family:'Lato',sans-serif;font-size:24px;color:#2c2c2c;line-height:1.85}
+
+    /* ==========================================
+       TEMPLATE 2 — Photo + Message
+       ========================================== */
+    .tpl-photo{display:flex;height:100%}
+    .tpl-photo .p-img{width:55%;height:100%;overflow:hidden;background:#e8e2d8;flex-shrink:0}
+    .tpl-photo .p-img img{width:100%;height:100%;object-fit:cover}
+    .tpl-photo .p-text{width:45%;display:flex;flex-direction:column;justify-content:flex-end;padding:60px 52px 80px}
+    .tpl-photo .p-from{font-family:'Lato',sans-serif;font-size:26px;color:#2c2c2c;margin-bottom:16px;font-weight:600}
+    .tpl-photo .p-msg{font-family:'Lato',sans-serif;font-size:22px;color:#555;line-height:1.85}
+
+    /* ==========================================
+       TEMPLATE 3 — Custom full-page design
+       ========================================== */
+    .tpl-custom{display:flex;align-items:center;justify-content:center;height:100%;background:#f8f6f3}
+    .tpl-custom img{max-width:100%;max-height:100%;object-fit:contain}
+
+    /* ==========================================
+       RESPONSIVE
+       ========================================== */
+    @media(max-width:520px){
+      .card{width:300px;height:400px}
+      .page{transform:scale(0.25)}
+      .topbar{padding:12px 14px;gap:8px}
+      .topbar h1{font-size:1.1rem}
+      .url-input{min-width:100%;order:10}
+      .grid{padding:16px;gap:16px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <h1>📖 Photobook Generator</h1>
+    <div class="sep"></div>
+    <input class="url-input" id="apiUrl" placeholder="Paste your Apps Script URL here..." />
+    <button class="btn btn-brown" onclick="loadFromAPI()">Load Data</button>
+    <button class="btn btn-sand" onclick="loadDemo()">Use Demo</button>
+    <div class="sep"></div>
+    <button class="btn btn-green" id="btnZip" onclick="downloadAllZip()" disabled>⬇ Download All (ZIP)</button>
+  </div>
+
+  <!-- Status -->
+  <div class="statusbar">
+    <span class="status-text" id="status">พร้อมใช้งาน — ใส่ URL แล้วกด Load Data หรือกด Use Demo เพื่อดูตัวอย่าง</span>
+    <div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+
+  <!-- Page preview grid -->
+  <div class="grid" id="grid"></div>
+
+  <script>
+  // ==========================================
+  // COUNTRY DATA
+  // ==========================================
+  const COUNTRY_DATA = {
+    AU:{flag:'🇦🇺',name:'Australia',code:'au'}, TH:{flag:'🇹🇭',name:'Thailand',code:'th'},
+    JP:{flag:'🇯🇵',name:'Japan',code:'jp'}, KR:{flag:'🇰🇷',name:'South Korea',code:'kr'},
+    US:{flag:'🇺🇸',name:'USA',code:'us'}, FR:{flag:'🇫🇷',name:'France',code:'fr'},
+    ES:{flag:'🇪🇸',name:'Spain',code:'es'}, IT:{flag:'🇮🇹',name:'Italy',code:'it'},
+    GB:{flag:'🇬🇧',name:'UK',code:'gb'}, DE:{flag:'🇩🇪',name:'Germany',code:'de'},
+    CA:{flag:'🇨🇦',name:'Canada',code:'ca'}, BR:{flag:'🇧🇷',name:'Brazil',code:'br'},
+    MX:{flag:'🇲🇽',name:'Mexico',code:'mx'}, IN:{flag:'🇮🇳',name:'India',code:'in'},
+    CN:{flag:'🇨🇳',name:'China',code:'cn'}, PH:{flag:'🇵🇭',name:'Philippines',code:'ph'},
+    ID:{flag:'🇮🇩',name:'Indonesia',code:'id'}, MY:{flag:'🇲🇾',name:'Malaysia',code:'my'},
+    SG:{flag:'🇸🇬',name:'Singapore',code:'sg'}, VN:{flag:'🇻🇳',name:'Vietnam',code:'vn'},
+    NZ:{flag:'🇳🇿',name:'New Zealand',code:'nz'}, SE:{flag:'🇸🇪',name:'Sweden',code:'se'},
+    NL:{flag:'🇳🇱',name:'Netherlands',code:'nl'}, PT:{flag:'🇵🇹',name:'Portugal',code:'pt'},
+    RU:{flag:'🇷🇺',name:'Russia',code:'ru'}, AR:{flag:'🇦🇷',name:'Argentina',code:'ar'},
+    CL:{flag:'🇨🇱',name:'Chile',code:'cl'}, CO:{flag:'🇨🇴',name:'Colombia',code:'co'},
+    PL:{flag:'🇵🇱',name:'Poland',code:'pl'}, TR:{flag:'🇹🇷',name:'Turkey',code:'tr'},
+    SA:{flag:'🇸🇦',name:'Saudi Arabia',code:'sa'}, AE:{flag:'🇦🇪',name:'UAE',code:'ae'},
+    TW:{flag:'🇹🇼',name:'Taiwan',code:'tw'}, HK:{flag:'🇭🇰',name:'Hong Kong',code:'hk'},
+    OTHER:{flag:'🌍',name:'Other',code:''}
+  };
+
+  const ENTRIES_PER_PAGE = 3;
+  let allPages = [];
+
+  // ==========================================
+  // DEMO DATA
+  // ==========================================
+  const DEMO = [
+    { track:'A', name:'Ora', contact_info:'X:@cattowriter', country:'AU', profile_url:'', message:'Thank you for being an incredible actor. Mr. Sunshine changed my life forever. Your dedication to every role inspires me daily.', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Lisa', contact_info:'X:@lisa_au', country:'AU', profile_url:'', message:'Proud to be your fan for 15 years. From Australia with love.', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Mika', contact_info:'X:@mika_lbh', country:'JP', profile_url:'', message:'Your acting changed my life. Every character you play is unforgettable. あなたの演技は私の人生を変えました。', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Yui', contact_info:'IG:@yui_japan', country:'JP', profile_url:'', message:'Your presence on screen is unmatched. Keep shining, LBH!', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'B', name:'Nana', contact_info:'X:@nanafan_th | IG:@nanafan_th', country:'TH', profile_url:'', message:'Thank you for every role you have played. You are truly the best!', photo_url:'https://picsum.photos/seed/lbh1/800/1000', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Pim', contact_info:'TT:@pim_bkk', country:'TH', profile_url:'', message:'พี่ฮอน คือนักแสดงที่เก่งที่สุด รักจากไทยค่ะ', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Sara', contact_info:'Email:sara@example.com', country:'US', profile_url:'', message:'Mr. Sunshine will always be my favourite drama. Eugene Choi forever in my heart.', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Emma', contact_info:'X:@emma_uk', country:'GB', profile_url:'', message:'A true legend of Korean cinema. Proud to be your fan across the world.', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'A', name:'Siwoo', contact_info:'X:@siwoo_kr', country:'KR', profile_url:'', message:'이병헌 배우님, 항상 응원합니다! 최고의 배우! 언제까지나 팬 하겠습니다.', photo_url:'', custom_page_url:'', lbh_image_url:'' },
+    { track:'B', name:'Marie', contact_info:'IG:@marie_fr', country:'FR', profile_url:'', message:'Votre talent traverse toutes les frontières. Merci pour tout, LBH!', photo_url:'https://picsum.photos/seed/lbh2/800/1000', custom_page_url:'', lbh_image_url:'' },
+  ];
+
+  // ==========================================
+  // LOAD DATA
+  // ==========================================
+  function setStatus(msg) {
+    document.getElementById('status').innerHTML = msg;
+  }
+
+  function setProgress(pct) {
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+
+  // Persist URL
+  const urlInput = document.getElementById('apiUrl');
+  urlInput.value = localStorage.getItem('lbh_api_url') || 'https://script.google.com/macros/s/AKfycbzMEtU77V3TdHj7hOG2BJfH_IGmg2mUi9vXP-ufaEuN7lLaPdiEfyIDbLrijCFVM9--Bw/exec';
+  urlInput.addEventListener('input', () => {
+    localStorage.setItem('lbh_api_url', urlInput.value.trim());
+  });
+
+  async function loadFromAPI() {
+    const url = urlInput.value.trim();
+    if (!url) { alert('กรุณาใส่ Apps Script URL ก่อน'); return; }
+    setStatus('⏳ กำลังโหลดข้อมูลจาก API...');
+    try {
+      const res = await fetch(url + '?action=submissions');
+      const data = await res.json();
+      const submissions = data.submissions || [];
+      if (!submissions.length) {
+        setStatus('⚠️ ไม่มีข้อมูล submission (Sheet อาจว่างอยู่)');
+        return;
+      }
+      setStatus(`✅ โหลดได้ <strong>${submissions.length}</strong> submissions — กำลัง render...`);
+      await buildPages(submissions);
+    } catch (err) {
+      setStatus('❌ โหลดไม่สำเร็จ: ' + err.message);
+    }
+  }
+
+  async function loadDemo() {
+    setStatus('⏳ กำลัง render demo data...');
+    await buildPages(DEMO);
+  }
+
+  // ==========================================
+  // BUILD PAGES
+  // ==========================================
+  async function buildPages(submissions) {
+    allPages = [];
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+
+    // Categorize submissions
+    const textEntries = [];
+    const photoEntries = [];
+    const customEntries = [];
+
+    submissions.forEach(s => {
+      if (s.custom_page_url) {
+        customEntries.push(s);
+      } else if (s.photo_url) {
+        photoEntries.push(s);
+      } else {
+        textEntries.push(s);
+      }
+    });
+
+    // --- Template 1: Group text entries by country ---
+    const grouped = {};
+    textEntries.forEach(s => {
+      const code = s.country || 'OTHER';
+      if (!grouped[code]) grouped[code] = [];
+      grouped[code].push(s);
+    });
+
+    const sortedCodes = Object.keys(grouped).sort((a, b) => {
+      const nameA = COUNTRY_DATA[a]?.name || a;
+      const nameB = COUNTRY_DATA[b]?.name || b;
+      return nameA.localeCompare(nameB);
+    });
+
+    let pageIndex = 0;
+
+    sortedCodes.forEach(code => {
+      const entries = grouped[code];
+      const country = COUNTRY_DATA[code] || { flag:'🌍', name: code, code:'' };
+      const totalChunks = Math.ceil(entries.length / ENTRIES_PER_PAGE);
+
+      for (let i = 0; i < entries.length; i += ENTRIES_PER_PAGE) {
+        const chunk = entries.slice(i, i + ENTRIES_PER_PAGE);
+        const chunkNum = Math.floor(i / ENTRIES_PER_PAGE) + 1;
+
+        const pageId = `page-${pageIndex}`;
+        const fileName = totalChunks > 1
+          ? `${country.name}_page${chunkNum}`
+          : `${country.name}`;
+
+        const html = renderTextPage(country, chunk);
+        addCard(grid, pageId, `Text — ${country.name}${totalChunks > 1 ? ' (' + chunkNum + '/' + totalChunks + ')' : ''}`, html, fileName);
+
+        allPages.push({ id: pageId, fileName });
+        pageIndex++;
+      }
+    });
+
+    // --- Template 2: Photo pages ---
+    photoEntries.forEach(s => {
+      const pageId = `page-${pageIndex}`;
+      const country = COUNTRY_DATA[s.country] || { name: s.country || 'Unknown' };
+      const fileName = `Photo_${s.name || 'fan'}_${country.name}`;
+      const html = renderPhotoPage(s);
+      addCard(grid, pageId, `Photo — ${s.name || 'Fan'}`, html, fileName);
+      allPages.push({ id: pageId, fileName });
+      pageIndex++;
+    });
+
+    // --- Template 3: Custom pages ---
+    customEntries.forEach(s => {
+      const pageId = `page-${pageIndex}`;
+      const country = COUNTRY_DATA[s.country] || { name: s.country || 'Unknown' };
+      const fileName = `Custom_${s.name || 'fan'}_${country.name}`;
+      const html = renderCustomPage(s);
+      addCard(grid, pageId, `Custom — ${s.name || 'Fan'}`, html, fileName);
+      allPages.push({ id: pageId, fileName });
+      pageIndex++;
+    });
+
+    document.getElementById('btnZip').disabled = allPages.length === 0;
+    setStatus(`✅ สร้างทั้งหมด <strong>${allPages.length}</strong> หน้า — Hover ที่หน้าเพื่อดาวน์โหลดทีละหน้า หรือกด Download All`);
+    setProgress(0);
+  }
+
+  // ==========================================
+  // RENDER TEMPLATES
+  // ==========================================
+
+  // --- Template 1: Text (country grouped) ---
+  function renderTextPage(country, entries) {
+    const flagCode = country.code || '';
+    const flagImg = flagCode
+      ? `<div class="t-flag"><img src="https://flagcdn.com/w80/${flagCode}.png" alt="${country.name}" crossorigin="anonymous"></div>`
+      : `<div class="t-flag" style="font-size:40px">${country.flag}</div>`;
+
+    const entriesHtml = entries.map(e => {
+      const avatarInner = e.profile_url
+        ? `<img src="${esc(e.profile_url)}" alt="${esc(e.name)}" crossorigin="anonymous" onerror="this.outerHTML='<span class=\\'t-avatar-ph\\'>👤</span>'">`
+        : `<span class="t-avatar-ph">👤</span>`;
+
+      const username = e.contact_info ? `<span class="t-user">${esc(e.contact_info)}</span>` : '';
+
+      return `
+        <div class="t-entry">
+          <div class="t-left">
+            <div class="t-avatar">${avatarInner}</div>
+            ${username}
+          </div>
+          <div class="t-right">
+            <div class="t-msg">${esc(e.message || '')}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="page tpl-text">
+        <div class="t-country">from ${esc(country.name)}</div>
+        ${flagImg}
+        ${entriesHtml}
+      </div>`;
+  }
+
+  // --- Template 2: Photo + Message ---
+  function renderPhotoPage(entry) {
+    const photoSrc = entry.photo_url || entry.lbh_image_url || '';
+    const fromName = entry.name || 'A Fan';
+    const fromHandle = entry.contact_info ? ` (${esc(entry.contact_info)})` : '';
+    const country = COUNTRY_DATA[entry.country] || { name: entry.country || '' };
+    const countryLabel = country.name ? `, ${country.name}` : '';
+
+    return `
+      <div class="page tpl-photo">
+        <div class="p-img">
+          ${photoSrc ? `<img src="${esc(photoSrc)}" alt="Fan photo" crossorigin="anonymous" onerror="this.style.display='none'">` : ''}
+        </div>
+        <div class="p-text">
+          <div class="p-from">From...${esc(fromName)}${fromHandle}${countryLabel}</div>
+          <div class="p-msg">${esc(entry.message || 'Message to LBH')}</div>
+        </div>
+      </div>`;
+  }
+
+  // --- Template 3: Custom page ---
+  function renderCustomPage(entry) {
+    const src = entry.custom_page_url || '';
+    return `
+      <div class="page tpl-custom">
+        ${src ? `<img src="${esc(src)}" alt="Custom page" crossorigin="anonymous">` : '<p style="color:#999;font-size:28px;">No image</p>'}
+      </div>`;
+  }
+
+  // ==========================================
+  // ADD CARD TO GRID
+  // ==========================================
+  function addCard(grid, pageId, label, innerHtml, fileName) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <span class="card-label">${label}</span>
+      <div class="card-overlay">
+        <button class="btn btn-brown" onclick="downloadOne('${pageId}','${fileName.replace(/'/g,"\\'")}')">⬇ PNG</button>
+      </div>
+      <div id="${pageId}">${innerHtml}</div>`;
+    grid.appendChild(card);
+  }
+
+  // ==========================================
+  // DOWNLOAD SINGLE PAGE
+  // ==========================================
+  async function downloadOne(pageId, fileName) {
+    setStatus('⏳ กำลังสร้างรูป...');
+    try {
+      const el = document.getElementById(pageId).querySelector('.page');
+      const canvas = await capturePage(el);
+      canvas.toBlob(blob => {
+        saveAs(blob, fileName + '.png');
+        setStatus('✅ ดาวน์โหลด ' + fileName + '.png สำเร็จ');
+      }, 'image/png');
+    } catch (err) {
+      setStatus('❌ Error: ' + err.message);
+    }
+  }
+
+  // ==========================================
+  // DOWNLOAD ALL AS ZIP
+  // ==========================================
+  async function downloadAllZip() {
+    if (!allPages.length) return;
+    const btnZip = document.getElementById('btnZip');
+    btnZip.disabled = true;
+    setStatus('⏳ กำลังสร้าง ZIP...');
+
+    const zip = new JSZip();
+    const folder = zip.folder('LBH_Photobook_Pages');
+
+    for (let i = 0; i < allPages.length; i++) {
+      const { id, fileName } = allPages[i];
+      const pct = Math.round(((i + 1) / allPages.length) * 100);
+      setProgress(pct);
+      setStatus(`⏳ Rendering ${i + 1} / ${allPages.length}...`);
+
+      try {
+        const el = document.getElementById(id).querySelector('.page');
+        const canvas = await capturePage(el);
+        const dataUrl = canvas.toDataURL('image/png');
+        const base64 = dataUrl.split(',')[1];
+        folder.file(`${String(i + 1).padStart(3, '0')}_${fileName}.png`, base64, { base64: true });
+      } catch (err) {
+        console.error(`Failed to capture page ${id}:`, err);
+      }
+    }
+
+    setStatus('⏳ กำลังบีบอัด ZIP...');
+    const content = await zip.generateAsync({ type: 'blob' });
+    saveAs(content, 'LBH_Photobook_Pages.zip');
+
+    setStatus(`✅ ดาวน์โหลด ZIP สำเร็จ — ${allPages.length} หน้า`);
+    setProgress(100);
+    btnZip.disabled = false;
+  }
+
+  // ==========================================
+  // CAPTURE PAGE ELEMENT → CANVAS
+  // ==========================================
+  async function capturePage(el) {
+    return html2canvas(el, {
+      scale: 1,
+      width: 1200,
+      height: 1600,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      onclone: (_doc, clonedEl) => {
+        clonedEl.style.transform = 'none';
+        clonedEl.style.position = 'absolute';
+        clonedEl.style.top = '0';
+        clonedEl.style.left = '0';
+      }
+    });
+  }
+
+  // ==========================================
+  // HELPERS
+  // ==========================================
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZFZ14BLNX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-WZFZ14BLNX");
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f0ece6">
+  <title>Submit Your Page — LBH Global Fan Project</title>
+  <meta property="og:title" content="Submit — Lee Byung-hun Global Fan Project">
+  <meta property="og:description" content="Submit your page for the fan-made memory photobook">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="form.css">
+</head>
+<body data-lang="en">
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">LBH Fan Project</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu" role="navigation">
+        <li><a href="index.html#about" data-i18n="navAbout">About Us</a></li>
+        <li><a href="submit.html" style="color:var(--brown);" data-i18n="navSubmit">Submit</a></li>
+        <li><a href="photobook.html" data-i18n="navPhotobook">Photobook</a></li>
+        <li><a href="index.html#messages" data-i18n="navMessages">Messages</a></li>
+        <li><a href="index.html#faq" data-i18n="navFAQ">FAQ</a></li>
+        <li><a href="no-other-choice-timeline.html" data-i18n="navBonus">Bonus - Timeline</a></li>
+        <li>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang-btn="en" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" data-lang-btn="th" onclick="setLang('th')">TH</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="form-page">
+    <div class="container">
+      <div class="form-container">
+        <div class="form-page-header">
+          <h1 class="form-page-title" data-i18n="formTitle">✉️ Submit Your Page</h1>
+          <p class="form-page-subtitle" data-i18n="formSubtitle">Fill out the form below to submit your page for the Lee Byung-hun Global Fanbook. All tracks are welcome!</p>
+        </div>
+
+        <div id="form-main">
+
+          <!-- STEP 1: Track -->
+          <div class="form-section">
+            <div class="form-section-title"><span>1</span> <span data-i18n="step1Title">Choose Your Track</span></div>
+            <p class="track-hint" data-i18n="trackHint">👇 Pick <strong>one</strong> — you only need to fill out one track!</p>
+            <div class="track-selector">
+              <div class="track-card" data-track="A" onclick="selectTrack('A')" tabindex="0" role="button" aria-pressed="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectTrack('A')}">
+                <div class="track-card-icon">💬</div>
+                <div class="track-card-title" data-i18n="trackATitle">Text Message</div>
+                <div class="track-card-desc" data-i18n="trackADesc">Write a message. We design the page for you.</div>
+                <div class="track-card-badge" data-i18n="trackABadge">No design needed</div>
+              </div>
+              <div class="track-card" data-track="B" onclick="selectTrack('B')" tabindex="0" role="button" aria-pressed="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectTrack('B')}">
+                <div class="track-card-icon">🖼️</div>
+                <div class="track-card-title" data-i18n="trackBTitle">Photo + Message</div>
+                <div class="track-card-desc" data-i18n="trackBDesc">Upload an image + short message. We handle layout.</div>
+                <div class="track-card-badge" data-i18n="trackBBadge">Easy</div>
+              </div>
+              <div class="track-card" data-track="C" onclick="selectTrack('C')" tabindex="0" role="button" aria-pressed="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectTrack('C')}">
+                <div class="track-card-icon">🎨</div>
+                <div class="track-card-title" data-i18n="trackCTitle">Full Custom Page</div>
+                <div class="track-card-desc" data-i18n="trackCDesc">Design your own page. Maximum creative freedom.</div>
+                <div class="track-card-badge" data-i18n="trackCBadge">Full control</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: Info -->
+          <div class="form-section" id="section-step2">
+            <div class="form-section-title"><span>2</span> <span data-i18n="step2Title">Your Information</span></div>
+            <div class="form-group">
+              <label class="form-label" for="field-name"><span data-i18n="labelName">Display Name</span><span class="required">*</span></label>
+              <span class="form-help" data-i18n="helpName">The name shown on your page in the fanbook</span>
+              <input type="text" class="form-input" id="field-name" placeholder="e.g. Mika" required maxlength="50" autocomplete="name" aria-required="true">
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="labelContact">Contact Method</span><span class="required">*</span></label>
+              <span class="form-help" data-i18n="helpContact">Choose how we can reach you (for credit or follow-up)</span>
+              <div class="contact-single-row">
+                <select class="form-select" id="field-contact-method" onchange="updateContactPlaceholder()">
+                  <option value="x" selected>𝕏 X (Twitter)</option>
+                  <option value="ig">📷 Instagram</option>
+                  <option value="tiktok">🎵 TikTok</option>
+                  <option value="email">✉️ Email</option>
+                </select>
+                <input type="text" class="form-input" id="field-contact-value" placeholder="@username" required aria-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-country"><span data-i18n="labelCountry">Country</span><span class="required">*</span></label>
+              <select class="form-select" id="field-country" required aria-required="true" autocomplete="country">
+                <option value="" data-i18n="selectCountry">— Select your country —</option>
+                <option value="AR">🇦🇷 Argentina</option><option value="AU">🇦🇺 Australia</option><option value="BR">🇧🇷 Brazil</option><option value="CA">🇨🇦 Canada</option><option value="CL">🇨🇱 Chile</option><option value="CN">🇨🇳 China</option><option value="CO">🇨🇴 Colombia</option><option value="FR">🇫🇷 France</option><option value="DE">🇩🇪 Germany</option><option value="HK">🇭🇰 Hong Kong</option><option value="IN">🇮🇳 India</option><option value="ID">🇮🇩 Indonesia</option><option value="IT">🇮🇹 Italy</option><option value="JP">🇯🇵 Japan</option><option value="KR">🇰🇷 South Korea</option><option value="MY">🇲🇾 Malaysia</option><option value="MX">🇲🇽 Mexico</option><option value="NL">🇳🇱 Netherlands</option><option value="NZ">🇳🇿 New Zealand</option><option value="PH">🇵🇭 Philippines</option><option value="PL">🇵🇱 Poland</option><option value="PT">🇵🇹 Portugal</option><option value="RU">🇷🇺 Russia</option><option value="SA">🇸🇦 Saudi Arabia</option><option value="SG">🇸🇬 Singapore</option><option value="ES">🇪🇸 Spain</option><option value="SE">🇸🇪 Sweden</option><option value="TW">🇹🇼 Taiwan</option><option value="TH">🇹🇭 Thailand</option><option value="TR">🇹🇷 Turkey</option><option value="AE">🇦🇪 UAE</option><option value="GB">🇬🇧 United Kingdom</option><option value="US">🇺🇸 United States</option><option value="VN">🇻🇳 Vietnam</option><option value="OTHER">🌍 Other</option>
+              </select>
+            </div>
+            <div class="form-group" id="other-country-group" style="display:none;">
+              <label class="form-label" for="field-other-country"><span data-i18n="labelOtherCountry">Please specify your country</span><span class="required">*</span></label>
+              <input type="text" class="form-input" id="field-other-country" placeholder="e.g. Norway" aria-required="true">
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="labelProfile">Profile Picture</span></label>
+              <span class="form-help" data-i18n="helpProfile">Optional — a small avatar next to your name.</span>
+              <div class="profile-upload-area">
+                <div class="profile-preview-circle" id="profile-preview">👤</div>
+                <div style="flex:1;">
+                  <label class="profile-upload-btn">
+                    <span data-i18n="btnChoosePhoto">Choose Photo</span>
+                    <input type="file" id="field-profile" accept="image/*" onchange="handleProfileUpload(this)">
+                  </label>
+                  <span class="form-help" style="margin-top:6px;margin-bottom:0;" data-i18n="helpProfileSpec">JPG / PNG, max 2MB</span>
+                  <button type="button" class="file-remove-btn" id="profile-remove-btn" style="display:none;" onclick="removeProfile()" data-i18n="btnRemove">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: Content -->
+          <div class="form-section">
+            <div class="form-section-title"><span>3</span> <span data-i18n="step3Title">Your Content</span></div>
+            <div class="form-notice" id="no-track-notice"><span data-i18n="noTrackNotice">👆 Please select a track above first.</span></div>
+
+            <!-- Track A -->
+            <div class="conditional-section" id="fields-track-a">
+              <!-- Template Preview -->
+              <div class="template-preview">
+                <div class="template-preview-label" data-i18n="previewLabel">📖 Your page will look like this:</div>
+                <div class="template-preview-frame">
+                  <img src="example1.png" alt="Text template example" class="template-example-img">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="field-message-a"><span data-i18n="labelMessage">Your Message to Lee Byung-hun</span><span class="required">*</span></label>
+                <span class="form-help" data-i18n="helpMessageA">Any language welcome! Max 300 characters.</span>
+                <textarea class="form-textarea" id="field-message-a" maxlength="300" oninput="updateCC(this,300)" aria-required="true"></textarea>
+                <div class="char-counter">0 / 300</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="field-language-a"><span data-i18n="labelLanguage">Message Language</span><span class="required">*</span></label>
+                <select class="form-select field-language" id="field-language-a" required aria-required="true">
+                  <option value="" data-i18n="selectLanguage">— Select language —</option>
+                  <option value="en">English</option>
+                  <option value="th">ภาษาไทย (Thai)</option>
+                  <option value="ko">한국어 (Korean)</option>
+                  <option value="ja">日本語 (Japanese)</option>
+                  <option value="zh">中文 (Chinese)</option>
+                  <option value="es">Español (Spanish)</option>
+                  <option value="fr">Français (French)</option>
+                  <option value="pt">Português (Portuguese)</option>
+                  <option value="id">Bahasa Indonesia</option>
+                  <option value="vi">Tiếng Việt (Vietnamese)</option>
+                  <option value="de">Deutsch (German)</option>
+                  <option value="other" data-i18n="langOther">Other</option>
+                </select>
+              </div>
+              <div class="form-notice" data-i18n="noticeTrackA">💡 We'll design a beautiful page for your message!</div>
+            </div>
+
+            <!-- Track B -->
+            <div class="conditional-section" id="fields-track-b">
+              <!-- Template Preview -->
+              <div class="template-preview">
+                <div class="template-preview-label" data-i18n="previewLabel">📖 Your page will look like this:</div>
+                <div class="template-preview-frame">
+                  <img src="example2.png" alt="Photo + Message template example" class="template-example-img">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="field-message-b"><span data-i18n="labelMessage">Your Message to Lee Byung-hun</span><span class="required">*</span></label>
+                <span class="form-help" data-i18n="helpMessageB">Short message with your photo. Max 200 characters.</span>
+                <textarea class="form-textarea" id="field-message-b" maxlength="200" oninput="updateCC(this,200)" style="min-height:90px" aria-required="true"></textarea>
+                <div class="char-counter">0 / 200</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="field-language-b"><span data-i18n="labelLanguage">Message Language</span><span class="required">*</span></label>
+                <select class="form-select field-language" id="field-language-b" required aria-required="true">
+                  <option value="" data-i18n="selectLanguage">— Select language —</option>
+                  <option value="en">English</option>
+                  <option value="th">ภาษาไทย (Thai)</option>
+                  <option value="ko">한국어 (Korean)</option>
+                  <option value="ja">日本語 (Japanese)</option>
+                  <option value="zh">中文 (Chinese)</option>
+                  <option value="es">Español (Spanish)</option>
+                  <option value="fr">Français (French)</option>
+                  <option value="pt">Português (Portuguese)</option>
+                  <option value="id">Bahasa Indonesia</option>
+                  <option value="vi">Tiếng Việt (Vietnamese)</option>
+                  <option value="de">Deutsch (German)</option>
+                  <option value="other" data-i18n="langOther">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label"><span data-i18n="labelPhoto">Photo / Fanart</span><span class="required">*</span></label>
+                <span class="form-help" data-i18n="helpPhoto">Upload 1 image — fanart or a favourite photo.</span>
+                <div class="file-upload-area" id="photo-upload-area">
+                  <input type="file" id="field-photo" accept="image/*" onchange="handlePhotoUpload(this,'photo')">
+                  <div class="file-upload-icon">🖼️</div>
+                  <div class="file-upload-text">
+                    <strong data-i18n="btnClickUpload">Click to upload</strong>
+                    <span data-i18n="orDragDrop"> or drag and drop</span><br>
+                    <span data-i18n="photoSpec">JPG, PNG — max 10MB</span>
+                  </div>
+                  <div class="file-upload-preview" id="photo-preview">
+                    <img id="photo-preview-img" src="" alt="">
+                    <div class="file-name" id="photo-file-name"></div>
+                    <button type="button" class="file-remove-btn" onclick="removeFile('photo')" data-i18n="btnRemove">Remove</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-notice" data-i18n="noticeTrackB">💡 We'll arrange your photo and message beautifully.</div>
+            </div>
+
+            <!-- Track C -->
+            <div class="conditional-section" id="fields-track-c">
+              <div class="form-notice" data-i18n="noticeTrackCSpec">📐 <strong>Specs:</strong> 2400×2400px, PNG, 300DPI, RGB.</div>
+              <div class="form-group">
+                <label class="form-label"><span data-i18n="labelCustomPage">Custom Page Design</span><span class="required">*</span></label>
+                <span class="form-help" data-i18n="helpCustomPage">Upload your completed page design as a PNG file.</span>
+                <div class="file-upload-area" id="custom-upload-area">
+                  <input type="file" id="field-custom" accept="image/png" onchange="handlePhotoUpload(this,'custom')">
+                  <div class="file-upload-icon">🎨</div>
+                  <div class="file-upload-text">
+                    <strong data-i18n="btnClickUpload">Click to upload</strong>
+                    <span data-i18n="orDragDrop"> or drag and drop</span><br>
+                    <span data-i18n="customSpec">PNG only — 2400×2400px recommended</span>
+                  </div>
+                  <div class="file-upload-preview" id="custom-preview">
+                    <img id="custom-preview-img" src="" alt="">
+                    <div class="file-name" id="custom-file-name"></div>
+                    <button type="button" class="file-remove-btn" onclick="removeFile('custom')" data-i18n="btnRemove">Remove</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label"><span data-i18n="labelMessageOptional">Message (Optional)</span></label>
+                <textarea class="form-textarea" id="field-message-c" maxlength="300" oninput="updateCC(this,300)" style="min-height:80px"></textarea>
+                <div class="char-counter">0 / 300</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="field-language-c"><span data-i18n="labelLanguage">Message Language</span><span class="required">*</span></label>
+                <select class="form-select field-language" id="field-language-c" required aria-required="true">
+                  <option value="" data-i18n="selectLanguage">— Select language —</option>
+                  <option value="en">English</option>
+                  <option value="th">ภาษาไทย (Thai)</option>
+                  <option value="ko">한국어 (Korean)</option>
+                  <option value="ja">日本語 (Japanese)</option>
+                  <option value="zh">中文 (Chinese)</option>
+                  <option value="es">Español (Spanish)</option>
+                  <option value="fr">Français (French)</option>
+                  <option value="pt">Português (Portuguese)</option>
+                  <option value="id">Bahasa Indonesia</option>
+                  <option value="vi">Tiếng Việt (Vietnamese)</option>
+                  <option value="de">Deutsch (German)</option>
+                  <option value="other" data-i18n="langOther">Other</option>
+                </select>
+              </div>
+              <div class="spec-box"><span data-i18n="specDetails"><strong>Template:</strong> <code>2400×2400px</code> <code>PNG</code> <code>300DPI</code> <code>RGB</code>. Keep content 200px from edges.</span></div>
+            </div>
+          </div><!-- STEP 4: Privacy -->
+          <div class="form-section">
+            <div class="form-section-title"><span id="step-privacy-num">4</span> <span data-i18n="step4Title">Privacy & Display</span></div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="labelDisplay">Show message on the website?</span><span class="required">*</span></label>
+              <span class="form-help" data-i18n="helpDisplay">Your page always appears in the printed fanbook. This controls website display.</span>
+              <div class="form-radio-group">
+                <label class="radio-option" onclick="selRadio(this)"><input type="radio" name="display" value="public"><span class="radio-label"><span data-i18n="optionPublic">Yes, show publicly</span><small data-i18n="optionPublicDesc">Name, country, message on website</small></span></label>
+                <label class="radio-option" onclick="selRadio(this)"><input type="radio" name="display" value="anonymous"><span class="radio-label"><span data-i18n="optionAnon">Show as Anonymous</span><small data-i18n="optionAnonDesc">Message shown, name as "Anonymous Fan"</small></span></label>
+                <label class="radio-option" onclick="selRadio(this)"><input type="radio" name="display" value="private"><span class="radio-label"><span data-i18n="optionPrivate">Keep private</span><small data-i18n="optionPrivateDesc">Only in printed fanbook</small></span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-option" onclick="togCB(this)"><input type="checkbox" id="field-agree" required><span class="checkbox-label"><span data-i18n="labelAgree">I understand this is a fan project and grant permission to use my submission.</span><span class="required">*</span></span></label>
+            </div>
+          </div>
+
+          <div class="form-submit-area">
+            <button class="form-submit-btn" id="submit-btn" onclick="handleSubmit()">
+              <span class="btn-text" data-i18n="btnSubmit">Submit My Page ✨</span>
+              <span class="spinner"></span>
+            </button>
+            <p class="form-help" style="margin-top:12px" data-i18n="submitNote">Files are uploaded to Google Drive. One submission per person.</p>
+          </div>
+        </div>
+
+        <div class="submit-success" id="submit-success">
+          <div class="success-icon">🎉</div>
+          <h2 class="success-title" data-i18n="successTitle">Thank You!</h2>
+          <p class="submit-success-text" data-i18n="successText">Your submission has been received! Thank you for being part of this project. 💛</p>
+
+          <a href="index.html" class="btn-primary" data-i18n="btnBackHome">← Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-logo">LBH Global Fan Project</div>
+      <p class="footer-disclaimer">Independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.</p>
+      <p class="footer-copyright">© 2026 LBH Global Fan Project</p>
+      <div class="footer-visitors">
+        <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fcattowriter.com%2Flbh&label=Visitors&labelColor=%236FA8DD&countColor=%23263759" alt="visitor badge" />
+      </div>
+    </div>
+  </footer>
+
+  <script src="form.js"></script>
+  <a class="bug-report-btn" href="mailto:cattowriter@gmail.com?subject=Bug%20Report%20-%20LBH%20Fan%20Project&body=Hi%20Catto%2C%0A%0APage%3A%20[URL]%0ABug%3A%20%5BDescribe%20the%20bug%20here%5D%0A" title="Report a bug">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+    <span>Report Bug</span>
+  </a>
+</body>
+</html>

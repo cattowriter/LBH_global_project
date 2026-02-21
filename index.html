@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZFZ14BLNX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-WZFZ14BLNX");
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f0ece6">
+  <title>Lee Byung-hun Global Fan Project — Global Edition</title>
+
+  <!-- Social Meta Tags -->
+  <meta property="og:title" content="Lee Byung-hun Global Fan Project">
+  <meta property="og:description" content="A fan-made memory photobook from fans around the world">
+  <meta property="og:type" content="website">
+  <meta name="description" content="A collaborative fan-made memory photobook created by fans around the world for Lee Byung-hun.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- jsvectormap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha384-3RT6/aAL0nKpqF8ldMoIrxz8OmRcPrKbR8MYXgvv2iKryEvn2vbfoI+FJbcpl+VW" crossorigin="anonymous">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">LBH Fan Project</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu" role="navigation">
+        <li><a href="#about" data-i18n="navAbout">About Us</a></li>
+        <li><a href="submit.html" data-i18n="navSubmit">Submit</a></li>
+        <li><a href="photobook.html" data-i18n="navPhotobook">Photobook</a></li>
+        <li><a href="#messages" data-i18n="navMessages">Messages</a></li>
+        <li><a href="#faq" data-i18n="navFAQ">FAQ</a></li>
+        <li><a href="no-other-choice-timeline.html" data-i18n="navBonus">Bonus - Timeline</a></li>
+        <li>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang-btn="en" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" data-lang-btn="th" onclick="setLang('th')">TH</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <h1 class="hero-title fade-in" data-i18n="heroTitle">Lee Byung-hun Global Fan Project</h1>
+      <p class="hero-subtitle fade-in delay-1" data-i18n="heroSubtitle">Global Edition 🌍</p>
+
+      <div class="flag-row fade-in delay-2" id="flag-row">
+        <!-- Dynamically filled by JS -->
+      </div>
+
+      <div class="hero-image-wrapper fade-in delay-2">
+        <div class="hero-image-frame">
+          <img src="LBH.png" alt="Lee Byung-hun" id="hero-img" loading="lazy">
+        </div>
+      </div>
+
+      <a href="submit.html" class="btn-primary cta-submit fade-in delay-4" data-i18n="heroSubmitBtn">✉️ Submit Your Page</a>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LIVE STATS BAR
+       ============================================ -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stats-row">
+        <div class="stat-item">
+          📬 <span class="stat-number" id="stat-count">0</span> / <span id="stat-cap">100</span> <span data-i18n="statSubmissions">submissions</span>
+        </div>
+        <div class="stat-item">
+          🗓️ <span class="stat-number" id="stat-countdown">—</span> <span data-i18n="statDaysLeft">days left</span>
+        </div>
+        <div class="stat-item">
+          🌍 <span class="stat-number" id="stat-countries">0</span> <span data-i18n="statCountries">countries</span>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       ABOUT THE PROJECT
+       ============================================ -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <h2 class="section-title fade-in" data-i18n="aboutTitle">About the Project</h2>
+      <div class="divider-ornament fade-in">✦ ✦ ✦</div>
+      <div class="about-card fade-in delay-1">
+        <p class="about-text" data-i18n="aboutText">
+          This project collects messages from fans around the world who want to say something to Lee Byung-hun — and we'll deliver it to him at his upcoming Japan fan meeting, or pass it through his staff if we don't get the chance. Everyone submits messages and photos online, then everything gets compiled into a real printed Fanbook — Global Edition to present to him in person.
+        </p>
+        <div class="timeline">
+          <div class="timeline-step">
+            <div class="timeline-icon">📢</div>
+            <span class="timeline-label" data-i18n="tlOpen">Open</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <div class="timeline-icon">📝</div>
+            <span class="timeline-label" data-i18n="tlDeadline">Deadline</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <div class="timeline-icon">🖨️</div>
+            <span class="timeline-label" data-i18n="tlPrint">Print</span>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <div class="timeline-icon">📦</div>
+            <span class="timeline-label" data-i18n="tlDeliver">Deliver</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       WORLD MAP SECTION
+       ============================================ -->
+  <section class="map-section" id="map">
+    <div class="container">
+      <h2 class="section-title fade-in" data-i18n="mapTitle">Fans from around the world 🌍</h2>
+      <p class="section-subtitle fade-in delay-1" data-i18n="mapSubtitle">Click on a highlighted country to see how many fans have joined</p>
+      <div class="map-container fade-in delay-2">
+        <div id="world-map"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Country Modal -->
+  <div class="country-modal" id="country-modal" role="dialog" aria-modal="true" aria-label="Country details">
+    <div class="modal-card" style="position:relative;">
+      <button class="modal-close-btn" id="modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-flag" id="modal-flag">🏳️</div>
+      <div class="modal-country-name" id="modal-country">Country</div>
+      <div class="modal-sub" id="modal-count">0 submissions</div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       HOW TO SUBMIT
+       ============================================ -->
+  <section class="submit-section" id="submit">
+    <div class="container">
+      <h2 class="section-title fade-in" data-i18n="submitTitle">How to Submit</h2>
+      <p class="section-subtitle fade-in delay-1" data-i18n="submitSubtitle">Choose the track that works best for you</p>
+
+      <div class="cards-grid">
+        <!-- Card A -->
+        <div class="submit-card fade-in delay-1">
+          <div class="card-icon">💬</div>
+          <h3 class="card-title" data-i18n="cardATitle">Text Message</h3>
+          <p class="card-desc" data-i18n="cardADesc">
+            Write a heartfelt message to Lee Byung-hun. Max 300 characters. We'll design the page for you.
+          </p>
+          <img src="example1.png" alt="Example: Text Message page" class="card-example" loading="lazy">
+          <span class="card-badge" data-i18n="cardABadge">No design needed</span>
+        </div>
+
+        <!-- Card B -->
+        <div class="submit-card fade-in delay-2">
+          <div class="card-icon">🖼️</div>
+          <h3 class="card-title" data-i18n="cardBTitle">Photo + Message</h3>
+          <p class="card-desc" data-i18n="cardBDesc">
+            Upload 1 image (fanart or favourite photo) + a short message. We handle the layout.
+          </p>
+          <img src="example2.png" alt="Example: Photo + Message page" class="card-example" loading="lazy">
+          <span class="card-badge" data-i18n="cardBBadge">Easy</span>
+        </div>
+
+        <!-- Card C -->
+        <div class="submit-card fade-in delay-3">
+          <div class="card-icon">🎨</div>
+          <h3 class="card-title" data-i18n="cardCTitle">Full Custom Page</h3>
+          <p class="card-desc" data-i18n="cardCDesc">
+            Design your own A4 square page (2400×2400px, PNG, 300DPI, RGB). Maximum creative freedom.
+          </p>
+          <span class="card-badge" data-i18n="cardCBadge">Full control</span>
+        </div>
+      </div>
+
+      <div class="submit-actions fade-in delay-4">
+        <a href="submit.html" class="btn-primary cta-submit" data-i18n="btnSubmitNow">Submit Now →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       MESSAGE WALL
+       ============================================ -->
+  <section class="messages-section" id="messages">
+    <div class="container">
+      <h2 class="section-title fade-in" data-i18n="msgTitle">Messages from Fans 💌</h2>
+      <p class="section-subtitle fade-in delay-1" data-i18n="msgSubtitle">Public messages from fans who opted in ✨</p>
+
+      <div id="message-wall" class="masonry-grid">
+        <div class="message-card fade-in delay-1">
+          <p class="message-text">Your Message to LBH!</p>
+          <p class="message-author">— Cattowriter · 🇦🇺 Australia</p>
+        </div>
+      </div>
+      <p class="messages-note" style="color:var(--gold);margin-top:8px;" data-i18n="msgExample">(Example — will update automatically as fans submit)</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FAQ
+       ============================================ -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <h2 class="section-title fade-in" data-i18n="faqTitle">Frequently Asked Questions</h2>
+      <div class="divider-ornament fade-in">✦ ✦ ✦</div>
+
+      <div class="faq-list">
+        <div class="faq-item fade-in delay-1">
+          <button class="faq-question">
+            <span data-i18n="faq1q">Can I submit in any language?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq1a">English is preferred, but you can submit in any language. Non-English messages will be translated to English using Google Gemini AI.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in delay-1">
+          <button class="faq-question">
+            <span data-i18n="faq2q">Is there a cost to participate?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq2a">No! I will attend the fan meeting and print this fanbook myself. If I can’t hand it over in person, I’ll leave it with the staff.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in delay-2">
+          <button class="faq-question">
+            <span data-i18n="faq3q">What’s the deadline?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq3a">March 10, 2026 — to allow time for compiling and printing. The book will be prepared to present in late March.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in delay-2">
+          <button class="faq-question">
+            <span data-i18n="faq4q">I want to edit my message or cancel my submission</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq4a">You can submit a new one to replace it — we’ll use the latest version.<br>To delete your submission, DM <a href="https://x.com/cattodata" target="_blank" rel="noopener noreferrer">@cattodata</a> on X to request removal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-logo">LBH Global Fan Project</div>
+      <div class="footer-socials">
+        <a href="https://x.com/cattowriter" target="_blank" aria-label="X (Twitter)" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/cattowriter/" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@cattowriter" target="_blank" aria-label="TikTok" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78 2.92 2.92 0 0 1 .88.13V9.01a6.28 6.28 0 0 0-.88-.07 6.29 6.29 0 0 0 0 12.58 6.29 6.29 0 0 0 6.29-6.29V9.43a8.2 8.2 0 0 0 3.81.94V6.69z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61578020735150" target="_blank" aria-label="Facebook" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+      </div>
+      <p class="footer-disclaimer" data-i18n="footerDisclaimer">
+        This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.
+      </p>
+      <p class="footer-copyright">© 2026 LBH Global Fan Project</p>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha384-dUo4VnkPwa5iJ/udOYY1SRDya6+2CVXYRfing32kyXbeB6HePV/YmJ3EPPvYz/Sb" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha384-QCoiowLYPphJpiHouJIJOUCcg6AxqnLAAyEjkZnJ7RQCpC3YY1kEX0PaOant/8kx" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+
+  <a class="bug-report-btn" href="mailto:cattowriter@gmail.com?subject=Bug%20Report%20-%20LBH%20Fan%20Project&body=Hi%20Catto%2C%0A%0APage%3A%20[URL]%0ABug%3A%20%5BDescribe%20the%20bug%20here%5D%0A" title="Report a bug">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+    <span>Report Bug</span>
+  </a>
+</body>
+</html>

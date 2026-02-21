@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Other Choice - World Tour Timeline</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', 'Sukhumvit Set', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #ffb347;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px 25px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.95em;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .map-section {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: rgba(26, 26, 46, 0.95);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .leaflet-popup-content {
+            margin: 10px;
+            font-size: 14px;
+        }
+
+        .popup-title {
+            font-size: 1.2em;
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .popup-location {
+            color: #ffb347;
+            margin-bottom: 5px;
+        }
+
+        .popup-awards {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .timeline {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px 60px;
+        }
+
+        .month-section {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .month-header {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #ffd700;
+            padding-left: 25px;
+            border-left: 5px solid #ffb347;
+            display: inline-block;
+        }
+
+        .events {
+            display: grid;
+            gap: 25px;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 179, 71, 0.05) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-left: 5px solid #ffd700;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .event-card:hover::before {
+            opacity: 1;
+        }
+
+        .event-card:hover {
+            transform: translateX(15px) scale(1.02);
+            border-left-color: #ffb347;
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-date {
+            font-size: 1.2em;
+            color: #ffb347;
+            font-weight: bold;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ccc;
+            font-size: 1.05em;
+        }
+
+        .event-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .award-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            color: #1a1a2e;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            margin: 6px 6px 6px 0;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nomination-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid #ffd700;
+            color: #ffd700;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            margin: 6px 6px 6px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .awards-list {
+            margin-top: 15px;
+            padding-left: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .awards-list li {
+            margin-bottom: 8px;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        .custom-marker {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(255, 215, 0, 0.9);
+                transform: scale(1.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2em;
+            }
+            
+            .month-header {
+                font-size: 1.7em;
+            }
+            
+            .event-title {
+                font-size: 1.2em;
+            }
+
+            #map {
+                height: 400px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 193, 7, 0.2);
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎬 NO OTHER CHOICE</h1>
+        <div class="subtitle">어쩔수없다 | World Festival Tour 2025-2026</div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">12+</div>
+                <div class="stat-label">รางวัลที่ชนะ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">สาขาที่เข้าชิง</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">18</div>
+                <div class="stat-label">งานเทศกาล</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">ประเทศ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">เดือนรอบโลก</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-section">
+        <h2 class="section-title">🌍 แผนที่เส้นทางทัวร์โลก</h2>
+        <div id="map"></div>
+    </div>
+
+    <div class="timeline">
+        <h2 class="section-title" style="margin-bottom: 50px;">📅 ไทม์ไลน์ทุกงาน</h2>
+
+        <div class="month-section">
+            <div class="month-header">สิงหาคม 2025</div>
+            <div class="events">
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">29 สิงหาคม</div>
+                        <div class="event-location">🇮🇹 Venice, Italy</div>
+                    </div>
+                    <div class="event-title">82nd Venice International Film Festival</div>
+                    <div>
+                        <span class="nomination-badge">เข้าชิง Golden Lion</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #ddd;">เดินพรมแดง: อีบยองฮอน × ปาร์กชานอุค</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-section">
+            <div class="month-header">กันยายน 2025</div>
+            <div class="events">
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">24 กันยายน</div>
+                        <div class="event-location">🇰🇷 South Korea</div>
+                    </div>
+                    <div class="event-title">🎬 เข้าฉายในเกาหลีใต้</div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">กันยายน</div>
+                        <div class="event-location">🇨🇦 Toronto, Canada</div>
+                    </div>
+                    <div class="event-title">50th Toronto International Film Festival</div>
+                    <div>
+                        <span class="award-badge">🏆 People's Choice Award</span>
+                        <span class="award-badge">🏆 อีบยองฮอน - Special Tribute Award</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-section">
+            <div class="month-header">ตุลาคม 2025</div>
+            <div class="events">
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ตุลาคม</div>
+                        <div class="event-location">🇺🇸 New York, USA</div>
+                    </div>
+                    <div class="event-title">63rd New York Film Festival</div>
+                    <p style="color: #ddd;">งานฉายพิเศษพร้อมทีมงาน</p>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ตุลาคม</div>
+                        <div class="event-location">🇬🇧 London, UK</div>
+                    </div>
+                    <div class="event-title">69th BFI London Film Festival</div>
+                    <p style="color: #ddd;">Red Carpet และงานฉาย</p>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ตุลาคม</div>
+                        <div class="event-location">🇰🇷 Busan, South Korea</div>
+                    </div>
+                    <div class="event-title">30th Busan International Film Festival</div>
+                    <p style="color: #ddd;">อีบยองฮอน - Opening Ceremony Host</p>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">23 ตุลาคม</div>
+                        <div class="event-location">🇰🇷 South Korea</div>
+                    </div>
+                    <div class="event-title">Korea Popular Culture & Arts Awards</div>
+                    <div>
+                        <span class="award-badge">🏆 อีบยองฮอน - เหรียญเกียรติคุณวัฒนธรรม</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ตุลาคม</div>
+                        <div class="event-location">🇺🇸 Newport Beach, USA</div>
+                    </div>
+                    <div class="event-title">25th Newport Beach Film Festival</div>
+                    <div>
+                        <span class="award-badge">🏆 ปาร์กชานอุค - Global Impact Award</span>
+                        <span class="award-badge">🏆 อีบยองฮอน - Artist of Distinction</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ตุลาคม</div>
+                        <div class="event-location">🇸🇪 Stockholm, Sweden</div>
+                    </div>
+                    <div class="event-title">Stockholm Film Festival</div>
+                    <div>
+                        <span class="award-badge">🏆 FIPRESCI Prize</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ตุลาคม</div>
+                        <div class="event-location">🇺🇸 Savannah, USA</div>
+                    </div>
+                    <div class="event-title">Savannah Film Festival</div>
+                    <div>
+                        <span class="award-badge">🏆 Audience Award</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-section">
+            <div class="month-header">พฤศจิกายน 2025</div>
+            <div class="events">
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">16 พฤศจิกายน</div>
+                        <div class="event-location">🇺🇸 Los Angeles, USA</div>
+                    </div>
+                    <div class="event-title">16th Governors Awards</div>
+                    <p style="color: #ddd;">เข้าร่วมงาน: อีบยองฮอน × ปาร์กชานอุค</p>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">19 พฤศจิกายน</div>
+                        <div class="event-location">🇰🇷 South Korea</div>
+                    </div>
+                    <div class="event-title">46th Blue Dragon Film Awards</div>
+                    <div>
+                        <span class="award-badge">🏆 กวาด 7 รางวัล</span>
+                    </div>
+                    <ul class="awards-list">
+                        <li>✨ Best Picture</li>
+                        <li>✨ Best Director (ปาร์กชานอุค - รางวัลที่ 4)</li>
+                        <li>✨ Best Actress (ซน เยจิน)</li>
+                        <li>✨ Best Supporting Actor (อี ซองมิน)</li>
+                        <li>✨ + 3 รางวัลด้านเทคนิค</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-section">
+            <div class="month-header">ธันวาคม 2025</div>
+            <div class="events">
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">1 ธันวาคม</div>
+                        <div class="event-location">🇺🇸 New York, USA</div>
+                    </div>
+                    <div class="event-title">35th Gotham Awards</div>
+                    <div>
+                        <span class="nomination-badge">เข้าชิง Best International Feature</span>
+                        <span class="nomination-badge">เข้าชิง Best Adapted Screenplay</span>
+                        <span class="nomination-badge">เข้าชิง Outstanding Lead Performance</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">7 ธันวาคม</div>
+                        <div class="event-location">🇺🇸 Los Angeles, USA</div>
+                    </div>
+                    <div class="event-title">KALH Honors 2025</div>
+                    <div>
+                        <span class="award-badge">🏆 ปาร์กชานอุค - Visionary Filmmaker</span>
+                        <span class="award-badge">🏆 อีบยองฮอน - Distinguished Actor</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ธันวาคม</div>
+                        <div class="event-location">🇸🇦 Riyadh, Saudi Arabia</div>
+                    </div>
+                    <div class="event-title">Joy Forum 2025</div>
+                    <p style="color: #ddd;">อีบยองฮอน - Worldwide Speaker</p>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">ธันวาคม</div>
+                        <div class="event-location">🇺🇸 Los Angeles, USA</div>
+                    </div>
+                    <div class="event-title">Academy Museum Gala</div>
+                    <p style="color: #ddd;">เข้าร่วมในฐานะแขกพิเศษ</p>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">15 ธันวาคม</div>
+                        <div class="event-location">🎬 Oscar Journey</div>
+                    </div>
+                    <div class="event-title">Oscar Shortlist ประกาศผล</div>
+                    <div>
+                        <span class="award-badge">✅ ติด Shortlist - International Feature</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-section">
+            <div class="month-header">มกราคม 2026</div>
+            <div class="events">
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">4 มกราคม</div>
+                        <div class="event-location">🇺🇸 Santa Monica, USA</div>
+                    </div>
+                    <div class="event-title">31st Critics Choice Awards</div>
+                    <div>
+                        <span class="nomination-badge">เข้าชิง Best Foreign Language Film</span>
+                        <span class="nomination-badge">เข้าชิง Best Adapted Screenplay</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">9 มกราคม</div>
+                        <div class="event-location">🇮🇩 Jakarta, Indonesia</div>
+                    </div>
+                    <div class="event-title">9th Astra Film Awards</div>
+                    <div>
+                        <span class="nomination-badge">เข้าชิง 4 สาขา</span>
+                        <span class="award-badge">🏆 ปาร์กชานอุค - Honorary Achievement</span>
+                    </div>
+                    <ul class="awards-list">
+                        <li>Best International Feature</li>
+                        <li>Best Motion Picture – Comedy or Musical</li>
+                        <li>Best Actor (อีบยองฮอน)</li>
+                        <li>Best Adapted Screenplay</li>
+                    </ul>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">11 มกราคม</div>
+                        <div class="event-location">🇺🇸 Los Angeles, USA</div>
+                    </div>
+                    <div class="event-title">83rd Golden Globe Awards</div>
+                    <div>
+                        <span class="nomination-badge">เข้าชิง Best Motion Picture – Musical/Comedy</span>
+                        <span class="nomination-badge">เข้าชิง Best Non-English Language Film</span>
+                        <span class="nomination-badge">เข้าชิง Best Performance (อีบยองฮอน)</span>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-date">มกราคม</div>
+                        <div class="event-location">🇺🇸 Los Angeles, USA</div>
+                    </div>
+                    <div class="event-title">11th Asian World Film Festival</div>
+                    <div>
+                        <span class="award-badge">🏆 อีบยองฮอน - Leopard Outstanding Achievement</span>
+                    </div>
+                </div>
+
+                <div class="event-card" style="border-left-color: #e74c3c;">
+                    <div class="event-header">
+                        <div class="event-date">22 มกราคม</div>
+                        <div class="event-location">🎬 Oscar Journey</div>
+                    </div>
+                    <div class="event-title">Oscars ประกาศผล Nomination</div>
+                    <p style="color: #e74c3c; font-size: 1.15em; margin-top: 10px; font-weight: bold;">❌ ไม่ผ่านเข้ารอบสุดท้าย (ตัดจาก Shortlist)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>#NoOtherChoice #어쩔수없다 #이병헌 #박찬욱</p>
+        <p style="margin-top: 10px; font-size: 0.9em;">Venice to Oscars • 5 Months Around the World</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Wait for Leaflet to load
+        window.addEventListener('load', function() {
+            // Initialize map
+            const map = L.map('map', {
+            center: [30, 20],
+            zoom: 2,
+            minZoom: 2,
+            maxZoom: 6
+        });
+
+        // Dark theme tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Locations data
+        const locations = [
+            {
+                name: 'Venice',
+                coords: [45.4408, 12.3155],
+                country: '🇮🇹',
+                event: 'Venice Film Festival',
+                awards: 'เข้าชิง Golden Lion'
+            },
+            {
+                name: 'Toronto',
+                coords: [43.6532, -79.3832],
+                country: '🇨🇦',
+                event: 'Toronto International FF',
+                awards: '🏆 People\'s Choice Award<br>🏆 อีบยองฮอน - Special Tribute'
+            },
+            {
+                name: 'New York',
+                coords: [40.7128, -74.0060],
+                country: '🇺🇸',
+                event: 'New York Film Festival',
+                awards: 'งานฉายพิเศษ'
+            },
+            {
+                name: 'London',
+                coords: [51.5074, -0.1278],
+                country: '🇬🇧',
+                event: 'BFI London Film Festival',
+                awards: 'Red Carpet และงานฉาย'
+            },
+            {
+                name: 'Seoul',
+                coords: [37.5665, 126.9780],
+                country: '🇰🇷',
+                event: 'Busan IFF & Blue Dragon',
+                awards: '🏆 กวาด 7 รางวัล Blue Dragon<br>🏆 เหรียญเกียรติคุณวัฒนธรรม'
+            },
+            {
+                name: 'Los Angeles',
+                coords: [34.0522, -118.2437],
+                country: '🇺🇸',
+                event: 'Governors Awards & More',
+                awards: '🏆 KALH Honors<br>Golden Globe Nominee'
+            },
+            {
+                name: 'Stockholm',
+                coords: [59.3293, 18.0686],
+                country: '🇸🇪',
+                event: 'Stockholm Film Festival',
+                awards: '🏆 FIPRESCI Prize'
+            },
+            {
+                name: 'Riyadh',
+                coords: [24.7136, 46.6753],
+                country: '🇸🇦',
+                event: 'Joy Forum 2025',
+                awards: 'อีบยองฮอน - Worldwide Speaker'
+            },
+            {
+                name: 'Jakarta',
+                coords: [-6.2088, 106.8456],
+                country: '🇮🇩',
+                event: 'Astra Film Awards',
+                awards: '🏆 ปาร์กชานอุค - Honorary Achievement'
+            }
+        ];
+
+        // Add markers
+        locations.forEach(loc => {
+            const marker = L.marker(loc.coords, {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: loc.country,
+                    iconSize: [30, 30]
+                })
+            }).addTo(map);
+
+            const popupContent = `
+                <div class="popup-title">${loc.event}</div>
+                <div class="popup-location">${loc.country} ${loc.name}</div>
+                <div class="popup-awards">${loc.awards}</div>
+            `;
+            
+            marker.bindPopup(popupContent);
+        });
+
+        // Draw flight paths
+        const paths = [
+            [[45.4408, 12.3155], [37.5665, 126.9780]], // Venice to Seoul
+            [[37.5665, 126.9780], [43.6532, -79.3832]], // Seoul to Toronto
+            [[43.6532, -79.3832], [40.7128, -74.0060]], // Toronto to NY
+            [[40.7128, -74.0060], [51.5074, -0.1278]], // NY to London
+            [[51.5074, -0.1278], [59.3293, 18.0686]], // London to Stockholm
+            [[59.3293, 18.0686], [34.0522, -118.2437]], // Stockholm to LA
+            [[34.0522, -118.2437], [24.7136, 46.6753]], // LA to Riyadh
+            [[24.7136, 46.6753], [-6.2088, 106.8456]] // Riyadh to Jakarta
+        ];
+
+        paths.forEach(path => {
+            L.polyline(path, {
+                color: '#ffd700',
+                weight: 2,
+                opacity: 0.6,
+                dashArray: '10, 10'
+            }).addTo(map);
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.event-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+        }); // End of window load event
+    </script>
+</body>
+</html>
