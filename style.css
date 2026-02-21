@@ -30,7 +30,7 @@
 
 /* --- Reset & Base --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 72px; }
 
 body {
   font-family: var(--font-body);
@@ -634,7 +634,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 @media (max-width: 768px) {
   .cards-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
   .submit-section { padding: 48px 0; }
-  .hero { padding: 48px 0 60px; }
+  .hero { padding: 84px 0 60px; }
   .hero-title { font-size: clamp(1.6rem, 5vw, 2.4rem); }
   .flag-row { font-size: 1.2rem; gap: 4px; margin-bottom: 20px; }
   .hero-image-wrapper { max-width: 320px; }
