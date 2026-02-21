@@ -774,7 +774,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 0 24px;
 }
 .faq-item.open .faq-answer {
-  max-height: 200px;
+  max-height: 500px;
   padding: 0 24px 20px;
 }
 .faq-answer p {

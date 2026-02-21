@@ -3,7 +3,6 @@
 // ============================================
 
 // --- Configuration ---
-const GOOGLE_FORM_URL = '#'; // Replace with actual Google Form URL
 const API_URL = 'https://script.google.com/macros/s/AKfycbxYxfFLfsIgvtAQNZKSuDYOPc_XJfBvWljOYZBsvLph-_bDJAez723yKfC5lvRfvfdHSQ/exec';
 
 // --- i18n TRANSLATIONS ---

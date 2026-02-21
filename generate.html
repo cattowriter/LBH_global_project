@@ -196,7 +196,7 @@
 
   // Persist URL
   const urlInput = document.getElementById('apiUrl');
-  urlInput.value = localStorage.getItem('lbh_api_url') || 'https://script.google.com/macros/s/AKfycbzMEtU77V3TdHj7hOG2BJfH_IGmg2mUi9vXP-ufaEuN7lLaPdiEfyIDbLrijCFVM9--Bw/exec';
+  urlInput.value = localStorage.getItem('lbh_api_url') || 'https://script.google.com/macros/s/AKfycbxYxfFLfsIgvtAQNZKSuDYOPc_XJfBvWljOYZBsvLph-_bDJAez723yKfC5lvRfvfdHSQ/exec';
   urlInput.addEventListener('input', () => {
     localStorage.setItem('lbh_api_url', urlInput.value.trim());
   });
@@ -216,7 +216,7 @@
       setStatus(`✅ โหลดได้ <strong>${submissions.length}</strong> submissions — กำลัง render...`);
       await buildPages(submissions);
     } catch (err) {
-      setStatus('❌ โหลดไม่สำเร็จ: ' + err.message);
+      setStatus('❌ โหลดไม่สำเร็จ: ' + (err.message || '').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
     }
   }
 
