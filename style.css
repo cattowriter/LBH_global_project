@@ -56,7 +56,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 {font-family:'Noto Sans Thai','Lato',sans-serif}
 
 /* Language toggle (shared) */
-.lang-toggle{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:3px}
+.lang-toggle{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:3px;flex-shrink:0;margin-left:12px}
 .lang-btn{padding:5px 14px;border-radius:50px;font-weight:600;color:var(--accent-light);transition:all var(--transition);font-size:.8rem;letter-spacing:.04em}
 .lang-btn.active{background:var(--brown);color:#fff}
 .lang-btn:hover:not(.active){background:var(--bg-warm)}
@@ -149,7 +149,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 768px) {
-  .nav-toggle { display: flex; }
+  .nav-toggle { display: flex; order: 2; }
+  .lang-toggle { order: 1; margin-left: auto; margin-right: 12px; }
   .nav-links {
     position: absolute;
     top: 60px;
@@ -826,6 +827,45 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .footer-visitors img {
   height: 28px;
+}
+
+/* ============================================
+   SUPPORT / BUY ME A COFFEE BUTTON
+   ============================================ */
+.support-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255, 243, 224, 0.92);
+  border: 1px solid rgba(196, 164, 105, 0.35);
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #8b6a3e;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px var(--shadow);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.support-btn:hover {
+  border-color: #c4a46c;
+  color: #6b4f2d;
+  background: rgba(255, 238, 210, 0.95);
+  box-shadow: 0 4px 18px var(--shadow);
+  transform: translateY(-1px);
+}
+.support-btn svg {
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .support-btn span { display: none; }
+  .support-btn { padding: 10px 12px; border-radius: 50%; }
 }
 
 /* ============================================
