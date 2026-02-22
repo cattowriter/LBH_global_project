@@ -414,6 +414,98 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border: none !important;
 }
 
+/* Map Legend */
+.map-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 0;
+}
+.map-legend-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.map-legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.map-legend-min,
+.map-legend-max {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+.map-legend-gradient {
+  width: 160px;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(to right, #e8d5b0, #d4b896, #c09a78, #a67c5b, #8b6340, #6b4f2d);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Top Countries */
+.map-top-countries {
+  margin-top: 32px;
+  text-align: center;
+}
+.top-countries-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.top-countries-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.top-country-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  transition: all var(--transition);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.top-country-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--shadow-md);
+}
+.top-country-rank {
+  font-weight: 700;
+  color: var(--brown);
+  font-size: 0.8rem;
+}
+.top-country-flag {
+  font-size: 1.2rem;
+}
+.top-country-name {
+  font-weight: 600;
+  color: var(--accent);
+}
+.top-country-count {
+  color: var(--accent-light);
+  font-size: 0.78rem;
+}
+@media (max-width: 480px) {
+  .map-legend { flex-wrap: wrap; gap: 8px; }
+  .map-legend-gradient { width: 120px; }
+  .top-country-item { padding: 6px 12px; font-size: 0.8rem; }
+}
+
 /* ============================================
    COUNTRY MODAL
    ============================================ */
@@ -668,6 +760,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .share-btn.share-copy:hover {
   border-color: var(--brown);
   color: var(--brown);
+}
+.share-btn.share-ig:hover {
+  border-color: #E1306C;
+  color: #E1306C;
+}
+.share-btn.share-tiktok:hover {
+  border-color: #ff0050;
+  color: #ff0050;
 }
 @media (max-width: 480px) {
   .share-btn span { display: none; }

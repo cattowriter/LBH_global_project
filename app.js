@@ -35,6 +35,7 @@ const TRANSLATIONS = {
     faq5q:'Can fans from any country participate?', faq5a:'Absolutely! This is a <strong>global</strong> project — fans from every country are welcome to join. No matter where you are in the world, your message matters. 🌍',
     faq6q:'The website has an error / I can\'t submit', faq6a:'Don\'t worry! You can click the <strong>"Report Bug"</strong> button at the bottom-right corner and include your message and photo — we\'ll submit it for you. Or you can DM <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> on X directly.',
     shareTitle:'Share this project 💛', shareText:'Help spread the word!',
+    mapLegendLabel:'Submissions', mapTopTitle:'Top participating countries',
     footerDisclaimer:'This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.',
   },
   th: {
@@ -65,6 +66,7 @@ const TRANSLATIONS = {
     faq5q:'อยู่ต่างประเทศ เข้าร่วมได้ไหม?', faq5a:'ได้แน่นอน! นี่คือโปรเจกต์<strong>ระดับโลก</strong> — แฟนจากทุกประเทศสามารถเข้าร่วมได้ ไม่ว่าจะอยู่ที่ไหนในโลก ข้อความของคุณมีค่าเสมอ 🌍',
     faq6q:'เว็บมีปัญหา / ส่งผลงานไม่ได้', faq6a:'ไม่ต้องตกใจ! สามารถกดปุ่ม <strong>"Report Bug"</strong> ที่มุมล่างขวา แล้วแนบข้อความและรูปที่ต้องการส่งมา เราจะ submit ให้แทน หรือ Inbox <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> บน X ได้เลยค่ะ',
     shareTitle:'แชร์โปรเจกต์นี้ 💛', shareText:'ช่วยกันบอกต่อ!',
+    mapLegendLabel:'จำนวนผลงาน', mapTopTitle:'ประเทศที่เข้าร่วมมากที่สุด',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
   },
   es: {
@@ -95,6 +97,7 @@ const TRANSLATIONS = {
     faq5q:'¿Pueden participar fans de cualquier país?', faq5a:'¡Por supuesto! Este es un proyecto <strong>global</strong> — fans de todos los países son bienvenidos. No importa dónde estés en el mundo, tu mensaje importa. 🌍',
     faq6q:'El sitio web tiene un error / no puedo enviar', faq6a:'¡No te preocupes! Puedes hacer clic en el botón <strong>"Report Bug"</strong> en la esquina inferior derecha e incluir tu mensaje y foto — lo enviaremos por ti. O puedes enviar un DM a <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> en X directamente.',
     shareTitle:'Comparte este proyecto 💛', shareText:'¡Ayuda a difundir la palabra!',
+    mapLegendLabel:'Envíos', mapTopTitle:'Países con más participación',
     footerDisclaimer:'Este es un proyecto independiente de fans. No está afiliado con Lee Byung-hun ni BH Entertainment.',
   },
   ko: {
@@ -125,6 +128,7 @@ const TRANSLATIONS = {
     faq5q:'어느 나라 팬이든 참여할 수 있나요?', faq5a:'물론입니다! 이것은 <strong>글로벌</strong> 프로젝트입니다 — 모든 나라의 팬을 환영합니다. 세계 어디에 계시든 여러분의 메시지는 소중합니다. 🌍',
     faq6q:'웹사이트 오류 / 제출할 수 없어요', faq6a:'걱정하지 마세요! 오른쪽 하단의 <strong>"Report Bug"</strong> 버튼을 클릭하고 메시지와 사진을 첨부해 주세요 — 대신 제출해 드리겠습니다. 또는 X에서 <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a>에게 DM을 보내주세요.',
     shareTitle:'이 프로젝트를 공유하세요 💛', shareText:'함께 알려주세요!',
+    mapLegendLabel:'제출 수', mapTopTitle:'참여가 많은 국가',
     footerDisclaimer:'이것은 독립적인 팬 프로젝트입니다. 이병헌 또는 BH 엔터테인먼트와 무관합니다.',
   }
 };
@@ -319,6 +323,8 @@ function updateUI(data) {
   updateCountdown(data.deadline);
   updateFlagRow(data.countries);
   updateMap(data.countries);
+  updateMapLegend(data.countries);
+  renderTopCountries(data.countries);
   updateSubmitButtons(data);
   updateTimeline();
   checkMilestone(data);
@@ -498,6 +504,40 @@ function closeCountryModal() {
 }
 
 // ============================================
+// MAP LEGEND & TOP COUNTRIES
+// ============================================
+function updateMapLegend(countries) {
+  const maxEl = document.getElementById('legend-max');
+  if (!maxEl) return;
+  const vals = Object.values(countries);
+  const maxVal = vals.length ? Math.max(...vals) : 0;
+  maxEl.textContent = maxVal > 0 ? maxVal + '+' : '5+';
+}
+
+function renderTopCountries(countries) {
+  const container = document.getElementById('map-top-countries');
+  if (!container) return;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  const entries = Object.entries(countries)
+    .map(([code, count]) => ({ code, count, info: COUNTRY_DATA[code] }))
+    .filter(e => e.info)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 8);
+  if (entries.length === 0) { container.innerHTML = ''; return; }
+  const heading = dict.mapTopTitle || 'Top participating countries';
+  const submWord = dict.statSubmissions || 'submissions';
+  container.innerHTML = `<h3 class="top-countries-title">${heading}</h3>
+    <div class="top-countries-list">${entries.map((e, i) => `
+      <div class="top-country-item">
+        <span class="top-country-rank">#${i + 1}</span>
+        <span class="top-country-flag">${e.info.flag}</span>
+        <span class="top-country-name">${e.info.name}</span>
+        <span class="top-country-count">${e.count} ${submWord}</span>
+      </div>`).join('')}
+    </div>`;
+}
+
+// ============================================
 // ACCORDION (FAQ)
 // ============================================
 function initAccordion() {
@@ -636,8 +676,12 @@ function initShareButtons() {
   const text = encodeURIComponent('Join the Lee Byung-hun Global Fan Project! Send your message to LBH and be part of the printed Fanbook 💛🌍 #LeeByunghun #LBH #이병헌');
   const shareX = document.getElementById('share-x');
   const shareFB = document.getElementById('share-fb');
+  const shareIG = document.getElementById('share-ig');
+  const shareTT = document.getElementById('share-tiktok');
   if (shareX) shareX.href = `https://x.com/intent/tweet?url=${url}&text=${text}`;
   if (shareFB) shareFB.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+  if (shareIG) shareIG.href = `https://www.instagram.com/?url=${decodeURIComponent(url)}`;
+  if (shareTT) shareTT.href = `https://www.tiktok.com/`;
 }
 
 // ============================================
