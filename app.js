@@ -36,6 +36,8 @@ const TRANSLATIONS = {
     faq6q:'The website has an error / I can\'t submit', faq6a:'Don\'t worry! You can click the <strong>"Report Bug"</strong> button at the bottom-right corner and include your message and photo — we\'ll submit it for you. Or you can DM <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> on X directly.',
     shareTitle:'Share this project 💛', shareText:'Help spread the word!',
     mapLegendLabel:'Submissions', mapTopTitle:'Top participating countries',
+    shareCopiedToast:'Link copied! Paste it on {app}',
+    milestoneTitle:'{n} Submissions Reached!', milestoneText:'Thank you to all the fans around the world! The love keeps growing 💛',
     footerDisclaimer:'This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.',
   },
   th: {
@@ -67,6 +69,8 @@ const TRANSLATIONS = {
     faq6q:'เว็บมีปัญหา / ส่งผลงานไม่ได้', faq6a:'ไม่ต้องตกใจ! สามารถกดปุ่ม <strong>"Report Bug"</strong> ที่มุมล่างขวา แล้วแนบข้อความและรูปที่ต้องการส่งมา เราจะ submit ให้แทน หรือ Inbox <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> บน X ได้เลยค่ะ',
     shareTitle:'แชร์โปรเจกต์นี้ 💛', shareText:'ช่วยกันบอกต่อ!',
     mapLegendLabel:'จำนวนผลงาน', mapTopTitle:'ประเทศที่เข้าร่วมมากที่สุด',
+    shareCopiedToast:'คัดลอกลิงก์แล้ว! วางบน {app} ได้เลย',
+    milestoneTitle:'ครบ {n} ผลงานแล้ว!', milestoneText:'ขอบคุณแฟนๆ จากทั่วโลก ความรักยังคงเติบโตต่อไป 💛',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
   },
   es: {
@@ -98,6 +102,8 @@ const TRANSLATIONS = {
     faq6q:'El sitio web tiene un error / no puedo enviar', faq6a:'¡No te preocupes! Puedes hacer clic en el botón <strong>"Report Bug"</strong> en la esquina inferior derecha e incluir tu mensaje y foto — lo enviaremos por ti. O puedes enviar un DM a <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> en X directamente.',
     shareTitle:'Comparte este proyecto 💛', shareText:'¡Ayuda a difundir la palabra!',
     mapLegendLabel:'Envíos', mapTopTitle:'Países con más participación',
+    shareCopiedToast:'¡Enlace copiado! Pégalo en {app}',
+    milestoneTitle:'¡{n} envíos alcanzados!', milestoneText:'¡Gracias a todos los fans del mundo! El amor sigue creciendo 💛',
     footerDisclaimer:'Este es un proyecto independiente de fans. No está afiliado con Lee Byung-hun ni BH Entertainment.',
   },
   ko: {
@@ -129,6 +135,8 @@ const TRANSLATIONS = {
     faq6q:'웹사이트 오류 / 제출할 수 없어요', faq6a:'걱정하지 마세요! 오른쪽 하단의 <strong>"Report Bug"</strong> 버튼을 클릭하고 메시지와 사진을 첨부해 주세요 — 대신 제출해 드리겠습니다. 또는 X에서 <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a>에게 DM을 보내주세요.',
     shareTitle:'이 프로젝트를 공유하세요 💛', shareText:'함께 알려주세요!',
     mapLegendLabel:'제출 수', mapTopTitle:'참여가 많은 국가',
+    shareCopiedToast:'링크를 복사했습니다! {app}에 붙여넣으세요',
+    milestoneTitle:'{n}개 제출 달성!', milestoneText:'전 세계 팬 여러분 감사합니다! 사랑은 계속됩니다 💛',
     footerDisclaimer:'이것은 독립적인 팬 프로젝트입니다. 이병헌 또는 BH 엔터테인먼트와 무관합니다.',
   }
 };
@@ -627,24 +635,42 @@ function initMobileNav() {
 }
 
 // ============================================
-// MILESTONE CELEBRATION (fire at 100!)
+// MILESTONE CELEBRATION (100, 200, 300, 400, 500)
 // ============================================
+const MILESTONES = [100, 200, 300, 400, 500];
+const MILESTONE_EMOJI = {
+  100: '🔥🎉🔥',
+  200: '🌟💛🌟',
+  300: '🎊🥳🎊',
+  400: '✨💫✨',
+  500: '🏆👑🏆'
+};
+
 function checkMilestone(data) {
-  if (data.count < 100) return;
-  const key = 'lbh_milestone_100';
-  if (sessionStorage.getItem(key)) return; // only show once per session
-  sessionStorage.setItem(key, '1');
-  showMilestoneBanner();
+  for (const n of MILESTONES) {
+    if (data.count >= n) {
+      const key = 'lbh_milestone_' + n;
+      if (!sessionStorage.getItem(key)) {
+        sessionStorage.setItem(key, '1');
+        showMilestoneBanner(n);
+        break; // show one at a time (next milestone on next refresh)
+      }
+    }
+  }
 }
 
-function showMilestoneBanner() {
+function showMilestoneBanner(n) {
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  const title = (dict.milestoneTitle || '{n} Submissions Reached!').replace('{n}', n);
+  const text = dict.milestoneText || 'Thank you to all the fans around the world! The love keeps growing 💛';
+  const emoji = MILESTONE_EMOJI[n] || '🎉🎉🎉';
   const banner = document.createElement('div');
   banner.className = 'milestone-banner';
   banner.innerHTML = `
     <div class="milestone-content">
-      <div class="milestone-fire">🔥🎉🔥</div>
-      <h3 class="milestone-title">100 Submissions Reached!</h3>
-      <p class="milestone-text">Thank you to all the fans around the world! The love keeps growing 💛</p>
+      <div class="milestone-fire">${emoji}</div>
+      <h3 class="milestone-title">${title}</h3>
+      <p class="milestone-text">${text}</p>
     </div>
   `;
   banner.addEventListener('click', () => banner.classList.add('hide'));
@@ -680,12 +706,9 @@ function initShareButtons() {
   const text = encodeURIComponent('Join the Lee Byung-hun Global Fan Project! Send your message to LBH and be part of the printed Fanbook 💛🌍 #LeeByunghun #LBH #이병헌');
   const shareX = document.getElementById('share-x');
   const shareFB = document.getElementById('share-fb');
-  const shareIG = document.getElementById('share-ig');
-  const shareTT = document.getElementById('share-tiktok');
   if (shareX) shareX.href = `https://x.com/intent/tweet?url=${url}&text=${text}`;
   if (shareFB) shareFB.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-  if (shareIG) shareIG.href = `https://www.instagram.com/?url=${decodeURIComponent(url)}`;
-  if (shareTT) shareTT.href = `https://www.tiktok.com/`;
+  // IG & TikTok don't have share URLs — handled via onclick in HTML
 }
 
 // ============================================

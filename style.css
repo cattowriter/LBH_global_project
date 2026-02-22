@@ -717,6 +717,38 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: var(--accent-light);
 }
 
+/* Share Toast */
+.share-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface);
+  border: 1px solid var(--gold);
+  color: var(--accent);
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  z-index: 3000;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.share-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.share-toast.hide {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+}
+.share-toast-icon {
+  margin-right: 6px;
+}
+
 /* ============================================
    SHARE BUTTONS
    ============================================ */
