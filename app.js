@@ -20,7 +20,7 @@ const TRANSLATIONS = {
     aboutText:'📣 Dear Lee Byung-hun fans! I\'d love to invite you to join the <strong>"Lee Byung-hun Global Fan Project"</strong><br><br>I created a website to collect messages from fans around the world to share with Lee Byung-hun. The plan is to present them at his upcoming Japan fan meeting — or ask staff to deliver them if I don\'t get the chance personally.<br><br>Fans can submit messages and photos / Fanart online, and I will compile everything into a printed <em>Fanbook – Global Edition</em> to give to him directly. 🤍 (I truly hope I can hand it to him myself!)<br><br>✨ <strong>This is a personal project.</strong> I will cover all printing costs. Some images may be slightly resized to fit the book (estimated max ~40 pages).<br><br>Please keep content focused on Lee Byung-hun. To ensure appropriateness, shipping / Inhun or unrelated content may be excluded. (I\'m an Inhun fan too 🥹 — but for this project, I may need to remove any unsuitable content.)<br><br>The website will also remain as a <strong>digital version</strong> so he can read fans\' messages anytime.<br><br>⏰ <strong>Deadline: March 10, 2026</strong><br><small>(Book will be prepared for late March.)</small>',
     tlOpen:'Open', tlDeadline:'Deadline', tlPrint:'Print', tlDeliver:'Deliver',
     submitTitle:'How to Submit', submitSubtitle:'Choose the track that works best for you',
-    cardATitle:'Text Message', cardADesc:'Write a heartfelt message to Lee Byung-hun. Max 300 characters. We\'ll design the page for you.', cardABadge:'No design needed',
+    cardATitle:'Text Message', cardADesc:'Write a heartfelt message to Lee Byung-hun. Max 400 characters. We\'ll design the page for you.', cardABadge:'No design needed',
     cardBTitle:'Photo + Message', cardBDesc:'Upload 1 image (fanart or favourite photo) + a short message. We handle the layout.', cardBBadge:'Easy',
     cardCTitle:'Full Custom Page', cardCDesc:'Design your own A4 square page (2400×2400px, PNG, 300DPI, RGB). Maximum creative freedom.', cardCBadge:'Full control',
     btnSpecSheet:'📄 Download Spec Sheet', btnSubmitNow:'Submit Now →',
@@ -47,7 +47,7 @@ const TRANSLATIONS = {
     aboutText:'📣 วันนี้มีไอเดียอยากชวนทุกคนมาร่วมทำโปรเจ็คด้วยกันค่ะ<br><strong>"Lee Byung-hun Global Fan Project"</strong><br><br>เพิ่งเขียนเว็บไซต์ขึ้นมาเพื่อรวบรวม ข้อความและรูปจากแฟน ๆ ทั่วโลก ที่อยากบอกอีบยองฮอน เพื่อนำไปจัดทำเป็น <em>Fanbook Global Edition</em> เล่มจริง และมอบให้เขาในงานแฟนมีตติ้งที่ญี่ปุ่น (หรือฝากสตาฟส่งให้หากไม่ได้ให้ด้วยตัวเอง) 🤍<br><br>✨ <strong>โปรเจ็คนี้เป็นโปรเจ็คส่วนตัว</strong><br>เราจะออกค่า Print ทั้งหมดเอง หนังสือคาดว่าจะไม่เกินประมาณ <strong>40 หน้า</strong> และบางรูปอาจมีการย่อเล็กน้อยเพื่อให้เหมาะกับการพิมพ์<br><br>หลังจบโปรเจ็ค เว็บไซต์จะยังคงเปิดเป็น <strong>เวอร์ชัน Digital</strong> เพื่อให้อีบยองฮอนเข้ามาอ่านได้ตลอดเวลา<br><br>เนื่องจากเป็นโปรเจ็คที่มอบให้อีบยองฮอนโดยตรง ขอความร่วมมือให้เนื้อหาโฟกัสที่ตัวเขาเท่านั้น และงดเนื้อหาเกี่ยวกับ Inhun / shipping หรือบุคคลอื่น ๆ เพื่อความเหมาะสมของงานนะคะ (ส่วนตัวเป็น Inhun เหมือนกันค่ะ 🥹 หากมีเนื้อหาที่ไม่เหมาะสม ขออนุญาตตัดออกนะคะ)<br><br>⏰ <strong>กำหนดปิดรับข้อความ</strong><br>Form จะปิดวันที่ <strong>10 มีนาคม 2026</strong><br><small>(เพื่อเตรียมนำไปมอบช่วงปลายเดือนมีนาคม)</small>',
     tlOpen:'เปิดรับ', tlDeadline:'ปิดรับ', tlPrint:'พิมพ์', tlDeliver:'จัดส่ง',
     submitTitle:'วิธีส่งผลงาน', submitSubtitle:'เลือก Track ที่เหมาะกับคุณ',
-    cardATitle:'ข้อความอย่างเดียว', cardADesc:'เขียนข้อความจากใจถึงอีบยองฮอน ไม่เกิน 300 ตัวอักษร เราออกแบบหน้าให้', cardABadge:'ไม่ต้องออกแบบ',
+    cardATitle:'ข้อความอย่างเดียว', cardADesc:'เขียนข้อความจากใจถึงอีบยองฮอน ไม่เกิน 400 ตัวอักษร เราออกแบบหน้าให้', cardABadge:'ไม่ต้องออกแบบ',
     cardBTitle:'รูป + ข้อความ', cardBDesc:'อัปโหลดรูป 1 รูป (แฟนอาร์ตหรือรูปที่ชอบ) + ข้อความสั้นๆ เราจัดเลย์เอาต์ให้', cardBBadge:'ง่ายมาก',
     cardCTitle:'ออกแบบเอง', cardCDesc:'ออกแบบหน้าเอง (2400×2400px, PNG, 300DPI, RGB) อิสระเต็มที่!', cardCBadge:'ควบคุมเต็มที่',
     btnSpecSheet:'📄 ดาวน์โหลด Spec Sheet', btnSubmitNow:'ส่งผลงาน →',
@@ -157,17 +157,37 @@ const COUNTRY_DATA = {
 };
 
 // --- State ---
-let currentData = { count: 0, cap: 100, deadline: '2026-03-10', countries: {} };
+const CACHE_KEY = 'lbh_stats_cache';
+const CACHE_TTL = 120000; // 2 minutes
+
+// Try to restore cached data immediately so page doesn't flash "0"
+let currentData = (function() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      const cached = JSON.parse(raw);
+      if (cached && cached.data && Date.now() - cached.ts < 600000) { // accept cache up to 10 min
+        return cached.data;
+      }
+    }
+  } catch(e) {}
+  return { count: 0, cap: 100, deadline: '2026-03-10', countries: {} };
+})();
 let mapInstance = null;
 
 // ============================================
-// DATA FETCHING
+// DATA FETCHING  (with localStorage cache)
 // ============================================
 async function fetchData() {
   try {
-    const res = await fetch(API_URL);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000); // 15s timeout
+    const res = await fetch(API_URL, { signal: controller.signal });
+    clearTimeout(timer);
     const data = await res.json();
     currentData = data;
+    // Persist to localStorage for instant next-visit load
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
     updateUI(data);
   } catch (err) {
     console.warn('API fetch failed, using cached data:', err);
@@ -498,7 +518,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const bl = navigator.language || '';
   setLang(bl.startsWith('th') ? 'th' : 'en');
 
-  // Initial data load
+  // Show cached stats immediately (avoids "0" flash)
+  if (currentData.count > 0) {
+    updateUI(currentData);
+  }
+
+  // Then fetch fresh data from API
   fetchData();
   loadMessageWall();
 
