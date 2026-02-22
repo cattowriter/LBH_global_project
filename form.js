@@ -266,9 +266,65 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = reject;
+    reader.onerror = () => reject(new Error('Failed to read file: ' + file.name));
     reader.readAsDataURL(file);
   });
+}
+
+// ==========================================
+// IMAGE COMPRESSION — reduce payload for reliable uploads
+// ==========================================
+function compressImage(file, maxDim, quality) {
+  return new Promise((resolve) => {
+    if (!file.type.startsWith('image/')) return resolve(file);
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.width, h = img.height;
+      // Only resize if exceeds max dimension
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else { w = Math.round(w * maxDim / h); h = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      canvas.toBlob(blob => {
+        if (blob && blob.size < file.size) {
+          resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+        } else {
+          resolve(file); // keep original if compression didn't help
+        }
+      }, 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+
+// ==========================================
+// FETCH WITH TIMEOUT + RETRY
+// ==========================================
+async function fetchWithRetry(url, options, timeoutMs, retries) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timer);
+      return res;
+    } catch (err) {
+      clearTimeout(timer);
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 2000)); // wait 2s before retry
+        continue;
+      }
+      throw err;
+    }
+  }
 }
 
 // ==========================================
@@ -323,6 +379,10 @@ async function handleSubmit() {
   btn.classList.add('loading');
   btn.disabled = true;
 
+  // Prevent accidental page close during upload
+  const guardClose = (e) => { e.preventDefault(); e.returnValue = ''; };
+  window.addEventListener('beforeunload', guardClose);
+
   try {
     // Build payload
     const data = {
@@ -352,27 +412,29 @@ async function handleSubmit() {
       data.language = document.getElementById('field-language-c').value;
     }
 
-    // Profile picture
+    // Profile picture — compress to 400px for smaller payload
     const profileInput = document.getElementById('field-profile');
     if (profileInput.files.length) {
-      const file = profileInput.files[0];
+      let file = profileInput.files[0];
+      file = await compressImage(file, 400, 0.8);
       data.profile_base64 = await fileToBase64(file);
-      data.profile_ext = file.name.split('.').pop();
+      data.profile_ext = file.type === 'image/jpeg' ? 'jpg' : file.name.split('.').pop();
       data.profile_mimetype = file.type;
     }
 
-    // Track B photo
+    // Track B photo — compress to max 2400px for faster upload
     if (selectedTrack === 'B') {
       const photoInput = document.getElementById('field-photo');
       if (photoInput.files.length) {
-        const file = photoInput.files[0];
+        let file = photoInput.files[0];
+        file = await compressImage(file, 2400, 0.85);
         data.photo_base64 = await fileToBase64(file);
-        data.photo_ext = file.name.split('.').pop();
+        data.photo_ext = file.type === 'image/jpeg' ? 'jpg' : file.name.split('.').pop();
         data.photo_mimetype = file.type;
       }
     }
 
-    // Track C custom page
+    // Track C custom page — NO compression (preserve original design quality)
     if (selectedTrack === 'C') {
       const customInput = document.getElementById('field-custom');
       if (customInput.files.length) {
@@ -383,22 +445,34 @@ async function handleSubmit() {
       }
     }
 
-
-
-    // Send
-    await fetch(APPS_SCRIPT_URL, {
+    // Send with 120s timeout + 1 automatic retry
+    await fetchWithRetry(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(data),
-    });
+    }, 120000, 1);
 
+    window.removeEventListener('beforeunload', guardClose);
     document.getElementById('form-main').style.display = 'none';
     document.getElementById('submit-success').classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (err) {
+    window.removeEventListener('beforeunload', guardClose);
     console.error('Submit error:', err);
-    alert(t('errFail'));
+
+    let msg = t('errFail');
+    if (err.name === 'AbortError') {
+      msg = lang === 'th'
+        ? 'หมดเวลาการอัปโหลด กรุณาลองอีกครั้ง หรือลองใช้ไฟล์ขนาดเล็กลง'
+        : 'Upload timed out. Please try again or use a smaller file.';
+    } else if (!navigator.onLine) {
+      msg = lang === 'th'
+        ? 'ไม่มีการเชื่อมต่ออินเทอร์เน็ต กรุณาตรวจสอบเน็ตแล้วลองใหม่'
+        : 'No internet connection. Please check your network and try again.';
+    }
+
+    alert(msg);
     btn.classList.remove('loading');
     btn.disabled = false;
   }
