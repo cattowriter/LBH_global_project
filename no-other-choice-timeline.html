@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260223">
   <style>
     .tl-hero { padding: 120px 0 50px; text-align: center; position: relative; overflow: hidden; }
     .tl-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(196,168,124,0.08) 0%, transparent 70%); pointer-events: none; }
@@ -862,12 +862,12 @@
     if (toggle && menu) {
       toggle.addEventListener('click', function() {
         menu.classList.toggle('open');
-        toggle.classList.toggle('active');
+        toggle.classList.toggle('open');
       });
       menu.querySelectorAll('a').forEach(function(a) {
         a.addEventListener('click', function() {
           menu.classList.remove('open');
-          toggle.classList.remove('active');
+          toggle.classList.remove('open');
         });
       });
     }
@@ -931,6 +931,7 @@
   };
   function setLangTL(lang) {
     tlLang = lang;
+    document.body.setAttribute('data-lang', lang);
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
       var key = el.getAttribute('data-i18n');
       if (TL_TRANSLATIONS[lang] && TL_TRANSLATIONS[lang][key] !== undefined) {

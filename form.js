@@ -614,12 +614,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggle && menu) {
     toggle.addEventListener('click', () => {
       menu.classList.toggle('open');
-      toggle.classList.toggle('active');
+      toggle.classList.toggle('open');
     });
     menu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         menu.classList.remove('open');
-        toggle.classList.remove('active');
+        toggle.classList.remove('open');
       });
     });
   }
