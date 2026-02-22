@@ -3,7 +3,7 @@
 // ============================================
 
 // --- Configuration ---
-const API_URL = 'https://script.google.com/macros/s/AKfycbxYxfFLfsIgvtAQNZKSuDYOPc_XJfBvWljOYZBsvLph-_bDJAez723yKfC5lvRfvfdHSQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
 
 // --- i18n TRANSLATIONS ---
 const TRANSLATIONS = {

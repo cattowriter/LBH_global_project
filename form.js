@@ -1,7 +1,7 @@
 // ==========================================
 // CONFIG — Replace with your deployed Apps Script Web App URL
 // ==========================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYxfFLfsIgvtAQNZKSuDYOPc_XJfBvWljOYZBsvLph-_bDJAez723yKfC5lvRfvfdHSQ/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
 
 // ==========================================
 // i18n TRANSLATIONS

@@ -196,7 +196,7 @@
 
   // Persist URL
   const urlInput = document.getElementById('apiUrl');
-  urlInput.value = localStorage.getItem('lbh_api_url') || 'https://script.google.com/macros/s/AKfycbxYxfFLfsIgvtAQNZKSuDYOPc_XJfBvWljOYZBsvLph-_bDJAez723yKfC5lvRfvfdHSQ/exec';
+  urlInput.value = localStorage.getItem('lbh_api_url') || 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
   urlInput.addEventListener('input', () => {
     localStorage.setItem('lbh_api_url', urlInput.value.trim());
   });
