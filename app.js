@@ -146,6 +146,10 @@ function setLang(l) {
     const k = el.getAttribute('data-i18n');
     if (dict[k] !== undefined) el.innerHTML = dict[k];
   });
+  // Re-render dynamic content that uses translated strings
+  if (currentData && currentData.countries) {
+    renderTopCountries(currentData.countries);
+  }
 }
 
 // --- Country code to flag emoji + name mapping ---
