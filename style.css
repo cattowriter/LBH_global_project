@@ -533,6 +533,146 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: var(--border);
   flex-shrink: 0;
 }
+.timeline-date {
+  font-size: 0.7rem;
+  color: var(--accent-light);
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* Active timeline step */
+.timeline-step.active .timeline-icon {
+  border-color: var(--brown);
+  background: rgba(139, 115, 85, 0.12);
+  box-shadow: 0 0 0 4px rgba(196, 168, 124, 0.25);
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+.timeline-step.active .timeline-label {
+  color: var(--brown);
+  font-weight: 700;
+}
+.timeline-step.active .timeline-date {
+  color: var(--brown);
+  opacity: 1;
+  font-weight: 600;
+}
+.timeline-step.done .timeline-icon {
+  border-color: var(--gold);
+  background: rgba(196, 168, 124, 0.15);
+}
+.timeline-step.done .timeline-label {
+  color: var(--gold);
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(196, 168, 124, 0.25); }
+  50% { box-shadow: 0 0 0 8px rgba(196, 168, 124, 0.1); }
+}
+
+/* ============================================
+   MILESTONE CELEBRATION BANNER
+   ============================================ */
+.milestone-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  pointer-events: all;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.milestone-banner.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.milestone-banner.hide {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.milestone-content {
+  background: linear-gradient(135deg, #fff8ee, #fff3e0);
+  border: 2px solid var(--gold);
+  border-radius: 16px;
+  padding: 28px 40px;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(196, 168, 124, 0.35);
+  max-width: 460px;
+  width: 100%;
+}
+.milestone-fire {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  animation: milestone-bounce 0.6s ease infinite alternate;
+}
+@keyframes milestone-bounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+.milestone-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--brown);
+  margin-bottom: 6px;
+}
+.milestone-text {
+  font-size: 0.9rem;
+  color: var(--accent-light);
+}
+
+/* ============================================
+   SHARE BUTTONS
+   ============================================ */
+.share-section {
+  padding: 40px 0 60px;
+  text-align: center;
+}
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  transition: all var(--transition);
+  cursor: pointer;
+  text-decoration: none;
+}
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--shadow-md);
+}
+.share-btn.share-x:hover {
+  border-color: #1d9bf0;
+  color: #1d9bf0;
+}
+.share-btn.share-fb:hover {
+  border-color: #1877f2;
+  color: #1877f2;
+}
+.share-btn.share-copy:hover {
+  border-color: var(--brown);
+  color: var(--brown);
+}
+@media (max-width: 480px) {
+  .share-btn span { display: none; }
+  .share-btn { padding: 12px 14px; border-radius: 50%; }
+}
 
 @media (max-width: 600px) {
   .about-card { padding: 32px 24px; }

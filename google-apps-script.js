@@ -48,7 +48,7 @@
 // --- Configuration ---
 var CONFIG = {
   FOLDER_NAME: 'LBH Fan Project Uploads',
-  CAP: 100,
+  CAP: 500,
   DEADLINE: '2026-03-10'
 };
 

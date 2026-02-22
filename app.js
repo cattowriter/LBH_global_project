@@ -31,7 +31,10 @@ const TRANSLATIONS = {
     faq1q:'Can I submit in any language?', faq1a:'English is preferred, but you can submit in any language. Non-English messages will be translated to English using Google Gemini AI.',
     faq2q:'Is there a cost to participate?', faq2a:'No! I will attend the fan meeting and print this fanbook myself. If I can\'t hand it over in person, I\'ll leave it with the staff.',
     faq3q:'What\'s the deadline?', faq3a:'March 10, 2026 — to allow time for compiling and printing. The book will be prepared to present in late March. Check the countdown bar above!',
-    faq4q:'I want to edit my message or cancel my submission', faq4a:'You can submit a new one to replace it — we\'ll use the latest version.<br>To delete your submission, DM <a href="https://x.com/cattodata" target="_blank" rel="noopener noreferrer">@cattodata</a> on X to request removal.',
+    faq4q:'I want to edit my message or cancel my submission', faq4a:'You can submit a new one to replace it — we\'ll use the latest version.<br>To delete your submission, DM <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> on X to request removal.',
+    faq5q:'Can fans from any country participate?', faq5a:'Absolutely! This is a <strong>global</strong> project — fans from every country are welcome to join. No matter where you are in the world, your message matters. 🌍',
+    faq6q:'The website has an error / I can\'t submit', faq6a:'Don\'t worry! You can click the <strong>"Report Bug"</strong> button at the bottom-right corner and include your message and photo — we\'ll submit it for you. Or you can DM <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> on X directly.',
+    shareTitle:'Share this project 💛', shareText:'Help spread the word!',
     footerDisclaimer:'This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.',
   },
   th: {
@@ -58,7 +61,10 @@ const TRANSLATIONS = {
     faq1q:'ส่งภาษาอะไรก็ได้ไหม?', faq1a:'ภาษาอังกฤษจะดีที่สุด แต่หากต้องการส่งภาษาอื่น จะทำการแปลด้วย Google Gemini เพื่อแปลงเป็นภาษาอังกฤษ',
     faq2q:'มีค่าใช้จ่ายไหม?', faq2a:'ไม่มี ฉันจะไป Fan Meeting แล้วเป็นคน Print Fanbook นี้ไปเอง หากไม่ได้ให้กับมือจะฝากสตาฟไว้',
     faq3q:'เดดไลน์เมื่อไร?', faq3a:'10 มีนาคม 2026 — เพื่อเผื่อเวลาในการรวบรวมและพิมพ์ จะเตรียมนำไปมอบช่วงปลายเดือนมีนาคม ดูนับถอยหลังด้านบนได้เลย!',
-    faq4q:'อยากแก้ไขข้อความ หรือเปลี่ยนใจไม่อยากส่งแล้ว', faq4a:'สามารถส่งอันใหม่มาทับ เราจะนับจากอันใหม่<br>สำหรับการลบ Inbox <a href="https://x.com/cattodata" target="_blank" rel="noopener noreferrer">@cattodata</a> เพื่อขอลบ',
+    faq4q:'อยากแก้ไขข้อความ หรือเปลี่ยนใจไม่อยากส่งแล้ว', faq4a:'สามารถส่งอันใหม่มาทับ เราจะนับจากอันใหม่<br>สำหรับการลบ Inbox <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> เพื่อขอลบ',
+    faq5q:'อยู่ต่างประเทศ เข้าร่วมได้ไหม?', faq5a:'ได้แน่นอน! นี่คือโปรเจกต์<strong>ระดับโลก</strong> — แฟนจากทุกประเทศสามารถเข้าร่วมได้ ไม่ว่าจะอยู่ที่ไหนในโลก ข้อความของคุณมีค่าเสมอ 🌍',
+    faq6q:'เว็บมีปัญหา / ส่งผลงานไม่ได้', faq6a:'ไม่ต้องตกใจ! สามารถกดปุ่ม <strong>"Report Bug"</strong> ที่มุมล่างขวา แล้วแนบข้อความและรูปที่ต้องการส่งมา เราจะ submit ให้แทน หรือ Inbox <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> บน X ได้เลยค่ะ',
+    shareTitle:'แชร์โปรเจกต์นี้ 💛', shareText:'ช่วยกันบอกต่อ!',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
   }
 };
@@ -171,7 +177,7 @@ let currentData = (function() {
       }
     }
   } catch(e) {}
-  return { count: 0, cap: 100, deadline: '2026-03-10', countries: {} };
+  return { count: 0, cap: 500, deadline: '2026-03-10', countries: {} };
 })();
 let mapInstance = null;
 
@@ -254,6 +260,8 @@ function updateUI(data) {
   updateFlagRow(data.countries);
   updateMap(data.countries);
   updateSubmitButtons(data);
+  updateTimeline();
+  checkMilestone(data);
 }
 
 function updateStats(data) {
@@ -366,8 +374,12 @@ function initMap() {
       regions: [{
         attribute: 'fill',
         scale: {
-          low: '#c4a87c',
-          high: '#6b5335',
+          '1': '#e8d5b0',
+          '2': '#d4b98a',
+          '3': '#c4a46c',
+          '4': '#a8874e',
+          '5': '#8b6a3e',
+          '6': '#6b4f2d',
         },
         values: values,
         min: 0,
@@ -511,6 +523,64 @@ function initMobileNav() {
 }
 
 // ============================================
+// MILESTONE CELEBRATION (fire at 100!)
+// ============================================
+function checkMilestone(data) {
+  if (data.count < 100) return;
+  const key = 'lbh_milestone_100';
+  if (sessionStorage.getItem(key)) return; // only show once per session
+  sessionStorage.setItem(key, '1');
+  showMilestoneBanner();
+}
+
+function showMilestoneBanner() {
+  const banner = document.createElement('div');
+  banner.className = 'milestone-banner';
+  banner.innerHTML = `
+    <div class="milestone-content">
+      <div class="milestone-fire">🔥🎉🔥</div>
+      <h3 class="milestone-title">100 Submissions Reached!</h3>
+      <p class="milestone-text">Thank you to all the fans around the world! The love keeps growing 💛</p>
+    </div>
+  `;
+  banner.addEventListener('click', () => banner.classList.add('hide'));
+  document.body.appendChild(banner);
+  requestAnimationFrame(() => banner.classList.add('show'));
+  setTimeout(() => banner.classList.add('hide'), 6000);
+  setTimeout(() => banner.remove(), 7000);
+}
+
+// ============================================
+// TIMELINE — highlight current stage
+// ============================================
+function updateTimeline() {
+  const steps = document.querySelectorAll('.timeline-step');
+  if (!steps.length) return;
+  // Current stage: before deadline = "Open" (step 0)
+  const now = new Date();
+  const deadline = new Date('2026-03-10T23:59:59');
+  let activeIdx = 0;
+  if (now > deadline) activeIdx = 1; // past deadline
+  // We only track open/deadline for now
+  steps.forEach((step, i) => {
+    step.classList.toggle('active', i === activeIdx);
+    step.classList.toggle('done', i < activeIdx);
+  });
+}
+
+// ============================================
+// SHARE BUTTONS
+// ============================================
+function initShareButtons() {
+  const url = encodeURIComponent('https://cattowriter.com/LBH_global_project/');
+  const text = encodeURIComponent('Join the Lee Byung-hun Global Fan Project! Send your message to LBH and be part of the printed Fanbook 💛🌍 #LeeByunghun #LBH #이병헌');
+  const shareX = document.getElementById('share-x');
+  const shareFB = document.getElementById('share-fb');
+  if (shareX) shareX.href = `https://x.com/intent/tweet?url=${url}&text=${text}`;
+  if (shareFB) shareFB.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+}
+
+// ============================================
 // INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -535,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initScrollAnimations();
   initMobileNav();
+  initShareButtons();
 
   // Init map after a short delay to ensure DOM + lib ready
   setTimeout(() => {
