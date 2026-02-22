@@ -119,6 +119,116 @@ th: {
   errFileSize:'ไฟล์ใหญ่เกินไป', uploading:'กำลังอัปโหลด...',
   previewLabel:'📖 หน้าของคุณจะมีหน้าตาแบบนี้:',
   trackHint:'👇 เลือก <strong>แค่อันเดียว</strong> — ไม่ต้องทำทั้ง 3 แบบนะ!'
+},
+es: {  navAbout:'Sobre nosotros', navSubmit:'Enviar', navPhotobook:'Álbum', navMessages:'Mensajes', navFAQ:'Preguntas', navBonus:'Bonus - Cronología',  back:'Volver', formTitle:'✉️ Envía tu página',
+  formSubtitle:'Completa el formulario a continuación para enviar tu página para el Lee Byung-hun Global Fanbook. ¡Todas las opciones son bienvenidas!',
+  step1Title:'Elige tu opción',
+  trackATitle:'Mensaje de texto', trackADesc:'Escribe un mensaje. Nosotros diseñamos la página.', trackABadge:'Sin diseño necesario',
+  trackBTitle:'Foto + Mensaje', trackBDesc:'Sube una imagen + mensaje corto. Nos encargamos del diseño.', trackBBadge:'Fácil',
+  trackCTitle:'Página personalizada', trackCDesc:'Diseña tu propia página. Máxima libertad creativa.', trackCBadge:'Control total',
+  step2Title:'Tu información',
+  labelName:'Nombre a mostrar', helpName:'El nombre que aparecerá en tu página del fanbook',
+  labelContact:'Método de contacto', helpContact:'Elige cómo podemos comunicarnos contigo (para crédito o seguimiento)',
+  errContact:'Por favor, ingresa tu información de contacto',
+  labelCountry:'País', selectCountry:'— Selecciona tu país —',
+  labelOtherCountry:'Por favor, especifica tu país',
+  labelLanguage:'Idioma del mensaje', helpLanguage:'¿En qué idioma estará tu mensaje?',
+  selectLanguage:'— Selecciona idioma —', errLanguage:'Por favor, selecciona un idioma',
+  langOther:'Otro',
+  labelProfile:'Foto de perfil', helpProfile:'Opcional — un pequeño avatar junto a tu nombre.',
+  helpProfileSpec:'JPG / PNG, máx. 2MB', btnChoosePhoto:'Elegir foto', btnRemove:'Eliminar',
+  step3Title:'Tu contenido', noTrackNotice:'👆 Por favor, selecciona una opción arriba primero.',
+  labelMessage:'Tu mensaje para Lee Byung-hun',
+  helpMessageA:'¡Cualquier idioma es bienvenido! Máx. 400 caracteres.',
+  helpMessageB:'Mensaje corto con tu foto. Máx. 400 caracteres.',
+  noticeTrackA:'💡 ¡Diseñaremos una página hermosa para tu mensaje!',
+  labelPhoto:'Foto / Fanart', helpPhoto:'Sube 1 imagen — fanart o una foto favorita.',
+  btnClickUpload:'Haz clic para subir', orDragDrop:' o arrastra y suelta',
+  photoSpec:'JPG, PNG — máx. 10MB',
+  noticeTrackB:'💡 Organizaremos tu foto y mensaje de forma hermosa.',
+  noticeTrackCSpec:'📐 <strong>Especificaciones:</strong> 2400×2400px, PNG, 300DPI, RGB.',
+  noticeTrackCPrint:'📌 <strong>Nota:</strong> Debido al límite de páginas impresas, haré lo posible por incluir tu página personalizada a tamaño completo. Si el total excede el límite de impresión, puede que necesite reducir ligeramente el tamaño. ¡Muchas gracias por tu comprensión! 🙏',
+  labelCustomPage:'Diseño de página personalizada',
+  helpCustomPage:'Sube tu diseño de página completado como archivo PNG.',
+  customSpec:'Solo PNG — recomendado 2400×2400px',
+  labelMessageOptional:'Mensaje (Opcional)',
+  specDetails:'<strong>Plantilla:</strong> <code>2400×2400px</code> <code>PNG</code> <code>300DPI</code> <code>RGB</code>. Mantén el contenido a 200px de los bordes.',
+  step4Title:'Privacidad y visualización',
+  labelDisplay:'¿Mostrar mensaje en el sitio web?',
+  helpDisplay:'Tu página siempre aparece en el fanbook impreso. Esto controla la visualización en el sitio web.',
+  optionPublic:'Sí, mostrar públicamente', optionPublicDesc:'Nombre, país, mensaje en el sitio web',
+  optionAnon:'Mostrar como anónimo', optionAnonDesc:'Mensaje visible, nombre como "Fan anónimo"',
+  optionPrivate:'Mantener privado', optionPrivateDesc:'Solo en el fanbook impreso',
+  labelAgree:'Entiendo que este es un proyecto de fans y autorizo el uso de mi envío.',
+  btnSubmit:'Enviar mi página ✨',
+  submitNote:'Los archivos se suben a Google Drive. Un envío por persona.',
+  successTitle:'¡Gracias!',
+  successText:'¡Tu envío ha sido recibido! Gracias por ser parte de este proyecto. 💛',
+  btnBackHome:'← Volver al inicio',
+  errName:'Por favor, ingresa tu nombre', errCountry:'Por favor, selecciona tu país',
+  errCountryOther:'Por favor, especifica tu país', errTrack:'Por favor, selecciona una opción',
+  errMsg:'Por favor, escribe tu mensaje', errPhoto:'Por favor, sube tu foto',
+  errCustom:'Por favor, sube tu diseño de página personalizada',
+  errDisplay:'Por favor, selecciona una preferencia de visualización', errAgree:'Por favor, acepta los términos',
+  errFail:'Envío fallido. Por favor, inténtalo de nuevo.', errPrefix:'Por favor, corrige:',
+  errFileSize:'Archivo demasiado grande', uploading:'Subiendo...',
+  previewLabel:'📖 Tu página se verá así:',
+  trackHint:'👇 Elige <strong>solo una</strong> — ¡no necesitas completar las 3!'
+},
+ko: {  navAbout:'소개', navSubmit:'제출', navPhotobook:'포토북', navMessages:'메시지', navFAQ:'FAQ', navBonus:'보너스 - 타임라인',  back:'뒤로', formTitle:'✉️ 페이지 제출하기',
+  formSubtitle:'아래 양식을 작성하여 Lee Byung-hun Global Fanbook에 페이지를 제출하세요. 모든 트랙을 환영합니다!',
+  step1Title:'트랙 선택',
+  trackATitle:'텍스트 메시지', trackADesc:'메시지를 작성하세요. 페이지 디자인은 저희가 합니다.', trackABadge:'디자인 불필요',
+  trackBTitle:'사진 + 메시지', trackBDesc:'이미지 업로드 + 짧은 메시지. 레이아웃은 저희가 담당합니다.', trackBBadge:'쉬움',
+  trackCTitle:'맞춤 페이지', trackCDesc:'자신만의 페이지를 디자인하세요. 최대한의 창작 자유.', trackCBadge:'완전한 자유',
+  step2Title:'기본 정보',
+  labelName:'표시 이름', helpName:'팬북에 표시될 이름',
+  labelContact:'연락 방법', helpContact:'연락 가능한 방법을 선택하세요 (크레딧 또는 후속 연락용)',
+  errContact:'연락처 정보를 입력해 주세요',
+  labelCountry:'국가', selectCountry:'— 국가를 선택하세요 —',
+  labelOtherCountry:'국가를 입력해 주세요',
+  labelLanguage:'메시지 언어', helpLanguage:'메시지를 어떤 언어로 작성하시나요?',
+  selectLanguage:'— 언어를 선택하세요 —', errLanguage:'언어를 선택해 주세요',
+  langOther:'기타',
+  labelProfile:'프로필 사진', helpProfile:'선택 사항 — 이름 옆에 표시될 작은 아바타.',
+  helpProfileSpec:'JPG / PNG, 최대 2MB', btnChoosePhoto:'사진 선택', btnRemove:'삭제',
+  step3Title:'내용', noTrackNotice:'👆 먼저 위에서 트랙을 선택해 주세요.',
+  labelMessage:'이병헌에게 보내는 메시지',
+  helpMessageA:'어떤 언어든 환영합니다! 최대 400자.',
+  helpMessageB:'사진과 함께하는 짧은 메시지. 최대 400자.',
+  noticeTrackA:'💡 메시지를 위한 아름다운 페이지를 디자인해 드립니다!',
+  labelPhoto:'사진 / 팬아트', helpPhoto:'이미지 1장 업로드 — 팬아트 또는 좋아하는 사진.',
+  btnClickUpload:'클릭하여 업로드', orDragDrop:' 또는 드래그 앤 드롭',
+  photoSpec:'JPG, PNG — 최대 10MB',
+  noticeTrackB:'💡 사진과 메시지를 아름답게 배치해 드립니다.',
+  noticeTrackCSpec:'📐 <strong>사양:</strong> 2400×2400px, PNG, 300DPI, RGB.',
+  noticeTrackCPrint:'📌 <strong>참고:</strong> 인쇄 페이지 수가 제한되어 있어 맞춤 페이지를 최대한 원본 크기로 포함하겠습니다. 총 페이지 수가 인쇄 한도를 초과하면 크기를 약간 줄여야 할 수 있습니다. 이해해 주셔서 정말 감사합니다! 🙏',
+  labelCustomPage:'맞춤 페이지 디자인',
+  helpCustomPage:'완성된 페이지 디자인을 PNG 파일로 업로드하세요.',
+  customSpec:'PNG만 가능 — 2400×2400px 권장',
+  labelMessageOptional:'메시지 (선택 사항)',
+  specDetails:'<strong>템플릿:</strong> <code>2400×2400px</code> <code>PNG</code> <code>300DPI</code> <code>RGB</code>. 가장자리에서 200px 이내에 내용을 배치하세요.',
+  step4Title:'개인정보 및 표시',
+  labelDisplay:'웹사이트에 메시지를 표시할까요?',
+  helpDisplay:'페이지는 항상 인쇄된 팬북에 포함됩니다. 이 설정은 웹사이트 표시를 제어합니다.',
+  optionPublic:'네, 공개적으로 표시', optionPublicDesc:'이름, 국가, 메시지가 웹사이트에 표시',
+  optionAnon:'익명으로 표시', optionAnonDesc:'메시지 표시, 이름은 "익명 팬"으로',
+  optionPrivate:'비공개 유지', optionPrivateDesc:'인쇄된 팬북에만 포함',
+  labelAgree:'이 프로젝트가 팬 프로젝트임을 이해하며, 제출물 사용을 허가합니다.',
+  btnSubmit:'페이지 제출하기 ✨',
+  submitNote:'파일은 Google Drive에 업로드됩니다. 1인당 1회 제출.',
+  successTitle:'감사합니다!',
+  successText:'제출이 접수되었습니다! 이 프로젝트에 참여해 주셔서 감사합니다. 💛',
+  btnBackHome:'← 홈으로 돌아가기',
+  errName:'이름을 입력해 주세요', errCountry:'국가를 선택해 주세요',
+  errCountryOther:'국가를 입력해 주세요', errTrack:'트랙을 선택해 주세요',
+  errMsg:'메시지를 작성해 주세요', errPhoto:'사진을 업로드해 주세요',
+  errCustom:'맞춤 페이지 디자인을 업로드해 주세요',
+  errDisplay:'표시 설정을 선택해 주세요', errAgree:'약관에 동의해 주세요',
+  errFail:'제출에 실패했습니다. 다시 시도해 주세요.', errPrefix:'수정해 주세요:',
+  errFileSize:'파일이 너무 큽니다', uploading:'업로드 중...',
+  previewLabel:'📖 페이지 미리보기:',
+  trackHint:'👇 <strong>하나만</strong> 선택하세요 — 3개 모두 작성할 필요 없습니다!'
 }};
 
 // ==========================================
@@ -141,15 +251,25 @@ function setLang(l) {
     const k = el.getAttribute('data-i18n'), v = T[l]?.[k];
     if (v !== undefined) el.innerHTML = v;
   });
-  const ph = l === 'th'
-    ? { 'field-name':'เช่น มิก้า', 'field-other-country':'เช่น นอร์เวย์',
-        'field-message-a':'เขียนข้อความจากใจถึงอีบยองฮอน...',
-        'field-message-b':'ข้อความสั้นๆ ประกอบรูป...',
-        'field-message-c':'ข้อความเพิ่มเติม...' }
-    : { 'field-name':'e.g. Mika', 'field-other-country':'e.g. Norway',
-        'field-message-a':'Write your heartfelt message...',
-        'field-message-b':'A short message with your photo...',
-        'field-message-c':'Additional message (optional)...' };
+  const phMap = {
+    th: { 'field-name':'เช่น มิก้า', 'field-other-country':'เช่น นอร์เวย์',
+          'field-message-a':'เขียนข้อความจากใจถึงอีบยองฮอน...',
+          'field-message-b':'ข้อความสั้นๆ ประกอบรูป...',
+          'field-message-c':'ข้อความเพิ่มเติม...' },
+    es: { 'field-name':'ej. Mika', 'field-other-country':'ej. Noruega',
+          'field-message-a':'Escribe tu mensaje sincero...',
+          'field-message-b':'Un mensaje corto con tu foto...',
+          'field-message-c':'Mensaje adicional (opcional)...' },
+    ko: { 'field-name':'예: 미카', 'field-other-country':'예: 노르웨이',
+          'field-message-a':'진심 어린 메시지를 작성하세요...',
+          'field-message-b':'사진과 함께하는 짧은 메시지...',
+          'field-message-c':'추가 메시지 (선택 사항)...' },
+    en: { 'field-name':'e.g. Mika', 'field-other-country':'e.g. Norway',
+          'field-message-a':'Write your heartfelt message...',
+          'field-message-b':'A short message with your photo...',
+          'field-message-c':'Additional message (optional)...' }
+  };
+  const ph = phMap[l] || phMap.en;
   Object.entries(ph).forEach(([id, v]) => {
     const el = document.getElementById(id);
     if (el) el.placeholder = v;
@@ -483,7 +603,10 @@ async function handleSubmit() {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   const bl = navigator.language || '';
-  setLang(bl.startsWith('th') ? 'th' : 'en');
+  if (bl.startsWith('th')) setLang('th');
+  else if (bl.startsWith('es')) setLang('es');
+  else if (bl.startsWith('ko')) setLang('ko');
+  else setLang('en');
 
   // Nav toggle for mobile
   const toggle = document.getElementById('nav-toggle');

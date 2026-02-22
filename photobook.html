@@ -241,6 +241,8 @@
       <div class="lang-toggle">
         <button class="lang-btn active" data-lang-btn="en" onclick="setLang('en')">EN</button>
         <button class="lang-btn" data-lang-btn="th" onclick="setLang('th')">TH</button>
+        <button class="lang-btn" data-lang-btn="es" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" data-lang-btn="ko" onclick="setLang('ko')">KO</button>
       </div>
     </div>
   </nav>
@@ -531,6 +533,14 @@
     th: {
       navAbout:'เกี่ยวกับเรา', navSubmit:'ส่งผลงาน', navPhotobook:'ดู Photobook',
       navMessages:'ข้อความ', navFAQ:'คำถาม', navBonus:'Bonus - Timeline'
+    },
+    es: {
+      navAbout:'Sobre nosotros', navSubmit:'Enviar', navPhotobook:'Álbum',
+      navMessages:'Mensajes', navFAQ:'Preguntas', navBonus:'Bonus - Cronología'
+    },
+    ko: {
+      navAbout:'소개', navSubmit:'제출', navPhotobook:'포토북',
+      navMessages:'메시지', navFAQ:'FAQ', navBonus:'보너스 - 타임라인'
     }
   };
   function setLang(lang) {
@@ -555,6 +565,8 @@
     // Auto-detect language
     const bl = navigator.language || '';
     if (bl.startsWith('th')) setLang('th');
+    else if (bl.startsWith('es')) setLang('es');
+    else if (bl.startsWith('ko')) setLang('ko');
   });
   </script>
 

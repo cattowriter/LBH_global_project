@@ -302,6 +302,8 @@
       <div class="lang-toggle">
         <button class="lang-btn active" data-lang-btn="en" onclick="setLangTL('en')">EN</button>
         <button class="lang-btn" data-lang-btn="th" onclick="setLangTL('th')">TH</button>
+        <button class="lang-btn" data-lang-btn="es" onclick="setLangTL('es')">ES</button>
+        <button class="lang-btn" data-lang-btn="ko" onclick="setLangTL('ko')">KO</button>
       </div>
     </div>
   </nav>
@@ -899,6 +901,32 @@
       tlKbd:'ใช้', tlKbd2:'ปุ่มลูกศรเพื่อเลื่อน',
       tlFooterNote:'จากเวนิสถึง Oscar Shortlist — 5 เดือนรอบโลก',
       tlStopOf:'จุดที่', tlStopOfSep:'/'
+    },
+    es: {
+      navAbout:'Sobre nosotros', navSubmit:'Enviar', navPhotobook:'Álbum',
+      navMessages:'Mensajes', navFAQ:'Preguntas', navBonus:'Bonus - Cronología',
+      tlBadge:'Filmografía de Lee Byung-hun',
+      tlTourLabel:'Gira Mundial de Festivales 2025–2026',
+      tlAwards:'Premios ganados', tlNoms:'Nominaciones', tlFests:'Festivales',
+      tlCountries:'Países', tlMonths:'Meses',
+      tlStart:'Iniciar el recorrido',
+      tlPrev:'Anterior', tlNext:'Siguiente',
+      tlKbd:'Usa', tlKbd2:'las teclas de flecha para navegar',
+      tlFooterNote:'De Venecia a la preselección del Oscar — 5 meses alrededor del mundo',
+      tlStopOf:'Parada', tlStopOfSep:'/'
+    },
+    ko: {
+      navAbout:'소개', navSubmit:'제출', navPhotobook:'포토북',
+      navMessages:'메시지', navFAQ:'FAQ', navBonus:'보너스 - 타임라인',
+      tlBadge:'이병헌 필모그래피',
+      tlTourLabel:'월드 페스티벌 투어 2025–2026',
+      tlAwards:'수상', tlNoms:'후보 지명', tlFests:'영화제',
+      tlCountries:'국가', tlMonths:'개월',
+      tlStart:'여정 시작하기',
+      tlPrev:'이전', tlNext:'다음',
+      tlKbd:'사용', tlKbd2:'화살표 키로 탐색',
+      tlFooterNote:'베니스에서 오스카 후보까지 — 전 세계 5개월의 여정',
+      tlStopOf:'정거장', tlStopOfSep:'/'
     }
   };
   function setLangTL(lang) {
@@ -924,6 +952,8 @@
   (function() {
     var bl = navigator.language || '';
     if (bl.startsWith('th')) setLangTL('th');
+    else if (bl.startsWith('es')) setLangTL('es');
+    else if (bl.startsWith('ko')) setLangTL('ko');
   })();
   </script>
   <a class="support-btn" href="mailto:cattowriter@gmail.com?subject=Support%20LBH%20Global%20Fan%20Project%20%E2%98%95&body=Hi%20Catto%2C%0A%0AI%E2%80%99d%20love%20to%20support%20the%20LBH%20Global%20Fan%20Project!%20%F0%9F%92%9B%0APlease%20let%20me%20know%20how%20I%20can%20help.%0A" title="Support this project">

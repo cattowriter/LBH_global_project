@@ -66,6 +66,66 @@ const TRANSLATIONS = {
     faq6q:'เว็บมีปัญหา / ส่งผลงานไม่ได้', faq6a:'ไม่ต้องตกใจ! สามารถกดปุ่ม <strong>"Report Bug"</strong> ที่มุมล่างขวา แล้วแนบข้อความและรูปที่ต้องการส่งมา เราจะ submit ให้แทน หรือ Inbox <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> บน X ได้เลยค่ะ',
     shareTitle:'แชร์โปรเจกต์นี้ 💛', shareText:'ช่วยกันบอกต่อ!',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
+  },
+  es: {
+    navAbout:'Sobre nosotros', navSubmit:'Enviar', navPhotobook:'Álbum', navMessages:'Mensajes', navFAQ:'Preguntas', navBonus:'Bonus - Cronología',
+    heroTitle:'Lee Byung-hun Global Fan Project', heroSubtitle:'Global Edition 🌍 por @cattowriter 🐱',
+    heroTagline:'Un Fanbook especial para Lee Byung-hun',
+    heroBookTitle:'Lee Byung-hun Global Fanbook 🌍',
+    heroSubmitBtn:'✉️ Envía tu página',
+    flagNote:'(¡se actualiza a medida que fans de más países se unen!)',
+    statSubmissions:'envíos', statDaysLeft:'días restantes', statCountries:'países',
+    mapTitle:'Fans de todo el mundo 🌍', mapSubtitle:'Haz clic en un país resaltado para ver cuántos fans se han unido',
+    aboutTitle:'Sobre el proyecto',
+    aboutText:'📣 ¡Queridos fans de Lee Byung-hun! Me encantaría invitarles a participar en el <strong>"Lee Byung-hun Global Fan Project"</strong><br><br>He creado un sitio web para recopilar mensajes de fans de todo el mundo para compartir con Lee Byung-hun. El plan es entregarlos en su próximo fan meeting en Japón, o pedir al personal que se los entregue si no tengo la oportunidad personalmente.<br><br>Los fans pueden enviar mensajes y fotos / fanart en línea, y compilaré todo en un <em>Fanbook – Global Edition</em> impreso para entregárselo directamente. 🤍 (¡Realmente espero poder dárselo en persona!)<br><br>✨ <strong>Este es un proyecto personal.</strong> Yo cubriré todos los costos de impresión. Algunas imágenes pueden redimensionarse ligeramente para ajustarse al libro (estimado máx. ~40 páginas).<br><br>Por favor, mantengan el contenido enfocado en Lee Byung-hun. Para garantizar la adecuación, el contenido de shipping / Inhun o no relacionado podría ser excluido. (¡Yo también soy fan de Inhun 🥹 — pero para este proyecto, puede que necesite eliminar contenido inadecuado.)<br><br>El sitio web también permanecerá como una <strong>versión digital</strong> para que él pueda leer los mensajes de los fans en cualquier momento.<br><br>⏰ <strong>Fecha límite: 10 de marzo de 2026</strong><br><small>(El libro se preparará para finales de marzo.)</small>',
+    tlOpen:'Abierto', tlDeadline:'Cierre', tlPrint:'Impresión', tlDeliver:'Entrega',
+    submitTitle:'Cómo enviar', submitSubtitle:'Elige la opción que mejor se adapte a ti',
+    cardATitle:'Mensaje de texto', cardADesc:'Escribe un mensaje sincero para Lee Byung-hun. Máx. 400 caracteres. Nosotros diseñamos la página.', cardABadge:'Sin diseño necesario',
+    cardBTitle:'Foto + Mensaje', cardBDesc:'Sube 1 imagen (fanart o foto favorita) + un mensaje corto. Nos encargamos del diseño.', cardBBadge:'Fácil',
+    cardCTitle:'Página personalizada', cardCDesc:'Diseña tu propia página A4 cuadrada (2400×2400px, PNG, 300DPI, RGB). Máxima libertad creativa.', cardCBadge:'Control total',
+    btnSpecSheet:'📄 Descargar hoja de especificaciones', btnSubmitNow:'Enviar ahora →',
+    noticeContentFocus:'💛 Por favor, mantén el contenido enfocado en Lee Byung-hun. Para garantizar la adecuación, el contenido de shipping / Inhun o no relacionado podría ser excluido. (¡Yo también soy fan de Inhun 🥹 — pero para este proyecto, puede que necesite eliminar contenido inadecuado.)',
+    msgTitle:'Mensajes de los fans 💌', msgSubtitle:'Mensajes públicos de fans que aceptaron compartir ✨',
+    msgExample:'(Ejemplo — se actualizará automáticamente cuando los fans envíen)',
+    faqTitle:'Preguntas frecuentes',
+    faq1q:'¿Puedo enviar en cualquier idioma?', faq1a:'Se prefiere el inglés, pero puedes enviar en cualquier idioma. Los mensajes en otros idiomas se traducirán al inglés usando Google Gemini AI.',
+    faq2q:'¿Tiene algún costo participar?', faq2a:'¡No! Yo asistiré al fan meeting e imprimiré este fanbook personalmente. Si no puedo entregarlo en persona, se lo dejaré al personal.',
+    faq3q:'¿Cuál es la fecha límite?', faq3a:'10 de marzo de 2026 — para tener tiempo de compilar e imprimir. El libro se preparará para presentar a finales de marzo. ¡Mira la cuenta regresiva arriba!',
+    faq4q:'Quiero editar mi mensaje o cancelar mi envío', faq4a:'Puedes enviar uno nuevo para reemplazarlo — usaremos la versión más reciente.<br>Para eliminar tu envío, envía un DM a <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> en X para solicitar la eliminación.',
+    faq5q:'¿Pueden participar fans de cualquier país?', faq5a:'¡Por supuesto! Este es un proyecto <strong>global</strong> — fans de todos los países son bienvenidos. No importa dónde estés en el mundo, tu mensaje importa. 🌍',
+    faq6q:'El sitio web tiene un error / no puedo enviar', faq6a:'¡No te preocupes! Puedes hacer clic en el botón <strong>"Report Bug"</strong> en la esquina inferior derecha e incluir tu mensaje y foto — lo enviaremos por ti. O puedes enviar un DM a <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a> en X directamente.',
+    shareTitle:'Comparte este proyecto 💛', shareText:'¡Ayuda a difundir la palabra!',
+    footerDisclaimer:'Este es un proyecto independiente de fans. No está afiliado con Lee Byung-hun ni BH Entertainment.',
+  },
+  ko: {
+    navAbout:'소개', navSubmit:'제출', navPhotobook:'포토북', navMessages:'메시지', navFAQ:'FAQ', navBonus:'보너스 - 타임라인',
+    heroTitle:'Lee Byung-hun Global Fan Project', heroSubtitle:'Global Edition 🌍 by @cattowriter 🐱',
+    heroTagline:'이병헌을 위한 특별한 팬북',
+    heroBookTitle:'Lee Byung-hun Global Fanbook 🌍',
+    heroSubmitBtn:'✉️ 페이지 제출하기',
+    flagNote:'(더 많은 나라의 팬이 참여하면 업데이트됩니다!)',
+    statSubmissions:'제출', statDaysLeft:'남은 일수', statCountries:'국가',
+    mapTitle:'전 세계의 팬들 🌍', mapSubtitle:'강조된 나라를 클릭하면 참여한 팬 수를 확인할 수 있습니다',
+    aboutTitle:'프로젝트 소개',
+    aboutText:'📣 이병헌 팬 여러분! <strong>"Lee Byung-hun Global Fan Project"</strong>에 여러분을 초대합니다.<br><br>전 세계 팬들의 메시지를 모아 이병헌에게 전달하기 위한 웹사이트를 만들었습니다. 일본 팬미팅에서 직접 전달하거나, 직접 전달하지 못할 경우 스태프를 통해 전달할 계획입니다.<br><br>팬들이 온라인으로 메시지와 사진 / 팬아트를 제출하면, 모든 것을 인쇄된 <em>팬북 – 글로벌 에디션</em>으로 편집하여 직접 전달하겠습니다. 🤍 (직접 전달할 수 있기를 진심으로 바랍니다!)<br><br>✨ <strong>이것은 개인 프로젝트입니다.</strong> 인쇄 비용은 모두 제가 부담합니다. 일부 이미지는 책에 맞게 약간 조정될 수 있습니다 (최대 약 40페이지 예상).<br><br>이병헌에 관한 내용만 포함해 주세요. 적절성을 위해 쉬핑 / 인헌 또는 관련 없는 내용은 제외될 수 있습니다. (저도 인헌 팬이에요 🥹 — 하지만 이 프로젝트에서는 부적절한 내용을 삭제해야 할 수 있습니다.)<br><br>웹사이트는 <strong>디지털 버전</strong>으로도 유지되어 그가 언제든지 팬들의 메시지를 읽을 수 있습니다.<br><br>⏰ <strong>마감일: 2026년 3월 10일</strong><br><small>(3월 말에 책을 준비할 예정입니다.)</small>',
+    tlOpen:'접수 중', tlDeadline:'마감', tlPrint:'인쇄', tlDeliver:'전달',
+    submitTitle:'제출 방법', submitSubtitle:'자신에게 맞는 트랙을 선택하세요',
+    cardATitle:'텍스트 메시지', cardADesc:'이병헌에게 진심 어린 메시지를 작성하세요. 최대 400자. 페이지 디자인은 저희가 합니다.', cardABadge:'디자인 불필요',
+    cardBTitle:'사진 + 메시지', cardBDesc:'이미지 1장 (팬아트 또는 좋아하는 사진) + 짧은 메시지를 업로드하세요. 레이아웃은 저희가 담당합니다.', cardBBadge:'쉬움',
+    cardCTitle:'맞춤 페이지', cardCDesc:'자신만의 A4 정사각형 페이지를 디자인하세요 (2400×2400px, PNG, 300DPI, RGB). 최대한의 창작 자유.', cardCBadge:'완전한 자유',
+    btnSpecSheet:'📄 사양서 다운로드', btnSubmitNow:'지금 제출하기 →',
+    noticeContentFocus:'💛 이병헌에 관한 내용만 포함해 주세요. 적절성을 위해 쉬핑 / 인헌 또는 관련 없는 내용은 제외될 수 있습니다. (저도 인헌 팬이에요 🥹 — 하지만 이 프로젝트에서는 부적절한 내용을 삭제해야 할 수 있습니다.)',
+    msgTitle:'팬들의 메시지 💌', msgSubtitle:'공개에 동의한 팬들의 메시지 ✨',
+    msgExample:'(예시 — 팬이 제출하면 자동으로 업데이트됩니다)',
+    faqTitle:'자주 묻는 질문',
+    faq1q:'어떤 언어로든 제출할 수 있나요?', faq1a:'영어를 권장하지만, 어떤 언어로든 제출할 수 있습니다. 영어가 아닌 메시지는 Google Gemini AI를 사용하여 영어로 번역됩니다.',
+    faq2q:'참여 비용이 있나요?', faq2a:'아닙니다! 제가 팬미팅에 참석하여 이 팬북을 직접 인쇄해 가겠습니다. 직접 전달하지 못하면 스태프에게 맡기겠습니다.',
+    faq3q:'마감일은 언제인가요?', faq3a:'2026년 3월 10일 — 편집과 인쇄 시간을 확보하기 위해서입니다. 3월 말에 전달할 수 있도록 준비합니다. 위의 카운트다운을 확인하세요!',
+    faq4q:'메시지를 수정하거나 제출을 취소하고 싶어요', faq4a:'새로운 것을 제출하면 이전 것을 대체합니다 — 가장 최신 버전을 사용합니다.<br>제출을 삭제하려면 X에서 <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a>에게 DM을 보내 삭제를 요청해 주세요.',
+    faq5q:'어느 나라 팬이든 참여할 수 있나요?', faq5a:'물론입니다! 이것은 <strong>글로벌</strong> 프로젝트입니다 — 모든 나라의 팬을 환영합니다. 세계 어디에 계시든 여러분의 메시지는 소중합니다. 🌍',
+    faq6q:'웹사이트 오류 / 제출할 수 없어요', faq6a:'걱정하지 마세요! 오른쪽 하단의 <strong>"Report Bug"</strong> 버튼을 클릭하고 메시지와 사진을 첨부해 주세요 — 대신 제출해 드리겠습니다. 또는 X에서 <a href="https://x.com/cattowriter" target="_blank" rel="noopener noreferrer">@cattowriter</a>에게 DM을 보내주세요.',
+    shareTitle:'이 프로젝트를 공유하세요 💛', shareText:'함께 알려주세요!',
+    footerDisclaimer:'이것은 독립적인 팬 프로젝트입니다. 이병헌 또는 BH 엔터테인먼트와 무관합니다.',
   }
 };
 
@@ -586,7 +646,10 @@ function initShareButtons() {
 document.addEventListener('DOMContentLoaded', () => {
   // Detect browser language
   const bl = navigator.language || '';
-  setLang(bl.startsWith('th') ? 'th' : 'en');
+  if (bl.startsWith('th')) setLang('th');
+  else if (bl.startsWith('es')) setLang('es');
+  else if (bl.startsWith('ko')) setLang('ko');
+  else setLang('en');
 
   // Show cached stats immediately (avoids "0" flash)
   if (currentData.count > 0) {
