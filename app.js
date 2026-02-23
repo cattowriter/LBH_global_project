@@ -325,7 +325,7 @@ async function loadMessageWall() {
         : '';
       const photoSrc = s.photo_url || s.custom_page_url || '';
       const photoHtml = photoSrc
-        ? `<div class="message-photo"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+        ? `<div class="message-photo" style="display:none"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onload="this.parentElement.style.display=''" onerror="this.parentElement.remove()"></div>`
         : '';
       return `<div class="message-card fade-in ${d}">
         ${photoHtml}
