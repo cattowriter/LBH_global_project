@@ -260,6 +260,7 @@ let currentData = (function() {
   return { count: 0, cap: 500, deadline: '2026-03-10', countries: {} };
 })();
 let mapInstance = null;
+let submissionsByCountry = {}; // grouped submissions for rich map tooltip
 
 // ============================================
 // DATA FETCHING  (with localStorage cache)
@@ -292,6 +293,14 @@ async function loadMessageWall() {
     const res = await fetch(API_URL + '?action=submissions');
     const data = await res.json();
     const submissions = (data.submissions || []).filter(s => s.message && s.message.trim());
+
+    // Group submissions by country for rich map tooltips
+    submissionsByCountry = {};
+    submissions.forEach(s => {
+      const cc = s.country || 'OTHER';
+      if (!submissionsByCountry[cc]) submissionsByCountry[cc] = [];
+      submissionsByCountry[cc].push(s);
+    });
 
     // Only replace examples if real submissions exist
     if (!submissions.length) return;
@@ -458,12 +467,12 @@ function initMap() {
 
     regionStyle: {
       initial: {
-        fill: '#e0e0e0',
+        fill: '#f0f0f0',
         stroke: '#ffffff',
         strokeWidth: 0.8,
       },
       hover: {
-        fill: '#c0c0c0',
+        fill: '#ffe0b2',
         cursor: 'pointer',
       },
       selected: {
@@ -475,12 +484,12 @@ function initMap() {
       regions: [{
         attribute: 'fill',
         scale: {
-          '1': '#fff3bf',
-          '2': '#feca57',
-          '3': '#ff9f43',
-          '4': '#ff6b6b',
-          '5': '#ff4757',
-          '6': '#e84393',
+          '1': '#FFD700',
+          '2': '#FFA502',
+          '3': '#FF6348',
+          '4': '#FF4757',
+          '5': '#FF2D55',
+          '6': '#FF006E',
         },
         values: values,
         min: 1,
@@ -492,10 +501,32 @@ function initMap() {
       const c = COUNTRY_DATA[code];
       const count = currentData.countries[code];
       if (c && count) {
-        tooltip.css({ backgroundColor: '#fff', color: '#2c2c2c', fontFamily: 'Lato, sans-serif', borderRadius: '10px', padding: '10px 16px', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '2px solid #ff6b6b' });
-        tooltip.text(`${c.flag} ${c.name} — ${count} submission${count > 1 ? 's' : ''}`);
+        const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+        const submWord = dict.statSubmissions || 'submissions';
+        const subs = (submissionsByCountry[code] || []).slice(0, 2);
+        let previewHtml = '';
+        if (subs.length) {
+          previewHtml = '<div style="margin-top:10px;border-top:1px solid #f0f0f0;padding-top:8px">' +
+            subs.map(s => {
+              const msg = s.message.length > 60 ? s.message.substring(0, 60) + '…' : s.message;
+              return '<div style="margin-bottom:6px">' +
+                '<div style="font-size:0.78rem;color:#666;font-style:italic;line-height:1.3">&ldquo;' + escapeHtml(msg) + '&rdquo;</div>' +
+                '<div style="font-size:0.7rem;color:#999;text-align:right">— ' + escapeHtml(s.name) + '</div>' +
+              '</div>';
+            }).join('') +
+          '</div>';
+        }
+        const html = '<div style="min-width:180px;max-width:260px">' +
+          '<div style="font-size:1.1em;font-weight:800;margin-bottom:2px">' + c.flag + ' ' + escapeHtml(c.name) + '</div>' +
+          '<div style="font-size:0.85rem;color:#FF4757;font-weight:700">' + count + ' ' + submWord + '</div>' +
+          previewHtml +
+          (subs.length ? '<div style="font-size:0.7rem;color:#aaa;text-align:center;margin-top:4px">click to explore →</div>' : '') +
+        '</div>';
+        tooltip.css({ backgroundColor: '#fff', color: '#2c2c2c', fontFamily: 'Lato, sans-serif', borderRadius: '12px', padding: '14px 18px', boxShadow: '0 12px 40px rgba(0,0,0,0.18)', border: '2px solid #FF6348', maxWidth: '280px' });
+        const tipEl = document.querySelector('.jvm-tooltip');
+        if (tipEl) { tipEl.innerHTML = html; } else { tooltip.text(c.flag + ' ' + c.name + ' — ' + count); }
       } else if (c) {
-        tooltip.text(`${c.flag} ${c.name}`);
+        tooltip.text(c.flag + ' ' + c.name);
       }
     },
 

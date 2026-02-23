@@ -409,12 +409,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-family: var(--font-body) !important;
   font-size: 0.9rem !important;
   font-weight: 600 !important;
-  padding: 10px 16px !important;
-  border-radius: 10px !important;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
-  border: 2px solid #ff6b6b !important;
+  padding: 14px 18px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18) !important;
+  border: 2px solid #FF6348 !important;
   background-color: #fff !important;
   color: #2c2c2c !important;
+  max-width: 280px !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.15s ease !important;
+  z-index: 10000 !important;
 }
 
 /* Map Legend */
@@ -448,8 +452,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   width: 180px;
   height: 14px;
   border-radius: 7px;
-  background: linear-gradient(to right, #fff3bf, #feca57, #ff9f43, #ff6b6b, #ff4757, #e84393);
-  box-shadow: 0 2px 8px rgba(255,107,107,0.3);
+  background: linear-gradient(to right, #FFD700, #FFA502, #FF6348, #FF4757, #FF2D55, #FF006E);
+  box-shadow: 0 2px 10px rgba(255,69,72,0.4);
 }
 
 /* Top Countries */
