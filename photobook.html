@@ -480,7 +480,7 @@
 
         const photoSrc = entry.photo_url || entry.custom_page_url || '';
         const photo = photoSrc
-          ? `<div class="entry-photo"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+          ? `<div class="entry-photo" style="display:none"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onload="this.parentElement.style.display=''" onerror="this.parentElement.remove()"></div>`
           : '';
 
         html += `
