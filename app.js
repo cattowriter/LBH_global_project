@@ -439,16 +439,16 @@ function initMap() {
 
     regionStyle: {
       initial: {
-        fill: '#d4cfc8',
-        stroke: '#c4bfb8',
-        strokeWidth: 0.5,
+        fill: '#2a2a3d',
+        stroke: '#3d3d56',
+        strokeWidth: 0.4,
       },
       hover: {
-        fill: '#b8a88a',
+        fill: '#4a4a6a',
         cursor: 'pointer',
       },
       selected: {
-        fill: '#8b7355',
+        fill: '#ff6b6b',
       },
     },
 
@@ -456,12 +456,12 @@ function initMap() {
       regions: [{
         attribute: 'fill',
         scale: {
-          '1': '#e8d5b0',
-          '2': '#d4b98a',
-          '3': '#c4a46c',
-          '4': '#a8874e',
-          '5': '#8b6a3e',
-          '6': '#6b4f2d',
+          '1': '#ffd166',
+          '2': '#ffb347',
+          '3': '#ff914d',
+          '4': '#ff6b6b',
+          '5': '#e84393',
+          '6': '#c44569',
         },
         values: values,
         min: 0,
@@ -473,7 +473,7 @@ function initMap() {
       const c = COUNTRY_DATA[code];
       const count = currentData.countries[code];
       if (c && count) {
-        tooltip.css({ backgroundColor: '#fff', color: '#2c2c2c', fontFamily: 'Lato, sans-serif', borderRadius: '8px', padding: '8px 14px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)' });
+        tooltip.css({ backgroundColor: '#1a1a2e', color: '#fff', fontFamily: 'Lato, sans-serif', borderRadius: '8px', padding: '8px 14px', boxShadow: '0 4px 20px rgba(0,0,0,0.3)', border: '1px solid rgba(255,209,102,0.3)' });
         tooltip.text(`${c.flag} ${c.name} — ${count} submission${count > 1 ? 's' : ''}`);
       } else if (c) {
         tooltip.text(`${c.flag} ${c.name}`);
