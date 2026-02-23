@@ -388,10 +388,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 .map-container {
-  background: #1a1a2e;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: var(--radius);
   padding: 24px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
   position: relative;
   overflow: hidden;
 }
@@ -407,13 +407,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* Map tooltip override */
 .jvm-tooltip {
   font-family: var(--font-body) !important;
-  font-size: 0.85rem !important;
-  padding: 8px 14px !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
-  border: 1px solid rgba(255,209,102,0.3) !important;
-  background-color: #1a1a2e !important;
-  color: #fff !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  padding: 10px 16px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
+  border: 2px solid #feca57 !important;
+  background-color: #fff !important;
+  color: #2c2c2c !important;
 }
 
 /* Map Legend */
@@ -428,7 +429,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .map-legend-label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.7);
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -441,14 +442,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .map-legend-max {
   font-size: 0.75rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.6);
+  color: var(--accent-light);
 }
 .map-legend-gradient {
-  width: 160px;
-  height: 12px;
-  border-radius: 6px;
-  background: linear-gradient(to right, #ffd166, #ffb347, #ff914d, #ff6b6b, #e84393, #c44569);
-  box-shadow: 0 0 8px rgba(255,107,107,0.3), inset 0 1px 3px rgba(0,0,0,0.1);
+  width: 180px;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(to right, #feca57, #ff9f43, #ff6b6b, #ee5a24, #e84393, #6c5ce7);
+  box-shadow: 0 2px 8px rgba(254,202,87,0.4);
 }
 
 /* Top Countries */
