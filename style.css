@@ -362,6 +362,28 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Milestone progress badge */
+.milestone-progress-badge {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--brown);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+.milestone-progress-badge.active {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fire-pulse 2s ease-in-out infinite;
+}
+@keyframes fire-pulse {
+  0%, 100% { text-shadow: 0 0 4px rgba(255, 140, 0, 0.3); }
+  50% { text-shadow: 0 0 12px rgba(255, 100, 0, 0.6), 0 0 20px rgba(255, 69, 0, 0.3); }
+}
+
 @media (max-width: 600px) {
   .stats-row { gap: 16px; }
   .stat-item { font-size: 0.8rem; }
@@ -371,7 +393,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    WORLD MAP SECTION
    ============================================ */
 .map-section {
-  padding: 80px 0 60px;
+  padding: 80px 0 20px;
 }
 .section-title {
   font-family: var(--font-display);
@@ -460,23 +482,22 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   box-shadow: 0 2px 10px rgba(255,69,72,0.4);
 }
 
-/* Top Countries */
+/* Top Countries Leaderboard */
 .map-top-countries {
-  margin-top: 32px;
+  margin-top: 20px;
   text-align: center;
 }
 .top-countries-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--accent);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .top-countries-list {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  max-width: 700px;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 420px;
   margin: 0 auto;
 }
 .top-country-item {
@@ -485,36 +506,120 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 8px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 50px;
-  padding: 8px 16px;
-  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  padding: 9px 14px;
+  font-size: 0.84rem;
   transition: all var(--transition);
-  box-shadow: 0 2px 8px var(--shadow);
+  box-shadow: 0 1px 4px var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 .top-country-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px var(--shadow-md);
+  transform: translateX(4px);
+  box-shadow: 0 3px 12px var(--shadow-md);
+  border-color: var(--gold);
 }
 .top-country-rank {
-  font-weight: 700;
+  font-weight: 800;
   color: var(--brown);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  min-width: 22px;
 }
 .top-country-flag {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 .top-country-name {
   font-weight: 600;
   color: var(--accent);
+  flex: 1;
+  text-align: left;
 }
 .top-country-count {
   color: var(--accent-light);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
+/* Progress bar behind each item */
+.top-country-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--radius-sm);
+  opacity: 0.07;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+/* Arrow hint */
+.top-country-arrow {
+  color: var(--gold);
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity var(--transition), transform var(--transition);
+}
+.top-country-item:hover .top-country-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* Medal emoji */
+.top-country-medal {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* #1 Gold */
+.top-country-item.rank-gold {
+  background: linear-gradient(135deg, #fffde7, #fff8e1);
+  border: 2px solid #FFB300;
+  padding: 10px 14px;
+  box-shadow: 0 3px 14px rgba(255, 179, 0, 0.25);
+  animation: gold-glow 2.5s ease-in-out infinite;
+}
+.top-country-item.rank-gold .top-country-bar { background: #FFB300; }
+.top-country-item.rank-gold .top-country-rank { color: #FF8F00; font-size: 0.85rem; }
+.top-country-item.rank-gold .top-country-name { color: #E65100; font-weight: 700; }
+.top-country-item.rank-gold .top-country-flag { font-size: 1.5rem; }
+@keyframes gold-glow {
+  0%, 100% { box-shadow: 0 3px 14px rgba(255, 179, 0, 0.25); }
+  50% { box-shadow: 0 5px 24px rgba(255, 152, 0, 0.4), 0 0 12px rgba(255, 111, 0, 0.18); }
+}
+
+/* #2 Silver */
+.top-country-item.rank-silver {
+  background: linear-gradient(135deg, #fafafa, #f5f5f5);
+  border: 1.5px solid #b0bec5;
+  box-shadow: 0 2px 8px rgba(144, 164, 174, 0.15);
+}
+.top-country-item.rank-silver .top-country-bar { background: #90a4ae; }
+.top-country-item.rank-silver .top-country-rank { color: #607d8b; }
+.top-country-item.rank-silver .top-country-flag { font-size: 1.4rem; }
+
+/* #3 Bronze */
+.top-country-item.rank-bronze {
+  background: linear-gradient(135deg, #fff8f0, #fff3e0);
+  border: 1.5px solid #d7a86e;
+  box-shadow: 0 2px 8px rgba(188, 143, 88, 0.14);
+}
+.top-country-item.rank-bronze .top-country-bar { background: #d7a86e; }
+.top-country-item.rank-bronze .top-country-rank { color: #a1887f; }
+.top-country-item.rank-bronze .top-country-flag { font-size: 1.4rem; }
+
 @media (max-width: 480px) {
   .map-legend { flex-wrap: wrap; gap: 8px; }
   .map-legend-gradient { width: 120px; }
-  .top-country-item { padding: 6px 12px; font-size: 0.8rem; }
+  .top-country-item { padding: 8px 12px; font-size: 0.8rem; gap: 6px; }
+  .top-countries-list { max-width: 100%; gap: 5px; }
+  .top-countries-title { font-size: 1.1rem; margin-bottom: 10px; }
+  .top-country-flag { font-size: 1.1rem; }
+  .top-country-item.rank-gold .top-country-flag { font-size: 1.3rem; }
+  .top-country-item.rank-silver .top-country-flag,
+  .top-country-item.rank-bronze .top-country-flag { font-size: 1.2rem; }
+  .top-country-medal { font-size: 0.9rem; }
 }
 
 /* ============================================
@@ -606,6 +711,30 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: #FF4757;
   font-weight: 600;
   text-align: right;
+}
+
+/* Explore on Message Board button inside country modal */
+.modal-explore-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: var(--brown);
+  color: #fff;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: all var(--transition);
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(139, 115, 85, 0.2);
+}
+.modal-explore-btn:hover {
+  background: var(--brown-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(139, 115, 85, 0.3);
 }
 
 /* ============================================
@@ -739,6 +868,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transform: translateY(-100%);
 }
 .milestone-content {
+  position: relative;
   background: linear-gradient(135deg, #fff8ee, #fff3e0);
   border: 2px solid var(--gold);
   border-radius: 16px;
@@ -766,6 +896,27 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .milestone-text {
   font-size: 0.9rem;
   color: var(--accent-light);
+}
+
+/* Milestone close button */
+.milestone-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--brown);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity var(--transition), transform var(--transition);
+  padding: 4px;
+  z-index: 1;
+}
+.milestone-close:hover {
+  opacity: 1;
+  transform: scale(1.15);
 }
 
 /* Share Toast */
@@ -870,7 +1021,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    HOW TO SUBMIT
    ============================================ */
 .submit-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 .cards-grid {
   display: grid;

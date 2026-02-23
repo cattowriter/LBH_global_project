@@ -39,6 +39,7 @@ const TRANSLATIONS = {
     mapLegendLabel:'Submissions', mapTopTitle:'Top participating countries',
     shareCopiedToast:'Link copied! Paste it on {app}',
     milestoneTitle:'{n} Submissions Reached!', milestoneText:'Thank you to all the fans around the world! The love keeps growing 💛',
+    modalExploreBtn:'Explore on Message Board →', milestoneBadge:'🔥 {n} reached!',
     footerDisclaimer:'This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.',
   },
   th: {
@@ -73,6 +74,7 @@ const TRANSLATIONS = {
     mapLegendLabel:'จำนวนผลงาน', mapTopTitle:'ประเทศที่เข้าร่วมมากที่สุด',
     shareCopiedToast:'คัดลอกลิงก์แล้ว! วางบน {app} ได้เลย',
     milestoneTitle:'ครบ {n} ผลงานแล้ว!', milestoneText:'ขอบคุณแฟนๆ จากทั่วโลก ความรักยังคงเติบโตต่อไป 💛',
+    modalExploreBtn:'ดูเพิ่มเติมบนบอร์ดข้อความ →', milestoneBadge:'🔥 ครบ {n} แล้ว!',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
   },
   es: {
@@ -107,6 +109,7 @@ const TRANSLATIONS = {
     mapLegendLabel:'Envíos', mapTopTitle:'Países con más participación',
     shareCopiedToast:'¡Enlace copiado! Pégalo en {app}',
     milestoneTitle:'¡{n} envíos alcanzados!', milestoneText:'¡Gracias a todos los fans del mundo! El amor sigue creciendo 💛',
+    modalExploreBtn:'Explorar en el tablero de mensajes →', milestoneBadge:'🔥 ¡{n} alcanzados!',
     footerDisclaimer:'Este es un proyecto independiente de fans. No está afiliado con Lee Byung-hun ni BH Entertainment.',
   },
   ko: {
@@ -141,6 +144,7 @@ const TRANSLATIONS = {
     mapLegendLabel:'제출 수', mapTopTitle:'참여가 많은 국가',
     shareCopiedToast:'링크를 복사했습니다! {app}에 붙여넣으세요',
     milestoneTitle:'{n}개 제출 달성!', milestoneText:'전 세계 팬 여러분 감사합니다! 사랑은 계속됩니다 💛',
+    modalExploreBtn:'메시지 보드에서 살펴보기 →', milestoneBadge:'🔥 {n} 달성!',
     footerDisclaimer:'이것은 독립적인 팬 프로젝트입니다. 이병헌 또는 BH 엔터테인먼트와 무관합니다.',
   }
 };
@@ -305,10 +309,12 @@ async function loadMessageWall() {
     // Only replace examples if real submissions exist
     if (!submissions.length) return;
 
-    // Reuse global COUNTRY_DATA for flag + name lookup
+    // Show max 6 cards, then a "View all" link
+    const MAX_PREVIEW = 6;
+    const previewSubs = submissions.slice(0, MAX_PREVIEW);
 
     const delays = ['delay-1','delay-2','delay-3'];
-    wall.innerHTML = submissions.map((s, i) => {
+    wall.innerHTML = previewSubs.map((s, i) => {
       const _ci = COUNTRY_DATA[s.country];
       const flag = _ci ? _ci.flag : '🌍';
       const country = s.country === 'OTHER' ? (s.country_other || 'Other') : (_ci ? _ci.name : s.country);
@@ -317,16 +323,31 @@ async function loadMessageWall() {
       const translationHtml = s.message_en
         ? `<p class="message-translation">🌐 ${escapeHtml(s.message_en)}</p>`
         : '';
+      const photoSrc = s.photo_url || s.custom_page_url || '';
+      const photoHtml = photoSrc
+        ? `<div class="message-photo"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+        : '';
       return `<div class="message-card fade-in ${d}">
+        ${photoHtml}
         <p class="message-text">${escapeHtml(s.message)}</p>
         ${translationHtml}
         <p class="message-author">${escapeHtml(author)}</p>
       </div>`;
     }).join('');
 
-    // Hide the example note
-    const noteEl = document.querySelector('[data-i18n="msgExample"]');
-    if (noteEl) noteEl.style.display = 'none';
+    // "View all" button if there are more
+    if (submissions.length > MAX_PREVIEW) {
+      const viewAllEl = document.querySelector('[data-i18n="msgExample"]');
+      if (viewAllEl) {
+        viewAllEl.innerHTML = `<a href="photobook.html" style="display:inline-flex;align-items:center;gap:6px;padding:10px 28px;background:var(--brown);color:#fff;border-radius:50px;font-size:0.88rem;font-weight:600;text-decoration:none;transition:all 0.3s;box-shadow:0 2px 10px rgba(139,115,85,0.2);">View all ${submissions.length} messages →</a>`;
+        viewAllEl.style.color = '';
+        viewAllEl.style.marginTop = '24px';
+        viewAllEl.style.textAlign = 'center';
+      }
+    } else {
+      const noteEl = document.querySelector('[data-i18n="msgExample"]');
+      if (noteEl) noteEl.style.display = 'none';
+    }
 
     requestAnimationFrame(() => {
       wall.querySelectorAll('.message-card').forEach(el => el.classList.add('visible'));
@@ -368,6 +389,22 @@ function updateStats(data) {
   if (progressBar) {
     const pct = Math.min((data.count / data.cap) * 100, 100);
     progressBar.style.width = pct + '%';
+  }
+
+  // Milestone progress badge
+  const badgeEl = document.getElementById('milestone-badge');
+  if (badgeEl) {
+    const reached = MILESTONES.filter(n => data.count >= n);
+    if (reached.length > 0) {
+      const highest = reached[reached.length - 1];
+      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+      const label = (dict.milestoneBadge || '🔥 {n} reached!').replace('{n}', highest);
+      badgeEl.textContent = label;
+      badgeEl.classList.add('active');
+    } else {
+      badgeEl.textContent = '';
+      badgeEl.classList.remove('active');
+    }
   }
 }
 
@@ -581,6 +618,17 @@ function showCountryModal(code, countryInfo, count) {
       }).join('');
     }
   }
+
+  // Add "Explore in Photobook" button — links to photobook.html#country-XX
+  const exploreLabel = dict.modalExploreBtn || 'Explore on Message Board →';
+  const existingExploreBtn = modal.querySelector('.modal-explore-btn');
+  if (existingExploreBtn) existingExploreBtn.remove();
+  const exploreBtn = document.createElement('a');
+  exploreBtn.href = `photobook.html#country-${code}`;
+  exploreBtn.className = 'modal-explore-btn';
+  exploreBtn.textContent = exploreLabel;
+  modal.querySelector('.modal-card').appendChild(exploreBtn);
+
   modal.classList.add('active');
 }
 
@@ -608,18 +656,29 @@ function renderTopCountries(countries) {
     .map(([code, count]) => ({ code, count, info: COUNTRY_DATA[code] }))
     .filter(e => e.info)
     .sort((a, b) => b.count - a.count)
-    .slice(0, 8);
+    .slice(0, 5);
   if (entries.length === 0) { container.innerHTML = ''; return; }
   const heading = dict.mapTopTitle || 'Top participating countries';
   const submWord = dict.statSubmissions || 'submissions';
+  const medalEmoji = ['🏆', '🥈', '🥉'];
+  const maxCount = entries[0].count;
   container.innerHTML = `<h3 class="top-countries-title">${heading}</h3>
-    <div class="top-countries-list">${entries.map((e, i) => `
-      <div class="top-country-item">
+    <div class="top-countries-list">${entries.map((e, i) => {
+      const rankClass = i === 0 ? 'rank-gold' : i === 1 ? 'rank-silver' : i === 2 ? 'rank-bronze' : '';
+      const medal = i < 3 ? `<span class="top-country-medal">${medalEmoji[i]}</span>` : '';
+      const barPct = Math.round((e.count / maxCount) * 100);
+      const barColor = i === 0 ? '#FFB300' : i === 1 ? '#90a4ae' : i === 2 ? '#d7a86e' : 'var(--gold)';
+      return `
+      <a href="photobook.html#country-${e.code}" class="top-country-item ${rankClass}">
+        <div class="top-country-bar" style="width:${barPct}%;background:${barColor}"></div>
+        ${medal}
         <span class="top-country-rank">#${i + 1}</span>
         <span class="top-country-flag">${e.info.flag}</span>
         <span class="top-country-name">${e.info.name}</span>
         <span class="top-country-count">${e.count} ${submWord}</span>
-      </div>`).join('')}
+        <span class="top-country-arrow">→</span>
+      </a>`;
+    }).join('')}
     </div>`;
 }
 
@@ -742,11 +801,16 @@ function showMilestoneBanner(n) {
   banner.className = 'milestone-banner';
   banner.innerHTML = `
     <div class="milestone-content">
+      <button class="milestone-close" aria-label="Close">&times;</button>
       <div class="milestone-fire">${emoji}</div>
       <h3 class="milestone-title">${title}</h3>
       <p class="milestone-text">${text}</p>
     </div>
   `;
+  banner.querySelector('.milestone-close').addEventListener('click', (e) => {
+    e.stopPropagation();
+    banner.classList.add('hide');
+  });
   banner.addEventListener('click', () => banner.classList.add('hide'));
   document.body.appendChild(banner);
   requestAnimationFrame(() => banner.classList.add('show'));
