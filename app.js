@@ -555,9 +555,32 @@ function updateMap(countries) {
 function showCountryModal(code, countryInfo, count) {
   const modal = document.getElementById('country-modal');
   if (!modal) return;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  const submWord = dict.statSubmissions || 'submissions';
   document.getElementById('modal-flag').textContent = countryInfo.flag;
   document.getElementById('modal-country').textContent = countryInfo.name;
-  document.getElementById('modal-count').textContent = `${count} submission${count > 1 ? 's' : ''}`;
+  document.getElementById('modal-count').textContent = `${count} ${submWord}`;
+
+  // Render all submissions for this country
+  const subsEl = document.getElementById('modal-submissions');
+  const subs = submissionsByCountry[code] || [];
+  if (subsEl) {
+    if (subs.length === 0) {
+      subsEl.innerHTML = '<p style="color:#aaa;font-size:0.85rem;margin-top:16px;font-style:italic">No public messages from this country yet</p>';
+    } else {
+      subsEl.innerHTML = subs.map(s => {
+        const msg = s.message.length > 120 ? s.message.substring(0, 120) + '…' : s.message;
+        const translationHtml = s.message_en
+          ? `<div class="modal-msg-translation">🌐 ${escapeHtml(s.message_en.length > 120 ? s.message_en.substring(0, 120) + '…' : s.message_en)}</div>`
+          : '';
+        return `<div class="modal-msg-card">
+          <div class="modal-msg-text">&ldquo;${escapeHtml(msg)}&rdquo;</div>
+          ${translationHtml}
+          <div class="modal-msg-author">— ${escapeHtml(s.name)}</div>
+        </div>`;
+      }).join('');
+    }
+  }
   modal.classList.add('active');
 }
 
