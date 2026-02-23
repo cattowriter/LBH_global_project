@@ -415,6 +415,28 @@ function updateSubmitButtons(data) {
 // ============================================
 // WORLD MAP (jsvectormap)
 // ============================================
+// Quantize raw count into bucket 1-6 for clean color mapping
+function quantizeLevel(count, maxCount) {
+  if (!count || maxCount <= 0) return 1;
+  const ratio = count / maxCount;
+  if (ratio <= 0.10) return 1;
+  if (ratio <= 0.25) return 2;
+  if (ratio <= 0.45) return 3;
+  if (ratio <= 0.65) return 4;
+  if (ratio <= 0.85) return 5;
+  return 6;
+}
+
+function buildQuantizedValues(countries) {
+  const counts = Object.values(countries);
+  const maxCount = counts.length ? Math.max(...counts) : 1;
+  const values = {};
+  Object.keys(countries).forEach(code => {
+    values[code] = quantizeLevel(countries[code], maxCount);
+  });
+  return values;
+}
+
 function initMap() {
   const container = document.getElementById('world-map');
   if (!container || typeof jsVectorMap === 'undefined') {
@@ -422,11 +444,8 @@ function initMap() {
     return;
   }
 
-  // Build region values and series
-  const values = {};
-  Object.keys(currentData.countries).forEach(code => {
-    values[code] = currentData.countries[code];
-  });
+  // Build quantized region values (buckets 1-6)
+  const values = buildQuantizedValues(currentData.countries);
 
   mapInstance = new jsVectorMap({
     selector: '#world-map',
@@ -456,16 +475,16 @@ function initMap() {
       regions: [{
         attribute: 'fill',
         scale: {
-          '1': '#feca57',
-          '2': '#ff9f43',
-          '3': '#ff6b6b',
-          '4': '#ee5a24',
-          '5': '#e84393',
-          '6': '#6c5ce7',
+          '1': '#fff3bf',
+          '2': '#feca57',
+          '3': '#ff9f43',
+          '4': '#ff6b6b',
+          '5': '#ff4757',
+          '6': '#e84393',
         },
         values: values,
-        min: 0,
-        max: Math.max(...Object.values(values), 1),
+        min: 1,
+        max: 6,
       }]
     },
 
@@ -473,7 +492,7 @@ function initMap() {
       const c = COUNTRY_DATA[code];
       const count = currentData.countries[code];
       if (c && count) {
-        tooltip.css({ backgroundColor: '#fff', color: '#2c2c2c', fontFamily: 'Lato, sans-serif', borderRadius: '10px', padding: '10px 16px', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '2px solid #feca57' });
+        tooltip.css({ backgroundColor: '#fff', color: '#2c2c2c', fontFamily: 'Lato, sans-serif', borderRadius: '10px', padding: '10px 16px', boxShadow: '0 8px 30px rgba(0,0,0,0.15)', border: '2px solid #ff6b6b' });
         tooltip.text(`${c.flag} ${c.name} — ${count} submission${count > 1 ? 's' : ''}`);
       } else if (c) {
         tooltip.text(`${c.flag} ${c.name}`);
@@ -492,10 +511,7 @@ function initMap() {
 
 function updateMap(countries) {
   if (!mapInstance) return;
-  const values = {};
-  Object.keys(countries).forEach(code => {
-    values[code] = countries[code];
-  });
+  const values = buildQuantizedValues(countries);
   try {
     mapInstance.params.series.regions[0].values = values;
     // Reset and re-apply colors

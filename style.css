@@ -412,7 +412,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 10px 16px !important;
   border-radius: 10px !important;
   box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
-  border: 2px solid #feca57 !important;
+  border: 2px solid #ff6b6b !important;
   background-color: #fff !important;
   color: #2c2c2c !important;
 }
@@ -448,8 +448,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   width: 180px;
   height: 14px;
   border-radius: 7px;
-  background: linear-gradient(to right, #feca57, #ff9f43, #ff6b6b, #ee5a24, #e84393, #6c5ce7);
-  box-shadow: 0 2px 8px rgba(254,202,87,0.4);
+  background: linear-gradient(to right, #fff3bf, #feca57, #ff9f43, #ff6b6b, #ff4757, #e84393);
+  box-shadow: 0 2px 8px rgba(255,107,107,0.3);
 }
 
 /* Top Countries */
