@@ -420,19 +420,51 @@
       return nameA.localeCompare(nameB);
     });
 
-    // Update stats
+    // Check if filtering by country (e.g. #country-TH from map)
+    const filterCode = window.location.hash?.startsWith('#country-')
+      ? window.location.hash.slice('#country-'.length)
+      : null;
+
+    // If filtering, only show that country
+    let codesToRender = sortedCodes;
+    if (filterCode && grouped[filterCode]) {
+      codesToRender = [filterCode];
+    }
+
+    // Update stats & header visibility
     const statsEl = document.getElementById('pb-stats');
-    document.getElementById('pb-total').textContent = submissions.length;
-    document.getElementById('pb-countries').textContent = sortedCodes.length;
-    statsEl.style.display = 'flex';
+    const headerEl = document.querySelector('.photobook-header');
+    if (filterCode && grouped[filterCode]) {
+      // Hide big header, show stats with filtered data
+      if (headerEl) headerEl.style.display = 'none';
+      document.getElementById('pb-total').textContent = grouped[filterCode].length;
+      document.getElementById('pb-countries').textContent = 1;
+      statsEl.style.display = 'flex';
+    } else {
+      document.getElementById('pb-total').textContent = submissions.length;
+      document.getElementById('pb-countries').textContent = sortedCodes.length;
+      statsEl.style.display = 'flex';
+    }
 
     // Build HTML
     let html = '';
-    sortedCodes.forEach((code, i) => {
+
+    // When filtering: compact header with back button + country info
+    if (filterCode && grouped[filterCode]) {
+      const fc = COUNTRY_DATA[filterCode] || { flag: '🌍', name: filterCode };
+      html += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <a href="photobook.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--surface);color:var(--brown);border:1.5px solid var(--border);border-radius:50px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:all 0.3s;">
+          ← All countries
+        </a>
+        <div style="font-size:0.85rem;color:var(--accent-light);">${grouped[filterCode].length} messages</div>
+      </div>`;
+    }
+
+    codesToRender.forEach((code, i) => {
       const country = COUNTRY_DATA[code] || { flag: '🌍', name: code };
       const entries = grouped[code];
 
-      html += `<section class="country-section fade-in">`;
+      html += `<section class="country-section fade-in" id="country-${code}">`;
       html += `<h2 class="country-header">from ${country.name} ${country.flag}</h2>`;
 
       entries.forEach((entry, j) => {
@@ -471,7 +503,7 @@
 
       html += `</section>`;
 
-      if (i < sortedCodes.length - 1) {
+      if (i < codesToRender.length - 1) {
         html += `<div class="country-divider">✦ ✦ ✦</div>`;
       }
     });
