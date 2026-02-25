@@ -37,7 +37,7 @@ const TRANSLATIONS = {
     faq7q:'Can I mention other people, like his co-stars or family?', faq7a:'Many people have kindly asked whether it\'s okay to mention individuals such as Lee Min-jung, Park Chan-wook, Lee Jung-jae, or others.<br><br>Yes — you\'re very welcome to mention people connected to his life or work, such as colleagues, collaborators, family members, or friendships, as long as the message remains respectful and keeps Lee Byung-hun as the main focus.<br><br>To keep the fanbook suitable for something that will be presented to him directly, I may gently exclude content that is explicitly NSFW (18+), overly shipping-focused, or unrelated to him.<br><br>Thank you so much for your understanding and for helping keep this project warm and meaningful for him. 🤍<br>(I\'m an Inhun fan too 🥹 — this is simply to keep everything appropriate for the occasion.)',
     faq8q:'Can I use AI-generated images?', faq8a:'Since this fanbook will be presented to Lee Byung-hun personally, we kindly ask fans to please avoid submitting AI-generated images that recreate his likeness together with other people, as he has shared in interviews that he feels concerned about AI-related content.<br><br>Regular fanart and all heartfelt creative works are absolutely welcome. Thank you so much for your understanding 🤍',
     shareTitle:'Share this project 💛', shareText:'Help spread the word!',
-    mapLegendLabel:'Submissions', mapTopTitle:'Top participating countries',
+    mapLegendLabel:'Submissions', mapTopTitle:'Top participating countries', allCountriesLabel:'Participating Countries',
     shareCopiedToast:'Link copied! Paste it on {app}',
     milestoneTitle:'{n} Submissions Reached!', milestoneText:'Thank you to all the fans around the world! The love keeps growing 💛',
     modalExploreBtn:'Explore on Message Board →', milestoneBadge:'🔥 {n} reached!',
@@ -73,7 +73,7 @@ const TRANSLATIONS = {
     faq7q:'กล่าวถึงบุคคลอื่น เช่น ครอบครัว หรือเพื่อนร่วมงานได้ไหม?', faq7a:'[อัปเดต] เนื่องจากมีหลายท่านสอบถามเข้ามา เช่น สามารถกล่าวถึงอีมินจอง, Park Chan-wook, อีจองแจ หรือบุคคลอื่น ๆ ได้หรือไม่ — สามารถกล่าวถึงบุคคลที่เกี่ยวข้องกับชีวิตหรือผลงานของเขาได้เลยค่ะ ไม่ว่าจะเป็นเพื่อนร่วมงาน ครอบครัว หรือความสัมพันธ์ในเชิงมิตรภาพ ตราบใดที่ยังอยู่ในขอบเขตที่สุภาพและเหมาะสม และยังคงโฟกัสที่ตัวอีบยองฮอนเป็นหลัก<br><br>อย่างไรก็ตาม เนื้อหาแนว shipping แบบชัดเจน หรือเนื้อหาที่ไม่เหมาะสม (เช่น 18+) อาจต้องขออนุญาตตัดออก เพื่อให้โปรเจ็คยังคงเหมาะสมกับการนำไปมอบให้เขาโดยตรงค่ะ',
     faq8q:'สามารถใช้ภาพ AI ได้ไหม?', faq8a:'เนื่องจากแฟนบุ๊กเล่มนี้จะมอบให้อีบยองฮอนโดยตรง ขอความร่วมมืออย่างสุภาพให้งดส่งภาพ AI ที่นำภาพลักษณ์ของเขาไปสร้างร่วมกับบุคคลอื่น เนื่องจากเขาเคยพูดในบทสัมภาษณ์ว่ามีความกังวลเกี่ยวกับคอนเทนต์ AI<br><br>แฟนอาร์ตและผลงานสร้างสรรค์จากใจทุกรูปแบบยังคงยินดีต้อนรับเสมอ ขอบคุณมาก ๆ สำหรับความเข้าใจค่ะ 🤍',
     shareTitle:'แชร์โปรเจกต์นี้ 💛', shareText:'ช่วยกันบอกต่อ!',
-    mapLegendLabel:'จำนวนผลงาน', mapTopTitle:'ประเทศที่เข้าร่วมมากที่สุด',
+    mapLegendLabel:'จำนวนผลงาน', mapTopTitle:'ประเทศที่เข้าร่วมมากที่สุด', allCountriesLabel:'Participating Countries',
     shareCopiedToast:'คัดลอกลิงก์แล้ว! วางบน {app} ได้เลย',
     milestoneTitle:'ครบ {n} ผลงานแล้ว!', milestoneText:'ขอบคุณแฟนๆ จากทั่วโลก ความรักยังคงเติบโตต่อไป 💛',
     modalExploreBtn:'ดูเพิ่มเติมบนบอร์ดข้อความ →', milestoneBadge:'🔥 ครบ {n} แล้ว!',
@@ -109,7 +109,7 @@ const TRANSLATIONS = {
     faq7q:'¿Puedo mencionar a otras personas, como su familia o compañeros de actuación?', faq7a:'Muchas personas han preguntado amablemente si está bien mencionar personas como Lee Min-jung, Park Chan-wook, Lee Jung-jae, u otros.<br><br>Sí — es muy bienvenido mencionar personas relacionadas con su vida o trabajo, como colegas, colaboradores, familiares o amistades, siempre que el mensaje sea respetuoso y mantenga a Lee Byung-hun como enfoque principal.<br><br>Para mantener el fanbook adecuado para algo que se le presentará directamente, podría excluir contenido explícitamente NSFW (18+), excesivamente centrado en shipping, o no relacionado con él.<br><br>Muchas gracias por su comprensión y por ayudar a que este proyecto sea cálido y significativo para él. 🤍<br>(Yo también soy fan de Inhun 🥹 — esto es simplemente para mantener todo apropiado para la ocasión.)',
     faq8q:'¿Se pueden usar imágenes generadas con IA?', faq8a:'Como este fanbook será entregado directamente a Lee Byung-hun, les pedimos amablemente evitar enviar imágenes generadas con IA que recrean su imagen junto a otras personas, ya que él ha expresado en entrevistas su preocupación sobre contenidos relacionados con IA.<br><br>El fanart y todas las creaciones hechas con cariño siempre serán bienvenidas. ¡Muchas gracias por su comprensión! 🤍',
     shareTitle:'Comparte este proyecto 💛', shareText:'¡Ayuda a difundir la palabra!',
-    mapLegendLabel:'Envíos', mapTopTitle:'Países con más participación',
+    mapLegendLabel:'Envíos', mapTopTitle:'Países con más participación', allCountriesLabel:'Participating Countries',
     shareCopiedToast:'¡Enlace copiado! Pégalo en {app}',
     milestoneTitle:'¡{n} envíos alcanzados!', milestoneText:'¡Gracias a todos los fans del mundo! El amor sigue creciendo 💛',
     modalExploreBtn:'Explorar en el tablero de mensajes →', milestoneBadge:'🔥 ¡{n} alcanzados!',
@@ -145,7 +145,7 @@ const TRANSLATIONS = {
     faq7q:'가족이나 동료 배우 등 다른 사람을 언급해도 되나요?', faq7a:'이민정, 박찬욱 감독, 이정재 등을 언급해도 되는지 문의를 많이 주셨습니다.<br><br>네 — 그의 삶이나 작업과 관련된 사람들을 언급하는 것은 매우 환영합니다. 동료, 협업자, 가족, 우정 관계 등이 포함되며, 메시지가 정중하고 이병헌을 중심으로 유지되어야 합니다.<br><br>직접 전달될 팬북에 걸맞도록, 명시적인 NSFW(18+) 내용, 지나치게 shipping에 집중된 내용, 또는 그와 무관한 내용은 정중히 제외될 수 있습니다.<br><br>이해와 협조에 진심으로 감사드립니다. 🤍<br>(저도 Inhun 팬입니다 🥹 — 단지 이 자리에 모든 것이 어울리도록 하기 위함입니다.)',
     faq8q:'AI 이미지를 사용해도 되나요?', faq8a:'이 팬북은 이병헌 배우님께 직접 전달될 예정이므로, 배우님의 모습이 다른 사람과 함께 재현된 AI 생성 이미지는 제출을 자제해 주시길 정중히 부탁드립니다. 배우님은 여러 인터뷰에서 AI 관련 콘텐츠에 대해 우려를 느낀다고 밝힌 바 있습니다.<br><br>팬아트와 정성 어린 모든 창작물은 언제나 환영합니다. 이해해 주셔서 감사합니다 🤍',
     shareTitle:'이 프로젝트를 공유하세요 💛', shareText:'함께 알려주세요!',
-    mapLegendLabel:'제출 수', mapTopTitle:'참여가 많은 국가',
+    mapLegendLabel:'제출 수', mapTopTitle:'참여가 많은 국가', allCountriesLabel:'Participating Countries',
     shareCopiedToast:'링크를 복사했습니다! {app}에 붙여넣으세요',
     milestoneTitle:'{n}개 제출 달성!', milestoneText:'전 세계 팬 여러분 감사합니다! 사랑은 계속됩니다 💛',
     modalExploreBtn:'메시지 보드에서 살펴보기 →', milestoneBadge:'🔥 {n} 달성!',
@@ -249,6 +249,53 @@ const COUNTRY_DATA = {
   YE:{flag:'🇾🇪',name:'Yemen'}, ZM:{flag:'🇿🇲',name:'Zambia'}, ZW:{flag:'🇿🇼',name:'Zimbabwe'},
   OTHER:{flag:'🌍',name:'Other'}
 };
+
+// Country → Continent mapping
+const CONTINENT_MAP = {
+  // Asia
+  AF:'Asia', AM:'Asia', AZ:'Asia', BD:'Asia', BN:'Asia', BT:'Asia', CN:'Asia',
+  GE:'Asia', HK:'Asia', ID:'Asia', IN:'Asia', JP:'Asia', KG:'Asia', KH:'Asia',
+  KP:'Asia', KR:'Asia', KZ:'Asia', LA:'Asia', LK:'Asia', MM:'Asia', MN:'Asia',
+  MV:'Asia', MY:'Asia', NP:'Asia', PH:'Asia', PK:'Asia', SG:'Asia', TH:'Asia',
+  TJ:'Asia', TL:'Asia', TM:'Asia', TW:'Asia', UZ:'Asia', VN:'Asia',
+  // Middle East → Asia
+  BH:'Asia', IQ:'Asia', IR:'Asia', IL:'Asia', JO:'Asia', KW:'Asia', LB:'Asia',
+  OM:'Asia', PS:'Asia', QA:'Asia', SA:'Asia', SY:'Asia', AE:'Asia', YE:'Asia',
+  TR:'Asia',
+  // Europe
+  AD:'Europe', AL:'Europe', AT:'Europe', BA:'Europe', BE:'Europe', BG:'Europe',
+  BY:'Europe', CH:'Europe', CY:'Europe', CZ:'Europe', DE:'Europe', DK:'Europe',
+  EE:'Europe', ES:'Europe', FI:'Europe', FR:'Europe', GB:'Europe', GR:'Europe',
+  HR:'Europe', HU:'Europe', IE:'Europe', IS:'Europe', IT:'Europe', LI:'Europe',
+  LT:'Europe', LU:'Europe', LV:'Europe', MC:'Europe', MD:'Europe', ME:'Europe',
+  MK:'Europe', MT:'Europe', NL:'Europe', NO:'Europe', PL:'Europe', PT:'Europe',
+  RO:'Europe', RS:'Europe', RU:'Europe', SE:'Europe', SI:'Europe', SK:'Europe',
+  SM:'Europe', UA:'Europe', VA:'Europe', XK:'Europe',
+  // Americas
+  AG:'Americas', AR:'Americas', BB:'Americas', BO:'Americas', BR:'Americas',
+  BS:'Americas', BZ:'Americas', CA:'Americas', CL:'Americas', CO:'Americas',
+  CR:'Americas', CU:'Americas', DM:'Americas', DO:'Americas', EC:'Americas',
+  GD:'Americas', GT:'Americas', GY:'Americas', HN:'Americas', HT:'Americas',
+  JM:'Americas', KN:'Americas', LC:'Americas', MX:'Americas', NI:'Americas',
+  PA:'Americas', PE:'Americas', PY:'Americas', SR:'Americas', SV:'Americas',
+  TT:'Americas', US:'Americas', UY:'Americas', VC:'Americas', VE:'Americas',
+  // Africa
+  AO:'Africa', BF:'Africa', BI:'Africa', BJ:'Africa', BW:'Africa', CD:'Africa',
+  CF:'Africa', CG:'Africa', CI:'Africa', CM:'Africa', CV:'Africa', DJ:'Africa',
+  DZ:'Africa', EG:'Africa', ER:'Africa', ET:'Africa', GA:'Africa', GH:'Africa',
+  GM:'Africa', GN:'Africa', GQ:'Africa', GW:'Africa', KE:'Africa', KM:'Africa',
+  LR:'Africa', LS:'Africa', LY:'Africa', MA:'Africa', MG:'Africa', ML:'Africa',
+  MR:'Africa', MU:'Africa', MW:'Africa', MZ:'Africa', NA:'Africa', NE:'Africa',
+  NG:'Africa', RW:'Africa', SC:'Africa', SD:'Africa', SL:'Africa', SN:'Africa',
+  SO:'Africa', SS:'Africa', ST:'Africa', SZ:'Africa', TD:'Africa', TG:'Africa',
+  TN:'Africa', TZ:'Africa', UG:'Africa', ZA:'Africa', ZM:'Africa', ZW:'Africa',
+  // Oceania
+  AU:'Oceania', FJ:'Oceania', FM:'Oceania', KI:'Oceania', MH:'Oceania',
+  NR:'Oceania', NZ:'Oceania', PG:'Oceania', PW:'Oceania', SB:'Oceania',
+  TO:'Oceania', TV:'Oceania', VU:'Oceania', WS:'Oceania',
+};
+const CONTINENT_ORDER = ['Asia','Europe','Americas','Africa','Oceania'];
+const CONTINENT_ICONS = {Asia:'🌏',Europe:'🌍',Americas:'🌎',Africa:'🌍',Oceania:'🌊'};
 
 // --- State ---
 const CACHE_KEY = 'lbh_stats_cache';
@@ -656,16 +703,20 @@ function renderTopCountries(countries) {
   const container = document.getElementById('map-top-countries');
   if (!container) return;
   const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
-  const entries = Object.entries(countries)
+  const allEntries = Object.entries(countries)
     .map(([code, count]) => ({ code, count, info: COUNTRY_DATA[code] }))
     .filter(e => e.info)
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
+    .sort((a, b) => b.count - a.count);
+  const entries = allEntries.slice(0, 5);
   if (entries.length === 0) { container.innerHTML = ''; return; }
   const heading = dict.mapTopTitle || 'Top participating countries';
   const submWord = dict.statSubmissions || 'submissions';
   const medalEmoji = ['🏆', '🥈', '🥉'];
   const maxCount = entries[0].count;
+  const allCountriesLabel = dict.allCountriesLabel || 'Participating Countries';
+  const chipsHtml = allEntries.map(e =>
+    `<a href="photobook.html#country-${e.code}" class="country-chip" title="${e.count} ${submWord}">${e.info.flag} ${e.info.name}</a>`
+  ).join('');
   container.innerHTML = `<h3 class="top-countries-title">${heading}</h3>
     <div class="top-countries-list">${entries.map((e, i) => {
       const rankClass = i === 0 ? 'rank-gold' : i === 1 ? 'rank-silver' : i === 2 ? 'rank-bronze' : '';
@@ -683,7 +734,8 @@ function renderTopCountries(countries) {
         <span class="top-country-arrow">→</span>
       </a>`;
     }).join('')}
-    </div>`;
+    </div>
+    <div class="all-countries-chips"><p class="all-countries-label">${allCountriesLabel}</p>${chipsHtml}</div>`;
 }
 
 // ============================================

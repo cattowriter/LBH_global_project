@@ -609,6 +609,47 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .top-country-item.rank-bronze .top-country-rank { color: #a1887f; }
 .top-country-item.rank-bronze .top-country-flag { font-size: 1.4rem; }
 
+/* All countries chips */
+.all-countries-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(139,115,85,0.15);
+}
+.all-countries-label {
+  width: 100%;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--brown);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+.country-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(139,115,85,0.2);
+  border-radius: 50px;
+  font-size: 0.76rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.18s;
+}
+.country-chip:hover {
+  background: var(--brown);
+  color: #fff;
+  border-color: var(--brown);
+  transform: translateY(-1px);
+}
+
 @media (max-width: 480px) {
   .map-legend { flex-wrap: wrap; gap: 8px; }
   .map-legend-gradient { width: 120px; }
@@ -620,6 +661,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .top-country-item.rank-silver .top-country-flag,
   .top-country-item.rank-bronze .top-country-flag { font-size: 1.2rem; }
   .top-country-medal { font-size: 0.9rem; }
+  .country-chip { font-size: 0.72rem; padding: 3px 8px; }
 }
 
 /* ============================================
