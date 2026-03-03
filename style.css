@@ -789,7 +789,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   text-align: center;
   margin-top: 10px;
 }
-/* Trigger button on photobook */
 .er-trigger-wrap { text-align: center; margin: 8px 0 20px; }
 .er-trigger-btn {
   display: inline-flex;
