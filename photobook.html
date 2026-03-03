@@ -267,6 +267,12 @@
         </div>
       </div>
 
+      <!-- Edit request trigger — DISABLED
+      <div class="er-trigger-wrap">
+        <button class="er-trigger-btn" id="er-open">✏️ Request to edit your submission</button>
+      </div>
+      -->
+
       <!-- Content container -->
       <div id="photobook-content">
         <div class="photobook-loading" id="photobook-loading">
@@ -288,6 +294,41 @@
       </div>
     </div>
   </footer>
+
+  <!-- ==========================================
+       EDIT REQUEST MODAL — DISABLED
+  <div class="er-modal" id="er-modal" role="dialog" aria-modal="true" aria-labelledby="er-title">
+    <div class="er-card">
+      <button class="er-close" id="er-close" aria-label="Close">×</button>
+      <h2 id="er-title">✏️ Request to Edit Submission</h2>
+      <p class="er-sub">Fill in what you'd like to change. We'll process it within 1–2 days.</p>
+
+      <label class="er-label">Your contact info from original submission *
+        <input id="er-contact" type="text" placeholder="e.g. X:@handle or email@example.com" required>
+      </label>
+
+      <label class="er-label">New message <span class="er-opt">(optional — leave blank to keep original)</span>
+        <textarea id="er-message" rows="4" maxlength="400" placeholder="Your updated message..."></textarea>
+      </label>
+
+      <label class="er-label">New photo <span class="er-opt">(optional — Track B only)</span>
+        <input id="er-photo" type="file" accept="image/*">
+      </label>
+
+      <label class="er-check">
+        <input type="checkbox" id="er-delete">
+        Please delete / replace my original submission
+      </label>
+
+      <label class="er-label">Additional notes <span class="er-opt">(optional)</span>
+        <input id="er-notes" type="text" placeholder="Anything else to let us know...">
+      </label>
+
+      <button class="er-submit" id="er-submit">Send Request →</button>
+      <p class="er-note">Your request will be reviewed manually by @cattowriter.</p>
+    </div>
+  </div>
+       ========================================== -->
 
   <script>
   // ==========================================
@@ -624,6 +665,119 @@
     else if (bl.startsWith('es')) setLang('es');
     else if (bl.startsWith('ko')) setLang('ko');
   });
+
+  // ==========================================
+  // IMAGE HELPERS (for edit request photo upload)
+  // ==========================================
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.readAsDataURL(file);
+    });
+  }
+  function compressImage(file, maxDim, quality) {
+    return new Promise(resolve => {
+      if (!file.type.startsWith('image/')) return resolve(file);
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+          else { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(blob => {
+          resolve(blob && blob.size < file.size
+            ? new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })
+            : file);
+        }, 'image/jpeg', quality);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  }
+
+  // ==========================================
+  // EDIT REQUEST MODAL — DISABLED
+  // ==========================================
+  /*
+  (function() {
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
+    const modal = document.getElementById('er-modal');
+    const openBtn = document.getElementById('er-open');
+    const closeBtn = document.getElementById('er-close');
+    const submitBtn = document.getElementById('er-submit');
+
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('er-contact').focus();
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Auto-open if URL contains #edit-request
+    if (window.location.hash === '#edit-request') {
+      window.addEventListener('load', () => setTimeout(openModal, 400));
+    }
+
+    submitBtn.addEventListener('click', async () => {
+      const contact = document.getElementById('er-contact').value.trim();
+      if (!contact) {
+        document.getElementById('er-contact').focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      const payload = {
+        request_type: 'edit_request',
+        contact_info: contact,
+        new_message: document.getElementById('er-message').value.trim(),
+        delete_original: document.getElementById('er-delete').checked,
+        notes: document.getElementById('er-notes').value.trim(),
+      };
+
+      // Optional new photo — compress to 1200px
+      const photoFile = document.getElementById('er-photo').files[0];
+      if (photoFile) {
+        try {
+          const compressed = await compressImage(photoFile, 1200, 0.82);
+          payload.photo_base64 = await fileToBase64(compressed);
+          payload.photo_ext = compressed.type === 'image/jpeg' ? 'jpg' : 'png';
+          payload.photo_mimetype = compressed.type;
+        } catch {}
+      }
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload),
+        });
+        submitBtn.textContent = '✅ Sent! We\'ll review within 1–2 days.';
+        submitBtn.style.background = '#4caf50';
+      } catch {
+        submitBtn.textContent = 'Failed — please try again';
+        submitBtn.disabled = false;
+      }
+    });
+  })();
+  */
   </script>
 
   <a class="support-btn" href="mailto:cattowriter@gmail.com?subject=Support%20LBH%20Global%20Fan%20Project%20%E2%98%95&body=Hi%20Catto%2C%0A%0AI%E2%80%99d%20love%20to%20support%20the%20LBH%20Global%20Fan%20Project!%20%F0%9F%92%9B%0APlease%20let%20me%20know%20how%20I%20can%20help.%0A" title="Support this project">

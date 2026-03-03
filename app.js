@@ -836,15 +836,15 @@ const MILESTONE_EMOJI = {
 };
 
 function checkMilestone(data) {
-  for (const n of MILESTONES) {
-    if (data.count >= n) {
-      const key = 'lbh_milestone_' + n;
-      if (!sessionStorage.getItem(key)) {
-        sessionStorage.setItem(key, '1');
-        showMilestoneBanner(n);
-        break; // show one at a time (next milestone on next refresh)
-      }
-    }
+  // Find the highest milestone reached
+  const reached = MILESTONES.filter(n => data.count >= n);
+  if (reached.length === 0) return;
+  const highest = reached[reached.length - 1];
+  // Show banner only once per session for this milestone
+  const key = 'lbh_milestone_shown';
+  if (sessionStorage.getItem(key) !== String(highest)) {
+    sessionStorage.setItem(key, String(highest));
+    showMilestoneBanner(highest);
   }
 }
 

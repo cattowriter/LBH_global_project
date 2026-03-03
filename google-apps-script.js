@@ -61,6 +61,11 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
     var folder = getOrCreateFolder(CONFIG.FOLDER_NAME);
 
+    // Route edit requests to separate sheet tab — DISABLED
+    // if (data.request_type === 'edit_request') {
+    //   return handleEditRequest(data, folder);
+    // }
+
     // Build filename prefix: 001_Name_@xaccount_TH_20260222-143000
     var rowNum = sheet.getLastRow(); // current last row = next submission number
     var seq = ('000' + rowNum).slice(-3); // zero-padded: 001, 002, ...
@@ -162,6 +167,59 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
+
+// ============================================================
+// EDIT REQUEST — Save to "Edit Requests" sheet tab — DISABLED
+// ============================================================
+/*
+function handleEditRequest(data, folder) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var editSheet = ss.getSheetByName('Edit Requests');
+    if (!editSheet) {
+      editSheet = ss.insertSheet('Edit Requests');
+      editSheet.appendRow([
+        'Timestamp', 'Contact Info (original)',
+        'New Message', 'New Photo URL',
+        'Delete Original?', 'Notes', 'Status'
+      ]);
+      // Freeze header row
+      editSheet.setFrozenRows(1);
+    }
+
+    // Save new photo to Drive if attached
+    var newPhotoUrl = '';
+    if (data.photo_base64) {
+      var ext = data.photo_ext || 'jpg';
+      newPhotoUrl = saveFileToDrive(
+        folder,
+        data.photo_base64,
+        'editreq_' + new Date().getTime() + '.' + ext,
+        data.photo_mimetype || 'image/jpeg'
+      );
+    }
+
+    editSheet.appendRow([
+      new Date().toISOString(),
+      data.contact_info || '',
+      data.new_message || '',
+      newPhotoUrl,
+      data.delete_original ? 'YES' : 'no',
+      data.notes || '',
+      'pending'
+    ]);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+*/
 
 // ============================================================
 // GET — Serve stats OR submission data
