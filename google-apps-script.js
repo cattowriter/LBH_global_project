@@ -490,8 +490,8 @@ function exportForCanva() {
   // --- Generate CSVs & page order ---
   var continentCsv = 'page_num,continent,emoji,subtitle,total_countries,total_submissions\n';
   var countryCsv = 'page_num,continent,country,flag,submission_count,track_a_count,track_b_count,track_c_count\n';
-  var trackACsv = 'page_num,continent,country,flag,seq,name,display_message,language,profile_image,lbh_image\n';
-  var trackBCsv = 'page_num,continent,country,flag,seq,name,display_message,language,profile_image,photo_image\n';
+  var trackACsv = 'page_num,continent,country,flag,seq,name,contact,display_message,language,profile_image,lbh_image\n';
+  var trackBCsv = 'page_num,continent,country,flag,seq,name,contact,display_message,language,profile_image,photo_image\n';
   var pageOrder = '';
   var pageNum = 0;
   var globalSeqA = 0, globalSeqB = 0, globalSeqC = 0;
@@ -569,6 +569,7 @@ function exportForCanva() {
           }
           trackACsv += pageNum + ',' + csvEscape(cont.key) + ',' + csvEscape(countryName) + ',' +
             csvEscape(flag) + ',' + globalSeqA + ',' + csvEscape(e.name) + ',' +
+            csvEscape(maskEmail(e.contact)) + ',' +
             csvEscape(dispMsgA) + ',' +
             csvEscape(e.language) + ',' + csvEscape(profFile) + ',' + csvEscape(lbhFile) + '\n';
           pageOrder += '    P' + pad(pageNum) + '  [A] ' + e.name + '\n';
@@ -589,6 +590,7 @@ function exportForCanva() {
           }
           trackBCsv += pageNum + ',' + csvEscape(cont.key) + ',' + csvEscape(countryName) + ',' +
             csvEscape(flag) + ',' + globalSeqB + ',' + csvEscape(e.name) + ',' +
+            csvEscape(maskEmail(e.contact)) + ',' +
             csvEscape(dispMsgB) + ',' +
             csvEscape(e.language) + ',' + csvEscape(profFileB) + ',' + csvEscape(photoFile) + '\n';
           pageOrder += '    P' + pad(pageNum) + '  [B] ' + e.name + ' 📷\n';
@@ -881,6 +883,18 @@ function csvEscape(val) {
     return '"' + val.replace(/"/g, '""') + '"';
   }
   return val;
+}
+
+// Helper: mask email addresses (e.g. john@gmail.com → jo***@gmail.com)
+function maskEmail(contact) {
+  if (!contact) return '';
+  contact = String(contact);
+  // Check if it looks like an email
+  var m = contact.match(/^([^@]{1,2})([^@]*)@(.+)$/);
+  if (m) {
+    return m[1] + '***@' + m[3];
+  }
+  return contact;
 }
 
 // Helper: copy an image from URL to a folder, return filename
