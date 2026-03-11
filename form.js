@@ -648,7 +648,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function showClosedBanner() {
   const formMain = document.getElementById('form-main');
   if (!formMain) return;
-  // Fetch stats for count/countries
+  // Hide form immediately so users can't interact
+  formMain.style.display = 'none';
+  // Update header right away
+  const hdr = document.querySelector('.form-page-title');
+  if (hdr) hdr.textContent = t('closedTitle');
+  const sub = document.querySelector('.form-page-subtitle');
+  if (sub) sub.style.display = 'none';
+  // Fetch stats then show banner
   fetch(APPS_SCRIPT_URL + '?action=stats')
     .then(r => r.json())
     .then(data => {
@@ -672,11 +679,7 @@ function renderClosedBanner(container, count, countries) {
       '<p>' + text + '</p>' +
       '<a href="index.html" class="btn-primary">' + btnText + '</a>' +
     '</div>';
-  // Also update the page header
-  const hdr = document.querySelector('.form-page-title');
-  if (hdr) hdr.textContent = title;
-  const sub = document.querySelector('.form-page-subtitle');
-  if (sub) sub.style.display = 'none';
+  container.style.display = '';
 }
 
 // ==========================================
