@@ -490,8 +490,8 @@ function exportForCanva() {
   // --- Generate CSVs & page order ---
   var continentCsv = 'page_num,continent,emoji,subtitle,total_countries,total_submissions\n';
   var countryCsv = 'page_num,continent,country,flag,submission_count,track_a_count,track_b_count,track_c_count\n';
-  var trackACsv = 'page_num,continent,country,flag,seq,name,message,message_en,language,profile_image,lbh_image\n';
-  var trackBCsv = 'page_num,continent,country,flag,seq,name,message,message_en,language,profile_image,photo_image\n';
+  var trackACsv = 'page_num,continent,country,flag,seq,name,display_message,language,profile_image,lbh_image\n';
+  var trackBCsv = 'page_num,continent,country,flag,seq,name,display_message,language,profile_image,photo_image\n';
   var pageOrder = '';
   var pageNum = 0;
   var globalSeqA = 0, globalSeqB = 0, globalSeqC = 0;
@@ -563,9 +563,13 @@ function exportForCanva() {
           if (e.lbh_url) {
             lbhFile = copyImageToFolder(e.lbh_url, imgFolder, 'A' + pad(globalSeqA) + '_lbh');
           }
+          var dispMsgA = e.message || '';
+          if (e.message_en && e.language && e.language.toLowerCase() !== 'english' && e.language.toLowerCase() !== 'en') {
+            dispMsgA += '\n\n' + e.message_en;
+          }
           trackACsv += pageNum + ',' + csvEscape(cont.key) + ',' + csvEscape(countryName) + ',' +
             csvEscape(flag) + ',' + globalSeqA + ',' + csvEscape(e.name) + ',' +
-            csvEscape(e.message) + ',' + csvEscape(e.message_en) + ',' +
+            csvEscape(dispMsgA) + ',' +
             csvEscape(e.language) + ',' + csvEscape(profFile) + ',' + csvEscape(lbhFile) + '\n';
           pageOrder += '    P' + pad(pageNum) + '  [A] ' + e.name + '\n';
 
@@ -579,9 +583,13 @@ function exportForCanva() {
           if (e.photo_url) {
             photoFile = copyImageToFolder(e.photo_url, imgFolder, 'B' + pad(globalSeqB) + '_photo');
           }
+          var dispMsgB = e.message || '';
+          if (e.message_en && e.language && e.language.toLowerCase() !== 'english' && e.language.toLowerCase() !== 'en') {
+            dispMsgB += '\n\n' + e.message_en;
+          }
           trackBCsv += pageNum + ',' + csvEscape(cont.key) + ',' + csvEscape(countryName) + ',' +
             csvEscape(flag) + ',' + globalSeqB + ',' + csvEscape(e.name) + ',' +
-            csvEscape(e.message) + ',' + csvEscape(e.message_en) + ',' +
+            csvEscape(dispMsgB) + ',' +
             csvEscape(e.language) + ',' + csvEscape(profFileB) + ',' + csvEscape(photoFile) + '\n';
           pageOrder += '    P' + pad(pageNum) + '  [B] ' + e.name + ' 📷\n';
 
@@ -634,10 +642,10 @@ function exportForCanva() {
   summary += '    → Map: country, flag, submission_count\n\n';
   summary += '  Template 3: TRACK A (text message)\n';
   summary += '    → Bulk Create → upload 03_track_a_submissions.csv\n';
-  summary += '    → Map: name, message/message_en, flag, profile_image, lbh_image\n\n';
+  summary += '    → Map: name, display_message, flag, profile_image, lbh_image\n\n';
   summary += '  Template 4: TRACK B (photo + message)\n';
   summary += '    → Bulk Create → upload 04_track_b_submissions.csv\n';
-  summary += '    → Map: name, message/message_en, flag, photo_image, profile_image\n\n';
+  summary += '    → Map: name, display_message, flag, photo_image, profile_image\n\n';
   summary += '  Track C: Import images from 05_Track_C_CustomPages/ as full pages\n\n';
   summary += '── Assembly Order ──────────────────────────────────────\n';
   summary += 'See page_order.txt for the exact page sequence.\n';
