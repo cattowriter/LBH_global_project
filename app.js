@@ -41,6 +41,10 @@ const TRANSLATIONS = {
     shareCopiedToast:'Link copied! Paste it on {app}',
     milestoneTitle:'{n} Submissions Reached!', milestoneText:'Thank you to all the fans around the world! The love keeps growing 💛',
     modalExploreBtn:'Explore on Message Board →', milestoneBadge:'🔥 {n} reached!',
+    closedTitle:'Submissions Closed 💛',
+    closedText:'Thank you for being part of this project!<br>We received <strong>{count} messages</strong> from <strong>{countries} countries</strong> around the world.<br><br>The fanbook is now being designed and will be presented to Lee Byung-hun in early April.<br>Stay tuned for updates! 🌍',
+    closedBtn:'Submissions Closed 🔒',
+    closedCountdown:'Closed',
     footerDisclaimer:'This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.',
   },
   th: {
@@ -77,6 +81,10 @@ const TRANSLATIONS = {
     shareCopiedToast:'คัดลอกลิงก์แล้ว! วางบน {app} ได้เลย',
     milestoneTitle:'ครบ {n} ผลงานแล้ว!', milestoneText:'ขอบคุณแฟนๆ จากทั่วโลก ความรักยังคงเติบโตต่อไป 💛',
     modalExploreBtn:'ดูเพิ่มเติมบนบอร์ดข้อความ →', milestoneBadge:'🔥 ครบ {n} แล้ว!',
+    closedTitle:'ปิดรับผลงานแล้ว 💛',
+    closedText:'ขอบคุณที่เข้าร่วมโปรเจกต์นี้!<br>เราได้รับ <strong>{count} ข้อความ</strong> จาก <strong>{countries} ประเทศ</strong> ทั่วโลก<br><br>ตอนนี้กำลังทำรูปเล่ม Fanbook และจะนำไปมอบให้อีบยองฮอนในต้นเดือนเมษายน<br>รอติดตามอัพเดทนะคะ! 🌍',
+    closedBtn:'ปิดรับแล้ว 🔒',
+    closedCountdown:'ปิดแล้ว',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
   },
   es: {
@@ -113,6 +121,10 @@ const TRANSLATIONS = {
     shareCopiedToast:'¡Enlace copiado! Pégalo en {app}',
     milestoneTitle:'¡{n} envíos alcanzados!', milestoneText:'¡Gracias a todos los fans del mundo! El amor sigue creciendo 💛',
     modalExploreBtn:'Explorar en el tablero de mensajes →', milestoneBadge:'🔥 ¡{n} alcanzados!',
+    closedTitle:'Envíos cerrados 💛',
+    closedText:'¡Gracias por ser parte de este proyecto!<br>Recibimos <strong>{count} mensajes</strong> de <strong>{countries} países</strong> de todo el mundo.<br><br>El fanbook se está diseñando y se presentará a Lee Byung-hun a principios de abril.<br>¡Estén atentos a las novedades! 🌍',
+    closedBtn:'Envíos cerrados 🔒',
+    closedCountdown:'Cerrado',
     footerDisclaimer:'Este es un proyecto independiente de fans. No está afiliado con Lee Byung-hun ni BH Entertainment.',
   },
   ko: {
@@ -149,6 +161,10 @@ const TRANSLATIONS = {
     shareCopiedToast:'링크를 복사했습니다! {app}에 붙여넣으세요',
     milestoneTitle:'{n}개 제출 달성!', milestoneText:'전 세계 팬 여러분 감사합니다! 사랑은 계속됩니다 💛',
     modalExploreBtn:'메시지 보드에서 살펴보기 →', milestoneBadge:'🔥 {n} 달성!',
+    closedTitle:'접수가 마감되었습니다 💛',
+    closedText:'이 프로젝트에 참여해 주셔서 감사합니다!<br>전 세계 <strong>{countries}개국</strong>에서 <strong>{count}개의 메시지</strong>를 받았습니다.<br><br>팬북을 제작 중이며 4월 초에 이병헌에게 전달할 예정입니다.<br>업데이트를 기대해 주세요! 🌍',
+    closedBtn:'접수 마감 🔒',
+    closedCountdown:'마감',
     footerDisclaimer:'이것은 독립적인 팬 프로젝트입니다. 이병헌 또는 BH 엔터테인먼트와 무관합니다.',
   }
 };
@@ -465,8 +481,12 @@ function updateCountdown(deadline) {
   const now = new Date();
   const end = new Date(deadline + 'T23:59:59');
   const diff = end - now;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
   if (diff <= 0) {
-    el.textContent = '0';
+    el.textContent = dict.closedCountdown || 'Closed';
+    // Update "days left" label
+    const daysLabel = el.parentElement && el.parentElement.querySelector('[data-i18n="statDaysLeft"]');
+    if (daysLabel) daysLabel.textContent = '';
     return;
   }
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -496,10 +516,13 @@ function updateFlagRow(countries) {
 }
 
 function updateSubmitButtons(data) {
-  const closed = data.count >= data.cap;
+  const now = new Date();
+  const deadline = new Date('2026-03-10T23:59:59');
+  const closed = data.count >= data.cap || now > deadline;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
   document.querySelectorAll('.cta-submit').forEach(btn => {
     if (closed) {
-      btn.textContent = 'Submissions Closed 🔒';
+      btn.textContent = dict.closedBtn || 'Submissions Closed 🔒';
       btn.classList.add('closed');
       btn.setAttribute('href', '#');
       btn.style.pointerEvents = 'none';

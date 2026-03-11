@@ -61,7 +61,10 @@ en: {  navAbout:'About Us', navSubmit:'Submit', navPhotobook:'Photobook', navMes
   errFail:'Submission failed. Please try again.', errPrefix:'Please fix:',
   errFileSize:'File too large', uploading:'Uploading...',
   previewLabel:'📖 Your page will look like this:',
-  trackHint:'👇 Pick <strong>one</strong> — you only need to fill out one track!'
+  trackHint:'👇 Pick <strong>one</strong> — you only need to fill out one track!',
+  closedTitle:'Submissions Closed 💛',
+  closedText:'Thank you for being part of this project!<br>We received <strong>{count} messages</strong> from <strong>{countries} countries</strong> around the world.<br><br>The fanbook is now being designed and will be presented to Lee Byung-hun in early April.<br>Stay tuned for updates! 🌍',
+  closedBtn:'← Back to Home'
 },
 th: {
   navAbout:'เกี่ยวกับเรา', navSubmit:'ส่งผลงาน', navPhotobook:'ดู Photobook', navMessages:'ข้อความ', navFAQ:'คำถาม', navBonus:'Bonus - Timeline',
@@ -118,7 +121,10 @@ th: {
   errFail:'ส่งไม่สำเร็จ กรุณาลองอีกครั้ง', errPrefix:'กรุณาแก้ไข:',
   errFileSize:'ไฟล์ใหญ่เกินไป', uploading:'กำลังอัปโหลด...',
   previewLabel:'📖 หน้าของคุณจะมีหน้าตาแบบนี้:',
-  trackHint:'👇 เลือก <strong>แค่อันเดียว</strong> — ไม่ต้องทำทั้ง 3 แบบนะ!'
+  trackHint:'👇 เลือก <strong>แค่อันเดียว</strong> — ไม่ต้องทำทั้ง 3 แบบนะ!',
+  closedTitle:'ปิดรับผลงานแล้ว 💛',
+  closedText:'ขอบคุณที่เข้าร่วมโปรเจกต์นี้!<br>เราได้รับ <strong>{count} ข้อความ</strong> จาก <strong>{countries} ประเทศ</strong> ทั่วโลก<br><br>ตอนนี้กำลังทำรูปเล่ม Fanbook และจะนำไปมอบให้อีบยองฮอนในต้นเดือนเมษายน<br>รอติดตามอัพเดทนะคะ! 🌍',
+  closedBtn:'← กลับหน้าหลัก'
 },
 es: {  navAbout:'Sobre nosotros', navSubmit:'Enviar', navPhotobook:'Álbum', navMessages:'Mensajes', navFAQ:'Preguntas', navBonus:'Bonus - Cronología',  back:'Volver', formTitle:'✉️ Envía tu página',
   formSubtitle:'Completa el formulario a continuación para enviar tu página para el Lee Byung-hun Global Fanbook. ¡Todas las opciones son bienvenidas!',
@@ -173,7 +179,10 @@ es: {  navAbout:'Sobre nosotros', navSubmit:'Enviar', navPhotobook:'Álbum', nav
   errFail:'Envío fallido. Por favor, inténtalo de nuevo.', errPrefix:'Por favor, corrige:',
   errFileSize:'Archivo demasiado grande', uploading:'Subiendo...',
   previewLabel:'📖 Tu página se verá así:',
-  trackHint:'👇 Elige <strong>solo una</strong> — ¡no necesitas completar las 3!'
+  trackHint:'👇 Elige <strong>solo una</strong> — ¡no necesitas completar las 3!',
+  closedTitle:'Envíos cerrados 💛',
+  closedText:'¡Gracias por ser parte de este proyecto!<br>Recibimos <strong>{count} mensajes</strong> de <strong>{countries} países</strong> de todo el mundo.<br><br>El fanbook se está diseñando y se presentará a Lee Byung-hun a principios de abril.<br>¡Estén atentos a las novedades! 🌍',
+  closedBtn:'← Volver al inicio'
 },
 ko: {  navAbout:'소개', navSubmit:'제출', navPhotobook:'포토북', navMessages:'메시지', navFAQ:'FAQ', navBonus:'보너스 - 타임라인',  back:'뒤로', formTitle:'✉️ 페이지 제출하기',
   formSubtitle:'아래 양식을 작성하여 Lee Byung-hun Global Fanbook에 페이지를 제출하세요. 모든 트랙을 환영합니다!',
@@ -228,7 +237,10 @@ ko: {  navAbout:'소개', navSubmit:'제출', navPhotobook:'포토북', navMessa
   errFail:'제출에 실패했습니다. 다시 시도해 주세요.', errPrefix:'수정해 주세요:',
   errFileSize:'파일이 너무 큽니다', uploading:'업로드 중...',
   previewLabel:'📖 페이지 미리보기:',
-  trackHint:'👇 <strong>하나만</strong> 선택하세요 — 3개 모두 작성할 필요 없습니다!'
+  trackHint:'👇 <strong>하나만</strong> 선택하세요 — 3개 모두 작성할 필요 없습니다!',
+  closedTitle:'접수가 마감되었습니다 💛',
+  closedText:'이 프로젝트에 참여해 주셔서 감사합니다!<br>전 세계 <strong>{countries}개국</strong>에서 <strong>{count}개의 메시지</strong>를 받았습니다.<br><br>팬북을 제작 중이며 4월 초에 이병헌에게 전달할 예정입니다.<br>업데이트를 기대해 주세요! 🌍',
+  closedBtn:'← 홈으로 돌아가기'
 }};
 
 // ==========================================
@@ -608,6 +620,14 @@ document.addEventListener('DOMContentLoaded', () => {
   else if (bl.startsWith('ko')) setLang('ko');
   else setLang('en');
 
+  // Check if deadline has passed — show closed banner
+  const DEADLINE = '2026-03-10';
+  const now = new Date();
+  const end = new Date(DEADLINE + 'T23:59:59');
+  if (now > end) {
+    showClosedBanner();
+  }
+
   // Nav toggle for mobile
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('nav-menu');
@@ -624,6 +644,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+function showClosedBanner() {
+  const formMain = document.getElementById('form-main');
+  if (!formMain) return;
+  // Fetch stats for count/countries
+  fetch(APPS_SCRIPT_URL + '?action=stats')
+    .then(r => r.json())
+    .then(data => {
+      const count = data.count || 0;
+      const countries = Object.keys(data.countries || {}).length || 0;
+      renderClosedBanner(formMain, count, countries);
+    })
+    .catch(() => {
+      renderClosedBanner(formMain, '—', '—');
+    });
+}
+
+function renderClosedBanner(container, count, countries) {
+  const title = t('closedTitle');
+  const text = t('closedText').replace('{count}', count).replace('{countries}', countries);
+  const btnText = t('closedBtn');
+  container.innerHTML =
+    '<div class="closed-banner">' +
+      '<div class="closed-icon">💛</div>' +
+      '<h2>' + title + '</h2>' +
+      '<p>' + text + '</p>' +
+      '<a href="index.html" class="btn-primary">' + btnText + '</a>' +
+    '</div>';
+  // Also update the page header
+  const hdr = document.querySelector('.form-page-title');
+  if (hdr) hdr.textContent = title;
+  const sub = document.querySelector('.form-page-subtitle');
+  if (sub) sub.style.display = 'none';
+}
 
 // ==========================================
 // CONTACT METHOD — update placeholder based on selected method

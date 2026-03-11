@@ -107,6 +107,13 @@
 .success-title{font-family:var(--font-display);font-size:2rem;margin-bottom:12px}
 .submit-success-text{color:var(--accent-light);font-size:.95rem;line-height:1.7;max-width:440px;margin:0 auto 28px}
 
+/* Closed Banner */
+.closed-banner{text-align:center;padding:60px 24px}
+.closed-banner .closed-icon{font-size:4rem;margin-bottom:16px}
+.closed-banner h2{font-family:var(--font-display);font-size:2rem;margin-bottom:16px;color:var(--brown)}
+.closed-banner p{color:var(--accent-light);font-size:1rem;line-height:1.8;max-width:480px;margin:0 auto 32px}
+.closed-banner .btn-primary{display:inline-block;padding:14px 32px;font-size:1rem}
+
 /* File Upload Area */
 .file-upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;cursor:pointer;transition:all var(--transition);position:relative;background:var(--bg)}
 .file-upload-area:hover{border-color:var(--brown-light);background:rgba(139,115,85,.03)}
