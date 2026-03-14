@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fanbook Preview — LBH Global Fan Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page-size: min(90vw, 90vh, 700px);
+      --font-display: 'Dancing Script', cursive;
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-body: 'Lato', 'Noto Sans Thai', sans-serif;
+      --bg: #ebe8e4;
+      --surface: #fff;
+      --accent: #3a2f2a;
+      --accent-light: #8a7d74;
+      --brown: #7a5c3e;
+      --gold: #c4a265;
+      --border: #e0d8ce;
+      --shadow: rgba(0,0,0,0.08);
+      --private-bg: #fff3f3;
+      --private-border: #e8b4b4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--accent);
+      min-height: 100vh;
+    }
+
+    /* Top bar */
+    .top-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .top-bar h1 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--brown);
+    }
+    .top-actions { display: flex; gap: 8px; align-items: center; }
+    .top-actions button, .top-actions a {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--accent);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: var(--font-body);
+      transition: all 0.2s;
+    }
+    .top-actions button:hover, .top-actions a:hover {
+      background: var(--brown);
+      color: #fff;
+      border-color: var(--brown);
+    }
+    .badge-private {
+      background: var(--private-bg);
+      color: #c44;
+      border: 1px solid var(--private-border);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .admin-indicator {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* Page navigation */
+    .page-nav {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 12px;
+    }
+    .page-nav button {
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .page-nav button:hover { background: var(--brown); color: #fff; }
+    .page-nav button:disabled { opacity: 0.3; cursor: default; }
+    .page-counter { font-size: 0.85rem; color: var(--accent-light); min-width: 80px; text-align: center; }
+
+    /* Ebook page container */
+    .ebook-viewport {
+      display: flex; justify-content: center; padding: 20px 20px 40px;
+    }
+    .ebook-page {
+      width: var(--page-size);
+      height: var(--page-size);
+      background: var(--surface);
+      border-radius: 8px;
+      box-shadow: 0 4px 30px var(--shadow), 0 1px 3px rgba(0,0,0,0.06);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Page types */
+    .page-continent {
+      background: #1e1e2e;
+      color: #fff;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px;
+    }
+    .page-continent .emoji { font-size: clamp(3rem, 8vw, 5rem); margin-bottom: 12px; }
+    .page-continent .title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 600; letter-spacing: 0.05em;
+    }
+    .page-continent .subtitle {
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: #c8c4d0; margin-top: 8px; font-style: italic;
+    }
+    .page-continent .stats { font-size: 0.85rem; color: #9a96a6; margin-top: 20px; }
+
+    .page-country {
+      background: #f8f4ee;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px;
+    }
+    .page-country .flag { font-size: clamp(3rem, 8vw, 5rem); }
+    .page-country .name {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      margin-top: 8px; font-weight: 600;
+    }
+    .page-country .count {
+      font-size: 0.9rem; color: var(--accent-light); margin-top: 8px;
+    }
+
+    /* Track B - Photo + Message */
+    .page-trackB { padding: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; }
+    .trackB-entry {
+      display: flex; gap: 12px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .trackB-entry:last-child { border-bottom: none; padding-bottom: 0; }
+    .trackB-photo {
+      flex-shrink: 0; width: 35%; max-width: 200px;
+      border-radius: 6px; overflow: hidden;
+      align-self: flex-start;
+    }
+    .trackB-photo img { width: 100%; display: block; object-fit: contain; }
+    .trackB-info { flex: 1; min-width: 0; overflow: hidden; }
+    .trackB-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .trackB-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      overflow: hidden; border: 2px solid var(--border);
+      flex-shrink: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--accent-light);
+    }
+    .trackB-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .trackB-name { font-weight: 600; font-size: 0.95rem; }
+    .trackB-country { font-size: 0.78rem; color: var(--accent-light); }
+    .trackB-contact { font-size: 0.72rem; color: var(--accent-light); margin-top: 1px; }
+    .trackB-contact a { color: var(--brown); text-decoration: none; }
+    .trackB-msg { font-size: 0.85rem; line-height: 1.6; color: var(--accent); overflow: hidden; }
+    .trackB-msg-en { font-size: 0.78rem; color: var(--accent-light); font-style: italic; margin-top: 4px; overflow: hidden; }
+
+    /* Track A with Profile */
+    .page-trackA { padding: 12px 16px; overflow: hidden; }
+    .page-trackA .country-label {
+      text-align: center; font-size: 0.75rem; color: var(--accent-light);
+      margin-bottom: 10px; font-style: italic;
+    }
+    .trackA-entry {
+      display: flex; gap: 12px; margin-bottom: 10px;
+      padding-bottom: 10px; border-bottom: 1px solid #f0ece6;
+    }
+    .trackA-entry:last-child { border-bottom: none; }
+    .trackA-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      overflow: hidden; border: 2px solid var(--border);
+      flex-shrink: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: var(--accent-light);
+    }
+    .trackA-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .trackA-content { flex: 1; min-width: 0; }
+    .trackA-name { font-weight: 600; font-size: 0.9rem; }
+    .trackA-contact { font-size: 0.72rem; color: var(--accent-light); }
+    .trackA-contact a { color: var(--brown); text-decoration: none; }
+    .trackA-msg { font-size: 0.82rem; line-height: 1.55; margin-top: 2px; overflow: hidden; }
+    .trackA-msg-en { font-size: 0.75rem; color: var(--accent-light); font-style: italic; margin-top: 2px; overflow: hidden; }
+
+    /* Track A Text Only */
+    .page-trackATxt { padding: 12px 16px; overflow: hidden; }
+    .page-trackATxt .country-label {
+      text-align: center; font-size: 0.75rem; color: var(--accent-light);
+      margin-bottom: 8px; font-style: italic;
+    }
+    .trackATxt-entry { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f0ece6; }
+    .trackATxt-entry:last-child { border-bottom: none; }
+    .trackATxt-name { font-weight: 600; font-size: 0.85rem; }
+    .trackATxt-contact { font-size: 0.7rem; color: var(--accent-light); }
+    .trackATxt-contact a { color: var(--brown); text-decoration: none; }
+    .trackATxt-msg { font-size: 0.8rem; line-height: 1.5; margin-top: 2px; overflow: hidden; }
+    .trackATxt-msg-en { font-size: 0.72rem; color: var(--accent-light); font-style: italic; margin-top: 2px; overflow: hidden; }
+
+    /* Track C - Custom Page */
+    .page-trackC { padding: 0; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+    .trackC-image { flex: 1; overflow: hidden; min-height: 0; }
+    .trackC-image img { width: 100%; height: 100%; object-fit: contain; background: #f8f8f8; }
+    .trackC-info {
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.95);
+      border-top: 1px solid var(--border);
+    }
+    .trackC-name { font-weight: 600; font-size: 0.85rem; }
+    .trackC-country { font-size: 0.7rem; color: var(--accent-light); }
+    .trackC-contact { font-size: 0.62rem; color: var(--accent-light); margin-top: 1px; }
+    .trackC-contact a { color: var(--brown); text-decoration: none; }
+    .trackC-msg { font-size: 0.72rem; line-height: 1.5; margin-top: 4px; }
+
+    /* Loading */
+    .loading-wrap {
+      display: flex; align-items: center; justify-content: center;
+      height: 60vh; flex-direction: column; gap: 16px;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--brown);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Print styles */
+    @media print {
+      body { background: #fff; }
+      .top-bar, .page-nav, .fb-sidebar, .toc-overlay { display: none !important; }
+      .fb-layout { display: block !important; }
+      .ebook-viewport {
+        padding: 0;
+        display: block !important;
+      }
+      .all-pages-print {
+        display: block !important;
+      }
+      .all-pages-print .ebook-page {
+        width: 700px; height: 700px;
+        box-shadow: none;
+        border: none;
+        page-break-after: always;
+        page-break-inside: avoid;
+        break-after: page;
+        border-radius: 0;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+      .ebook-page {
+        width: 700px; height: 700px;
+        box-shadow: none; border: 1px solid #ddd;
+        page-break-after: always;
+        border-radius: 0;
+        overflow: visible;
+      }
+    }
+
+    /* TOC sidebar */
+    .toc-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.4);
+    }
+    .toc-overlay.active { display: block; }
+    .toc-panel {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 280px;
+      background: var(--surface); z-index: 201;
+      overflow-y: auto; padding: 20px;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+    }
+    .toc-panel h3 { font-size: 0.9rem; margin-bottom: 12px; color: var(--brown); }
+    .toc-item {
+      display: block; padding: 6px 10px; font-size: 0.78rem;
+      cursor: pointer; border-radius: 6px;
+      color: var(--accent); text-decoration: none;
+    }
+    .toc-item:hover { background: var(--bg); }
+    .toc-continent { font-weight: 600; margin-top: 10px; font-size: 0.82rem; }
+    .toc-country { padding-left: 20px; font-size: 0.75rem; }
+
+    /* ===== Country Timeline Sidebar ===== */
+    .fb-layout { display: flex; min-height: calc(100vh - 100px); }
+    .fb-sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 50px;
+      align-self: flex-start;
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+      padding: 12px 0 12px 6px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .fb-sidebar::-webkit-scrollbar { width: 4px; }
+    .fb-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .fb-sidebar-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+      padding: 0 10px 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 6px;
+    }
+    .fb-sidebar-list {
+      list-style: none; padding: 0; margin: 0;
+      position: relative;
+    }
+    .fb-sidebar-list::before {
+      content: '';
+      position: absolute;
+      left: 14px; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+    .fb-sb-item {
+      position: relative;
+      padding: 5px 8px 5px 30px;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fb-sb-item::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 50%;
+      transform: translateY(-50%);
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+    .fb-sb-item:hover { background: var(--bg); color: var(--accent); }
+    .fb-sb-item.active {
+      color: var(--brown);
+      font-weight: 600;
+      background: rgba(139,109,76,0.08);
+    }
+    .fb-sb-item.active::before {
+      background: var(--brown);
+      border-color: var(--brown);
+      box-shadow: 0 0 0 3px rgba(139,109,76,0.15);
+    }
+    .fb-sb-continent {
+      font-weight: 700;
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: 8px 8px 4px 10px;
+      margin-top: 4px;
+      letter-spacing: 0.03em;
+    }
+    .fb-main { flex: 1; min-width: 0; }
+    @media (max-width: 900px) {
+      .fb-sidebar { display: none; }
+      .fb-layout { display: block; }
+    }
+
+    /* Clickable images */
+    .trackB-photo img, .trackC-image img { cursor: zoom-in; }
+
+    /* Lightbox overlay */
+    .lightbox-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.85);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.active { display: flex; }
+    .lightbox-overlay img {
+      max-width: 92vw; max-height: 92vh; object-fit: contain;
+      border-radius: 8px; box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/PptxGenJS@3.12.0/dist/pptxgen.bundle.js"></script>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <h1>LBH Global Fanbook</h1>
+      <span id="admin-badge" style="display:none;" class="admin-indicator">ADMIN MODE</span>
+    </div>
+    <div class="top-actions">
+      <button onclick="toggleTOC()">Contents</button>
+      <button onclick="printAllPages()">Export PDF</button>
+      <button onclick="exportPptx()" id="btn-pptx">Export PPTX</button>
+      <a href="photobook.html">Public View</a>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <button id="btn-prev" onclick="goPage(-1)">Prev</button>
+    <span class="page-counter" id="page-counter">0 / 0</span>
+    <button id="btn-next" onclick="goPage(1)">Next</button>
+  </div>
+
+  <div class="fb-layout">
+    <nav class="fb-sidebar" id="fb-sidebar">
+      <div class="fb-sidebar-title">Countries</div>
+      <ul class="fb-sidebar-list" id="fb-sidebar-list"></ul>
+    </nav>
+    <div class="fb-main">
+      <div class="ebook-viewport" id="viewport">
+        <div class="loading-wrap">
+          <div class="spinner"></div>
+          <p>Loading fanbook...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC overlay -->
+  <div class="toc-overlay" id="toc-overlay" onclick="toggleTOC()">
+    <div class="toc-panel" onclick="event.stopPropagation()">
+      <h3>Table of Contents</h3>
+      <div id="toc-list"></div>
+    </div>
+  </div>
+
+  <!-- Lightbox for viewing full images -->
+  <div class="lightbox-overlay" id="lightbox" onclick="this.classList.remove('active')">
+    <img id="lightbox-img" src="" alt="Full view">
+  </div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzTvtqulM2ZWU1XkmWxdFe4i3ZEwg2Vl8YZOFzs7ZSGd0z8OV7W5kLOwJm6OR3SJzRi0Q/exec';
+
+const COUNTRY_DATA = {"AF":{"flag":"\ud83c\udde6\ud83c\uddeb","name":"Afghanistan"},"AL":{"flag":"\ud83c\udde6\ud83c\uddf1","name":"Albania"},"DZ":{"flag":"\ud83c\udde9\ud83c\uddff","name":"Algeria"},"AD":{"flag":"\ud83c\udde6\ud83c\udde9","name":"Andorra"},"AO":{"flag":"\ud83c\udde6\ud83c\uddf4","name":"Angola"},"AG":{"flag":"\ud83c\udde6\ud83c\uddec","name":"Antigua and Barbuda"},"AR":{"flag":"\ud83c\udde6\ud83c\uddf7","name":"Argentina"},"AM":{"flag":"\ud83c\udde6\ud83c\uddf2","name":"Armenia"},"AU":{"flag":"\ud83c\udde6\ud83c\uddfa","name":"Australia"},"AT":{"flag":"\ud83c\udde6\ud83c\uddf9","name":"Austria"},"AZ":{"flag":"\ud83c\udde6\ud83c\uddff","name":"Azerbaijan"},"BS":{"flag":"\ud83c\udde7\ud83c\uddf8","name":"Bahamas"},"BH":{"flag":"\ud83c\udde7\ud83c\udded","name":"Bahrain"},"BD":{"flag":"\ud83c\udde7\ud83c\udde9","name":"Bangladesh"},"BB":{"flag":"\ud83c\udde7\ud83c\udde7","name":"Barbados"},"BY":{"flag":"\ud83c\udde7\ud83c\uddfe","name":"Belarus"},"BE":{"flag":"\ud83c\udde7\ud83c\uddea","name":"Belgium"},"BZ":{"flag":"\ud83c\udde7\ud83c\uddff","name":"Belize"},"BJ":{"flag":"\ud83c\udde7\ud83c\uddef","name":"Benin"},"BT":{"flag":"\ud83c\udde7\ud83c\uddf9","name":"Bhutan"},"BO":{"flag":"\ud83c\udde7\ud83c\uddf4","name":"Bolivia"},"BA":{"flag":"\ud83c\udde7\ud83c\udde6","name":"Bosnia and Herzegovina"},"BW":{"flag":"\ud83c\udde7\ud83c\uddfc","name":"Botswana"},"BR":{"flag":"\ud83c\udde7\ud83c\uddf7","name":"Brazil"},"BN":{"flag":"\ud83c\udde7\ud83c\uddf3","name":"Brunei"},"BG":{"flag":"\ud83c\udde7\ud83c\uddec","name":"Bulgaria"},"BF":{"flag":"\ud83c\udde7\ud83c\uddeb","name":"Burkina Faso"},"BI":{"flag":"\ud83c\udde7\ud83c\uddee","name":"Burundi"},"CV":{"flag":"\ud83c\udde8\ud83c\uddfb","name":"Cabo Verde"},"KH":{"flag":"\ud83c\uddf0\ud83c\udded","name":"Cambodia"},"CM":{"flag":"\ud83c\udde8\ud83c\uddf2","name":"Cameroon"},"CA":{"flag":"\ud83c\udde8\ud83c\udde6","name":"Canada"},"CF":{"flag":"\ud83c\udde8\ud83c\uddeb","name":"Central African Republic"},"TD":{"flag":"\ud83c\uddf9\ud83c\udde9","name":"Chad"},"CL":{"flag":"\ud83c\udde8\ud83c\uddf1","name":"Chile"},"CN":{"flag":"\ud83c\udde8\ud83c\uddf3","name":"China"},"CO":{"flag":"\ud83c\udde8\ud83c\uddf4","name":"Colombia"},"KM":{"flag":"\ud83c\uddf0\ud83c\uddf2","name":"Comoros"},"CG":{"flag":"\ud83c\udde8\ud83c\uddec","name":"Congo"},"CR":{"flag":"\ud83c\udde8\ud83c\uddf7","name":"Costa Rica"},"HR":{"flag":"\ud83c\udded\ud83c\uddf7","name":"Croatia"},"CU":{"flag":"\ud83c\udde8\ud83c\uddfa","name":"Cuba"},"CZ":{"flag":"\ud83c\udde8\ud83c\uddff","name":"Czech Republic"},"DK":{"flag":"\ud83c\udde9\ud83c\uddf0","name":"Denmark"},"DJ":{"flag":"\ud83c\udde9\ud83c\uddef","name":"Djibouti"},"DM":{"flag":"\ud83c\udde9\ud83c\uddf2","name":"Dominica"},"DO":{"flag":"\ud83c\udde9\ud83c\uddf4","name":"Dominican Republic"},"CD":{"flag":"\ud83c\udde8\ud83c\udde9","name":"DR Congo"},"EC":{"flag":"\ud83c\uddea\ud83c\udde8","name":"Ecuador"},"EG":{"flag":"\ud83c\uddea\ud83c\uddec","name":"Egypt"},"SV":{"flag":"\ud83c\uddf8\ud83c\uddfb","name":"El Salvador"},"GQ":{"flag":"\ud83c\uddec\ud83c\uddf6","name":"Equatorial Guinea"},"ER":{"flag":"\ud83c\uddea\ud83c\uddf7","name":"Eritrea"},"EE":{"flag":"\ud83c\uddea\ud83c\uddea","name":"Estonia"},"SZ":{"flag":"\ud83c\uddf8\ud83c\uddff","name":"Eswatini"},"ET":{"flag":"\ud83c\uddea\ud83c\uddf9","name":"Ethiopia"},"FJ":{"flag":"\ud83c\uddeb\ud83c\uddef","name":"Fiji"},"FI":{"flag":"\ud83c\uddeb\ud83c\uddee","name":"Finland"},"FR":{"flag":"\ud83c\uddeb\ud83c\uddf7","name":"France"},"GA":{"flag":"\ud83c\uddec\ud83c\udde6","name":"Gabon"},"GM":{"flag":"\ud83c\uddec\ud83c\uddf2","name":"Gambia"},"GE":{"flag":"\ud83c\uddec\ud83c\uddea","name":"Georgia"},"DE":{"flag":"\ud83c\udde9\ud83c\uddea","name":"Germany"},"GH":{"flag":"\ud83c\uddec\ud83c\udded","name":"Ghana"},"GR":{"flag":"\ud83c\uddec\ud83c\uddf7","name":"Greece"},"GD":{"flag":"\ud83c\uddec\ud83c\udde9","name":"Grenada"},"GT":{"flag":"\ud83c\uddec\ud83c\uddf9","name":"Guatemala"},"GN":{"flag":"\ud83c\uddec\ud83c\uddf3","name":"Guinea"},"GW":{"flag":"\ud83c\uddec\ud83c\uddfc","name":"Guinea-Bissau"},"GY":{"flag":"\ud83c\uddec\ud83c\uddfe","name":"Guyana"},"HT":{"flag":"\ud83c\udded\ud83c\uddf9","name":"Haiti"},"HN":{"flag":"\ud83c\udded\ud83c\uddf3","name":"Honduras"},"HK":{"flag":"\ud83c\udded\ud83c\uddf0","name":"Hong Kong"},"HU":{"flag":"\ud83c\udded\ud83c\uddfa","name":"Hungary"},"IS":{"flag":"\ud83c\uddee\ud83c\uddf8","name":"Iceland"},"IN":{"flag":"\ud83c\uddee\ud83c\uddf3","name":"India"},"ID":{"flag":"\ud83c\uddee\ud83c\udde9","name":"Indonesia"},"IR":{"flag":"\ud83c\uddee\ud83c\uddf7","name":"Iran"},"IQ":{"flag":"\ud83c\uddee\ud83c\uddf6","name":"Iraq"},"IE":{"flag":"\ud83c\uddee\ud83c\uddea","name":"Ireland"},"IL":{"flag":"\ud83c\uddee\ud83c\uddf1","name":"Israel"},"IT":{"flag":"\ud83c\uddee\ud83c\uddf9","name":"Italy"},"CI":{"flag":"\ud83c\udde8\ud83c\uddee","name":"Ivory Coast"},"JM":{"flag":"\ud83c\uddef\ud83c\uddf2","name":"Jamaica"},"JP":{"flag":"\ud83c\uddef\ud83c\uddf5","name":"Japan"},"JO":{"flag":"\ud83c\uddef\ud83c\uddf4","name":"Jordan"},"KZ":{"flag":"\ud83c\uddf0\ud83c\uddff","name":"Kazakhstan"},"KE":{"flag":"\ud83c\uddf0\ud83c\uddea","name":"Kenya"},"KI":{"flag":"\ud83c\uddf0\ud83c\uddee","name":"Kiribati"},"XK":{"flag":"\ud83c\uddfd\ud83c\uddf0","name":"Kosovo"},"KW":{"flag":"\ud83c\uddf0\ud83c\uddfc","name":"Kuwait"},"KG":{"flag":"\ud83c\uddf0\ud83c\uddec","name":"Kyrgyzstan"},"LA":{"flag":"\ud83c\uddf1\ud83c\udde6","name":"Laos"},"LV":{"flag":"\ud83c\uddf1\ud83c\uddfb","name":"Latvia"},"LB":{"flag":"\ud83c\uddf1\ud83c\udde7","name":"Lebanon"},"LS":{"flag":"\ud83c\uddf1\ud83c\uddf8","name":"Lesotho"},"LR":{"flag":"\ud83c\uddf1\ud83c\uddf7","name":"Liberia"},"LY":{"flag":"\ud83c\uddf1\ud83c\uddfe","name":"Libya"},"LI":{"flag":"\ud83c\uddf1\ud83c\uddee","name":"Liechtenstein"},"LT":{"flag":"\ud83c\uddf1\ud83c\uddf9","name":"Lithuania"},"LU":{"flag":"\ud83c\uddf1\ud83c\uddfa","name":"Luxembourg"},"MG":{"flag":"\ud83c\uddf2\ud83c\uddec","name":"Madagascar"},"MW":{"flag":"\ud83c\uddf2\ud83c\uddfc","name":"Malawi"},"MY":{"flag":"\ud83c\uddf2\ud83c\uddfe","name":"Malaysia"},"MV":{"flag":"\ud83c\uddf2\ud83c\uddfb","name":"Maldives"},"ML":{"flag":"\ud83c\uddf2\ud83c\uddf1","name":"Mali"},"MT":{"flag":"\ud83c\uddf2\ud83c\uddf9","name":"Malta"},"MH":{"flag":"\ud83c\uddf2\ud83c\udded","name":"Marshall Islands"},"MR":{"flag":"\ud83c\uddf2\ud83c\uddf7","name":"Mauritania"},"MU":{"flag":"\ud83c\uddf2\ud83c\uddfa","name":"Mauritius"},"MX":{"flag":"\ud83c\uddf2\ud83c\uddfd","name":"Mexico"},"FM":{"flag":"\ud83c\uddeb\ud83c\uddf2","name":"Micronesia"},"MD":{"flag":"\ud83c\uddf2\ud83c\udde9","name":"Moldova"},"MC":{"flag":"\ud83c\uddf2\ud83c\udde8","name":"Monaco"},"MN":{"flag":"\ud83c\uddf2\ud83c\uddf3","name":"Mongolia"},"ME":{"flag":"\ud83c\uddf2\ud83c\uddea","name":"Montenegro"},"MA":{"flag":"\ud83c\uddf2\ud83c\udde6","name":"Morocco"},"MZ":{"flag":"\ud83c\uddf2\ud83c\uddff","name":"Mozambique"},"MM":{"flag":"\ud83c\uddf2\ud83c\uddf2","name":"Myanmar"},"NA":{"flag":"\ud83c\uddf3\ud83c\udde6","name":"Namibia"},"NR":{"flag":"\ud83c\uddf3\ud83c\uddf7","name":"Nauru"},"NP":{"flag":"\ud83c\uddf3\ud83c\uddf5","name":"Nepal"},"NL":{"flag":"\ud83c\uddf3\ud83c\uddf1","name":"Netherlands"},"NZ":{"flag":"\ud83c\uddf3\ud83c\uddff","name":"New Zealand"},"NI":{"flag":"\ud83c\uddf3\ud83c\uddee","name":"Nicaragua"},"NE":{"flag":"\ud83c\uddf3\ud83c\uddea","name":"Niger"},"NG":{"flag":"\ud83c\uddf3\ud83c\uddec","name":"Nigeria"},"KP":{"flag":"\ud83c\uddf0\ud83c\uddf5","name":"North Korea"},"MK":{"flag":"\ud83c\uddf2\ud83c\uddf0","name":"North Macedonia"},"NO":{"flag":"\ud83c\uddf3\ud83c\uddf4","name":"Norway"},"OM":{"flag":"\ud83c\uddf4\ud83c\uddf2","name":"Oman"},"PK":{"flag":"\ud83c\uddf5\ud83c\uddf0","name":"Pakistan"},"PW":{"flag":"\ud83c\uddf5\ud83c\uddfc","name":"Palau"},"PS":{"flag":"\ud83c\uddf5\ud83c\uddf8","name":"Palestine"},"PA":{"flag":"\ud83c\uddf5\ud83c\udde6","name":"Panama"},"PG":{"flag":"\ud83c\uddf5\ud83c\uddec","name":"Papua New Guinea"},"PY":{"flag":"\ud83c\uddf5\ud83c\uddfe","name":"Paraguay"},"PE":{"flag":"\ud83c\uddf5\ud83c\uddea","name":"Peru"},"PH":{"flag":"\ud83c\uddf5\ud83c\udded","name":"Philippines"},"PL":{"flag":"\ud83c\uddf5\ud83c\uddf1","name":"Poland"},"PT":{"flag":"\ud83c\uddf5\ud83c\uddf9","name":"Portugal"},"QA":{"flag":"\ud83c\uddf6\ud83c\udde6","name":"Qatar"},"RO":{"flag":"\ud83c\uddf7\ud83c\uddf4","name":"Romania"},"RU":{"flag":"\ud83c\uddf7\ud83c\uddfa","name":"Russia"},"RW":{"flag":"\ud83c\uddf7\ud83c\uddfc","name":"Rwanda"},"KN":{"flag":"\ud83c\uddf0\ud83c\uddf3","name":"Saint Kitts and Nevis"},"LC":{"flag":"\ud83c\uddf1\ud83c\udde8","name":"Saint Lucia"},"VC":{"flag":"\ud83c\uddfb\ud83c\udde8","name":"Saint Vincent"},"WS":{"flag":"\ud83c\uddfc\ud83c\uddf8","name":"Samoa"},"SM":{"flag":"\ud83c\uddf8\ud83c\uddf2","name":"San Marino"},"ST":{"flag":"\ud83c\uddf8\ud83c\uddf9","name":"Sao Tome and Principe"},"SA":{"flag":"\ud83c\uddf8\ud83c\udde6","name":"Saudi Arabia"},"SN":{"flag":"\ud83c\uddf8\ud83c\uddf3","name":"Senegal"},"RS":{"flag":"\ud83c\uddf7\ud83c\uddf8","name":"Serbia"},"SL":{"flag":"\ud83c\uddf8\ud83c\uddf1","name":"Sierra Leone"},"SG":{"flag":"\ud83c\uddf8\ud83c\uddec","name":"Singapore"},"SK":{"flag":"\ud83c\uddf8\ud83c\uddf0","name":"Slovakia"},"SI":{"flag":"\ud83c\uddf8\ud83c\uddee","name":"Slovenia"},"SB":{"flag":"\ud83c\uddf8\ud83c\udde7","name":"Solomon Islands"},"SO":{"flag":"\ud83c\uddf8\ud83c\uddf4","name":"Somalia"},"ZA":{"flag":"\ud83c\uddff\ud83c\udde6","name":"South Africa"},"KR":{"flag":"\ud83c\uddf0\ud83c\uddf7","name":"South Korea"},"SS":{"flag":"\ud83c\uddf8\ud83c\uddf8","name":"South Sudan"},"ES":{"flag":"\ud83c\uddea\ud83c\uddf8","name":"Spain"},"LK":{"flag":"\ud83c\uddf1\ud83c\uddf0","name":"Sri Lanka"},"SD":{"flag":"\ud83c\uddf8\ud83c\udde9","name":"Sudan"},"SR":{"flag":"\ud83c\uddf8\ud83c\uddf7","name":"Suriname"},"SE":{"flag":"\ud83c\uddf8\ud83c\uddea","name":"Sweden"},"CH":{"flag":"\ud83c\udde8\ud83c\udded","name":"Switzerland"},"SY":{"flag":"\ud83c\uddf8\ud83c\uddfe","name":"Syria"},"TW":{"flag":"\ud83c\uddf9\ud83c\uddfc","name":"Taiwan"},"TJ":{"flag":"\ud83c\uddf9\ud83c\uddef","name":"Tajikistan"},"TZ":{"flag":"\ud83c\uddf9\ud83c\uddff","name":"Tanzania"},"TH":{"flag":"\ud83c\uddf9\ud83c\udded","name":"Thailand"},"TL":{"flag":"\ud83c\uddf9\ud83c\uddf1","name":"Timor-Leste"},"TG":{"flag":"\ud83c\uddf9\ud83c\uddec","name":"Togo"},"TO":{"flag":"\ud83c\uddf9\ud83c\uddf4","name":"Tonga"},"TT":{"flag":"\ud83c\uddf9\ud83c\uddf9","name":"Trinidad and Tobago"},"TN":{"flag":"\ud83c\uddf9\ud83c\uddf3","name":"Tunisia"},"TR":{"flag":"\ud83c\uddf9\ud83c\uddf7","name":"Turkey"},"TM":{"flag":"\ud83c\uddf9\ud83c\uddf2","name":"Turkmenistan"},"TV":{"flag":"\ud83c\uddf9\ud83c\uddfb","name":"Tuvalu"},"UG":{"flag":"\ud83c\uddfa\ud83c\uddec","name":"Uganda"},"UA":{"flag":"\ud83c\uddfa\ud83c\udde6","name":"Ukraine"},"AE":{"flag":"\ud83c\udde6\ud83c\uddea","name":"UAE"},"GB":{"flag":"\ud83c\uddec\ud83c\udde7","name":"UK"},"US":{"flag":"\ud83c\uddfa\ud83c\uddf8","name":"USA"},"UY":{"flag":"\ud83c\uddfa\ud83c\uddfe","name":"Uruguay"},"UZ":{"flag":"\ud83c\uddfa\ud83c\uddff","name":"Uzbekistan"},"VU":{"flag":"\ud83c\uddfb\ud83c\uddfa","name":"Vanuatu"},"VA":{"flag":"\ud83c\uddfb\ud83c\udde6","name":"Vatican"},"VE":{"flag":"\ud83c\uddfb\ud83c\uddea","name":"Venezuela"},"VN":{"flag":"\ud83c\uddfb\ud83c\uddf3","name":"Vietnam"},"YE":{"flag":"\ud83c\uddfe\ud83c\uddea","name":"Yemen"},"ZM":{"flag":"\ud83c\uddff\ud83c\uddf2","name":"Zambia"},"ZW":{"flag":"\ud83c\uddff\ud83c\uddfc","name":"Zimbabwe"},"OTHER":{"flag":"\ud83c\udf0d","name":"Other"}};
+
+const CONTINENT_MAP = {"AF":"Asia","AM":"Asia","AZ":"Asia","BH":"Asia","BD":"Asia","BT":"Asia","BN":"Asia","KH":"Asia","CN":"Asia","GE":"Asia","HK":"Asia","IN":"Asia","ID":"Asia","IR":"Asia","IQ":"Asia","IL":"Asia","JP":"Asia","JO":"Asia","KZ":"Asia","KW":"Asia","KG":"Asia","LA":"Asia","LB":"Asia","MY":"Asia","MV":"Asia","MN":"Asia","MM":"Asia","NP":"Asia","KP":"Asia","OM":"Asia","PK":"Asia","PS":"Asia","PH":"Asia","QA":"Asia","SA":"Asia","SG":"Asia","KR":"Asia","LK":"Asia","SY":"Asia","TW":"Asia","TJ":"Asia","TH":"Asia","TL":"Asia","TR":"Asia","TM":"Asia","AE":"Asia","UZ":"Asia","VN":"Asia","YE":"Asia","AL":"Europe","AD":"Europe","AT":"Europe","BY":"Europe","BE":"Europe","BA":"Europe","BG":"Europe","HR":"Europe","CZ":"Europe","DK":"Europe","EE":"Europe","FI":"Europe","FR":"Europe","DE":"Europe","GR":"Europe","HU":"Europe","IS":"Europe","IE":"Europe","IT":"Europe","XK":"Europe","LV":"Europe","LI":"Europe","LT":"Europe","LU":"Europe","MT":"Europe","MD":"Europe","MC":"Europe","ME":"Europe","NL":"Europe","MK":"Europe","NO":"Europe","PL":"Europe","PT":"Europe","RO":"Europe","RU":"Europe","SM":"Europe","RS":"Europe","SK":"Europe","SI":"Europe","ES":"Europe","SE":"Europe","CH":"Europe","UA":"Europe","GB":"Europe","VA":"Europe","AG":"North America","BS":"North America","BB":"North America","BZ":"North America","CA":"North America","CR":"North America","CU":"North America","DM":"North America","DO":"North America","SV":"North America","GD":"North America","GT":"North America","HT":"North America","HN":"North America","JM":"North America","MX":"North America","NI":"North America","PA":"North America","KN":"North America","LC":"North America","VC":"North America","TT":"North America","US":"North America","AR":"South America","BO":"South America","BR":"South America","CL":"South America","CO":"South America","EC":"South America","GY":"South America","PY":"South America","PE":"South America","SR":"South America","UY":"South America","VE":"South America","DZ":"Africa","AO":"Africa","BJ":"Africa","BW":"Africa","BF":"Africa","BI":"Africa","CV":"Africa","CM":"Africa","CF":"Africa","TD":"Africa","KM":"Africa","CG":"Africa","CD":"Africa","CI":"Africa","DJ":"Africa","EG":"Africa","GQ":"Africa","ER":"Africa","SZ":"Africa","ET":"Africa","GA":"Africa","GM":"Africa","GH":"Africa","GN":"Africa","GW":"Africa","KE":"Africa","LS":"Africa","LR":"Africa","LY":"Africa","MG":"Africa","MW":"Africa","ML":"Africa","MR":"Africa","MU":"Africa","MA":"Africa","MZ":"Africa","NA":"Africa","NE":"Africa","NG":"Africa","RW":"Africa","ST":"Africa","SN":"Africa","SL":"Africa","SO":"Africa","ZA":"Africa","SS":"Africa","SD":"Africa","TZ":"Africa","TG":"Africa","TN":"Africa","UG":"Africa","ZM":"Africa","ZW":"Africa","AU":"Oceania","FJ":"Oceania","KI":"Oceania","MH":"Oceania","FM":"Oceania","NR":"Oceania","NZ":"Oceania","PW":"Oceania","PG":"Oceania","WS":"Oceania","SB":"Oceania","TO":"Oceania","TV":"Oceania","VU":"Oceania"};
+
+const CONTINENT_ORDER = [
+  { key: 'Oceania', emoji: '\ud83c\udf0f', subtitle: 'From the Pacific with Love' },
+  { key: 'Asia', emoji: '\ud83c\udf0f', subtitle: 'From East to West, United by Love' },
+  { key: 'Europe', emoji: '\ud83c\udf0d', subtitle: 'Across Every Border, One Heart' },
+  { key: 'North America', emoji: '\ud83c\udf0e', subtitle: 'Coast to Coast, For Byung-hun' },
+  { key: 'South America', emoji: '\ud83c\udf0e', subtitle: 'Pasi\u00f3n sin Fronteras' },
+  { key: 'Africa', emoji: '\ud83c\udf0d', subtitle: 'Ubuntu \u2014 We Are One' },
+  { key: 'Other', emoji: '\ud83c\udf10', subtitle: 'Fans Around the World' }
+];
+
+// Sort countries: Australia first in Oceania, Thailand first in Asia, then by count descending
+function sortCountryCodes(codes, contKey, byContData) {
+  return codes.sort((a, b) => {
+    if (contKey === 'Oceania') {
+      if (a === 'AU') return -1;
+      if (b === 'AU') return 1;
+    }
+    if (contKey === 'Asia') {
+      if (a === 'TH') return -1;
+      if (b === 'TH') return 1;
+    }
+    return byContData[b].length - byContData[a].length;
+  });
+}
+
+let pages = [];
+let currentPage = 0;
+let isAdmin = false;
+let pageCountryMap = []; // maps page index -> country code (for sidebar tracking)
+let allSubmissions = []; // stored for PPTX export
+
+// Check admin key
+const params = new URLSearchParams(window.location.search);
+const adminKey = params.get('key');
+
+function esc(text) {
+  const d = document.createElement('div');
+  d.textContent = text || '';
+  return d.innerHTML;
+}
+
+function maskEmail(email) {
+  const at = email.indexOf('@');
+  if (at <= 2) return email.charAt(0) + '***' + email.substring(at);
+  return email.substring(0, 2) + '***' + email.substring(at);
+}
+
+function msgHtml(entry) {
+  let h = '';
+  const msg = String(entry.message || '');
+  if (msg) h += `<div class="msg-orig">${esc(msg)}</div>`;
+  const lang = String(entry.language || '').toLowerCase();
+  const isEnglish = lang === 'english' || lang === 'en';
+  const msgEn = String(entry.message_en || '');
+  const hasDifferentTranslation = msgEn.trim() && msgEn.trim() !== msg.trim();
+  if (hasDifferentTranslation && !isEnglish) {
+    h += `<div class="msg-en" style="font-size:0.68rem;color:var(--accent-light);font-style:italic;margin-top:6px;line-height:1.5;">(${esc(msgEn)})</div>`;
+  }
+  return h;
+}
+
+function contactHtml(entry, cssClass) {
+  if (!entry.contact_info) return '';
+  const c = entry.contact_info.trim();
+  if (!c) return '';
+  const parts = c.split('|').map(p => p.trim()).filter(Boolean);
+  const formatted = parts.map(p => {
+    const m = p.match(/^(X|IG|TT|Email|FB|YT|TikTok|Instagram|Twitter|Facebook|YouTube)\s*[:：]\s*(.+)$/i);
+    if (!m) return esc(p);
+    const label = m[1].toUpperCase();
+    const val = m[2].trim();
+    if (label === 'X' || label === 'TWITTER') return `X: ${esc(val)}`;
+    if (label === 'IG' || label === 'INSTAGRAM') return `IG: ${esc(val)}`;
+    if (label === 'TT' || label === 'TIKTOK') return `TikTok: ${esc(val)}`;
+    if (label === 'EMAIL') return `Email: ${esc(maskEmail(val))}`;
+    if (label === 'FB' || label === 'FACEBOOK') return `FB: ${esc(val)}`;
+    if (label === 'YT' || label === 'YOUTUBE') return `YT: ${esc(val)}`;
+    return esc(p);
+  }).join(' · ');
+  return `<div class="${cssClass}">${formatted}</div>`;
+}
+
+function privateBadge(entry) {
+  return '';
+}
+
+async function loadData() {
+  let url = API_URL + '?action=submissions';
+  if (adminKey) {
+    url = API_URL + '?action=all&key=' + encodeURIComponent(adminKey);
+    isAdmin = true;
+    document.getElementById('admin-badge').style.display = 'inline';
+  }
+
+  const vp = document.getElementById('viewport');
+  vp.innerHTML = '<p style="text-align:center;padding:40px;">Loading data...</p>';
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      vp.innerHTML = `<p style="text-align:center;padding:40px;">Server error: ${res.status}. Check that Apps Script is deployed.</p>`;
+      return;
+    }
+
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseErr) {
+      vp.innerHTML = `<p style="text-align:center;padding:40px;">Invalid response from server. Try redeploying Apps Script.<br><small style="color:#999;">${esc(text.substring(0, 200))}</small></p>`;
+      return;
+    }
+
+    if (data.error) {
+      if (data.error === 'unauthorized') {
+        alert('Admin key incorrect. Loading public data instead.');
+        isAdmin = false;
+        document.getElementById('admin-badge').style.display = 'none';
+        // Retry without admin key
+        const res2 = await fetch(API_URL + '?action=submissions');
+        const data2 = await res2.json();
+        allSubmissions = data2.submissions || [];
+      } else {
+        alert('Error: ' + data.error);
+        return;
+      }
+    } else {
+      allSubmissions = data.submissions || [];
+    }
+
+    if (!allSubmissions.length) {
+      vp.innerHTML = '<p style="text-align:center;padding:40px;">No submissions found.</p>';
+      return;
+    }
+
+    buildPages(allSubmissions);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      vp.innerHTML = '<p style="text-align:center;padding:40px;">Request timed out (30s). Apps Script may be slow — try again.</p>';
+    } else {
+      vp.innerHTML = `<p style="text-align:center;padding:40px;">Failed to load: ${esc(err.message)}<br><small>Check connection & Apps Script deployment.</small></p>`;
+    }
+  }
+}
+
+function buildPages(submissions) {
+  pages = [];
+  pageCountryMap = [];
+  const tocItems = [];
+  const sidebarCountries = []; // { code, continent, pageIdx }
+
+  // Group by continent -> country
+  const byContinent = {};
+  submissions.forEach(s => {
+    const code = s.country || 'OTHER';
+    const cont = CONTINENT_MAP[code] || 'Other';
+    if (!byContinent[cont]) byContinent[cont] = {};
+    if (!byContinent[cont][code]) byContinent[cont][code] = [];
+    byContinent[cont][code].push(s);
+  });
+
+  CONTINENT_ORDER.forEach(cont => {
+    if (!byContinent[cont.key]) return;
+    const countryCodes = sortCountryCodes(Object.keys(byContinent[cont.key]), cont.key, byContinent[cont.key]);
+
+    let totalFans = 0;
+    countryCodes.forEach(c => totalFans += byContinent[cont.key][c].length);
+
+    // Continent cover
+    tocItems.push({ type: 'continent', label: `${cont.emoji} ${cont.key}`, page: pages.length });
+    pageCountryMap.push({ code: null, continent: cont.key });
+    pages.push({
+      type: 'continent',
+      html: `<div class="ebook-page page-continent">
+        <div class="emoji">${cont.emoji}</div>
+        <div class="title">${cont.key.toUpperCase()}</div>
+        <div class="subtitle">${cont.subtitle}</div>
+        <div class="stats">${countryCodes.length} Countries | ${totalFans} Fans</div>
+      </div>`
+    });
+
+    const SMALL_THRESHOLD = 5;
+
+    // Helper: estimate height of rendered text
+    function estH(text, charsPerLine, lineH) {
+      if (!text) return 0;
+      const s = String(text);
+      const hardBreaks = (s.match(/\n/g) || []).length;
+      const wrapLines = Math.max(1, Math.ceil(s.length / charsPerLine));
+      const lines = wrapLines + hardBreaks;
+      return lines * lineH * 1.35 + 8;
+    }
+
+    // Helper: make inline country header
+    function makeInlineHdr(cd, count) {
+      return `<div style="text-align:center;padding:6px 0 4px;border-bottom:2px solid var(--brown);margin-bottom:6px;">
+        <span style="font-size:1.4rem;">${cd.flag}</span>
+        <span style="font-size:0.9rem;font-weight:700;color:var(--brown);margin-left:6px;">${cd.name}</span>
+        <span style="font-size:0.65rem;color:var(--accent-light);margin-left:6px;">${count} messages</span>
+      </div>`;
+    }
+
+    // Helper: add entries for a country to page buffers (used for both big and small countries)
+    function addCountryPages(code, cd, entries, contKey, isSmall) {
+      tocItems.push({ type: 'country', label: `${cd.flag} ${cd.name} (${entries.length})`, page: pages.length });
+      sidebarCountries.push({ code, continent: contKey, pageIdx: pages.length });
+
+      if (!isSmall) {
+        // Big country: dedicated intro page
+        pageCountryMap.push({ code, continent: contKey });
+        pages.push({
+          type: 'country',
+          html: `<div class="ebook-page page-country">
+            <div class="flag">${cd.flag}</div>
+            <div class="name">${cd.name}</div>
+            <div class="count">${entries.length} message${entries.length > 1 ? 's' : ''} of love</div>
+          </div>`
+        });
+      }
+
+      const trackB = [], trackAImg = [], trackATxt = [], trackC = [];
+      entries.forEach(e => {
+        const t = (e.track || '').toLowerCase().replace('track ', '').replace('track_', '');
+        if (t === 'c') trackC.push(e);
+        else if (t === 'b' && e.photo_url) trackB.push(e);
+        else if (e.profile_url) trackAImg.push(e);
+        else trackATxt.push(e);
+      });
+      return { trackB, trackAImg, trackATxt, trackC };
+    }
+
+    // Helper: pack Track B entries dynamically onto pages
+    function packTrackB(items, code, contKey) {
+      const PAGE_H = 676;
+      let inner = '', usedH = 0, count = 0;
+      for (const { entry: b, cd, hdr } of items) {
+        const msgH = estH(b.message, 50, 17) + (b.message_en ? estH(b.message_en, 55, 15) + 4 : 0);
+        const textH = 45 + msgH;
+        let entryH = Math.max(170, textH) + 10;
+        let hdrH = 0;
+        if (hdr) hdrH = 40;
+
+        if (count > 0 && usedH + hdrH + entryH > PAGE_H) {
+          pageCountryMap.push({ code: code || b.country, continent: contKey });
+          pages.push({ type: 'trackB', html: `<div class="ebook-page page-trackB">${inner}</div>` });
+          inner = ''; usedH = 0; count = 0;
+        }
+        if (hdr) { inner += hdr; usedH += hdrH; }
+
+        const photoSrc = b.photo_url || '';
+        const profSrc = b.profile_url || '';
+        inner += `<div class="trackB-entry">
+          ${photoSrc ? `<div class="trackB-photo"><img src="${esc(photoSrc)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
+          <div class="trackB-info">
+            <div class="trackB-header">
+              <div class="trackB-avatar">${profSrc ? `<img src="${esc(profSrc)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\ud83d\udc64'}</div>
+              <div>
+                <div class="trackB-name">${esc(b.name)}${privateBadge(b)}</div>
+                <div class="trackB-country">${cd.flag} ${cd.name}</div>
+                ${contactHtml(b, 'trackB-contact')}
+              </div>
+            </div>
+            <div class="trackB-msg">${msgHtml(b)}</div>
+          </div>
+        </div>`;
+        usedH += entryH + 8;
+        count++;
+      }
+      if (inner) {
+        pageCountryMap.push({ code: code || 'OTHER', continent: contKey });
+        pages.push({ type: 'trackB', html: `<div class="ebook-page page-trackB">${inner}</div>` });
+      }
+    }
+
+    // Helper: pack Track A (with profile) entries
+    function packTrackA(items, code, contKey) {
+      const PAGE_H = 676;
+      let inner = '', usedH = 0, count = 0;
+      for (const { entry: a, cd, hdr } of items) {
+        const msgH = estH(a.message, 90, 15) + (a.message_en ? estH(a.message_en, 95, 13) + 2 : 0);
+        const entryH = Math.max(48, 20 + msgH) + 6;
+        let hdrH = 0;
+        if (hdr) hdrH = 25;
+
+        if (count > 0 && usedH + hdrH + entryH > PAGE_H) {
+          pageCountryMap.push({ code: code || a.country, continent: contKey });
+          pages.push({ type: 'trackA', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+          inner = ''; usedH = 0; count = 0;
+        }
+        if (hdr) { inner += hdr; usedH += hdrH; }
+
+        inner += `<div class="trackA-entry">
+          <div class="trackA-avatar">${a.profile_url ? `<img src="${esc(a.profile_url)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\ud83d\udc64'}</div>
+          <div class="trackA-content">
+            <div class="trackA-name">${esc(a.name)}${privateBadge(a)}</div>
+            ${contactHtml(a, 'trackA-contact')}
+            <div class="trackA-msg">${msgHtml(a)}</div>
+          </div>
+        </div>`;
+        usedH += entryH + 8;
+        count++;
+      }
+      if (count > 0) {
+        pageCountryMap.push({ code: code || 'OTHER', continent: contKey });
+        pages.push({ type: 'trackA', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+      }
+    }
+
+    // Helper: pack Track ATxt entries
+    function packTrackATxt(items, code, contKey) {
+      const PAGE_H = 676;
+      let inner = '', usedH = 0, count = 0;
+      for (const { entry: t, cd, hdr } of items) {
+        const msgH = estH(t.message, 100, 14) + (t.message_en ? estH(t.message_en, 105, 12) + 2 : 0);
+        const entryH = 18 + msgH + 5;
+        let hdrH = 0;
+        if (hdr) hdrH = 25;
+
+        if (count > 0 && usedH + hdrH + entryH > PAGE_H) {
+          pageCountryMap.push({ code: code || t.country, continent: contKey });
+          pages.push({ type: 'trackATxt', html: `<div class="ebook-page page-trackATxt">${inner}</div>` });
+          inner = ''; usedH = 0; count = 0;
+        }
+        if (hdr) { inner += hdr; usedH += hdrH; }
+
+        inner += `<div class="trackATxt-entry">
+          <div class="trackATxt-name">${esc(t.name)}${privateBadge(t)}</div>
+          ${contactHtml(t, 'trackATxt-contact')}
+          <div class="trackATxt-msg">${msgHtml(t)}</div>
+        </div>`;
+        usedH += entryH + 6;
+        count++;
+      }
+      if (count > 0) {
+        pageCountryMap.push({ code: code || 'OTHER', continent: contKey });
+        pages.push({ type: 'trackATxt', html: `<div class="ebook-page page-trackATxt">${inner}</div>` });
+      }
+    }
+
+    // Unified packer: mixes Track B, A, ATxt entries on shared pages to avoid gaps
+    function packMixedContent(items, code, contKey) {
+      const PAGE_H = 676;
+      let inner = '', usedH = 0, count = 0;
+      for (const { entry: e, cd, hdr, type } of items) {
+        let entryH, entryHtml;
+        let hdrH = hdr ? 25 : 0;
+        if (type === 'b') {
+          const msgH = estH(e.message, 50, 17) + (e.message_en ? estH(e.message_en, 55, 15) + 4 : 0);
+          const textH = 45 + msgH;
+          entryH = Math.max(170, textH) + 10;
+          const photoSrc = e.photo_url || '';
+          const profSrc = e.profile_url || '';
+          entryHtml = `<div class="trackB-entry">
+            ${photoSrc ? `<div class="trackB-photo"><img src="${esc(photoSrc)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
+            <div class="trackB-info">
+              <div class="trackB-header">
+                <div class="trackB-avatar">${profSrc ? `<img src="${esc(profSrc)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\ud83d\udc64'}</div>
+                <div>
+                  <div class="trackB-name">${esc(e.name)}${privateBadge(e)}</div>
+                  <div class="trackB-country">${cd.flag} ${cd.name}</div>
+                  ${contactHtml(e, 'trackB-contact')}
+                </div>
+              </div>
+              <div class="trackB-msg">${msgHtml(e)}</div>
+            </div>
+          </div>`;
+        } else if (type === 'a') {
+          const msgH = estH(e.message, 90, 15) + (e.message_en ? estH(e.message_en, 95, 13) + 2 : 0);
+          entryH = Math.max(48, 20 + msgH) + 6;
+          entryHtml = `<div class="trackA-entry">
+            <div class="trackA-avatar">${e.profile_url ? `<img src="${esc(e.profile_url)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\ud83d\udc64'}</div>
+            <div class="trackA-content">
+              <div class="trackA-name">${esc(e.name)}${privateBadge(e)}</div>
+              ${contactHtml(e, 'trackA-contact')}
+              <div class="trackA-msg">${msgHtml(e)}</div>
+            </div>
+          </div>`;
+        } else {
+          const msgH = estH(e.message, 100, 14) + (e.message_en ? estH(e.message_en, 105, 12) + 2 : 0);
+          entryH = 18 + msgH + 5;
+          entryHtml = `<div class="trackATxt-entry">
+            <div class="trackATxt-name">${esc(e.name)}${privateBadge(e)}</div>
+            ${contactHtml(e, 'trackATxt-contact')}
+            <div class="trackATxt-msg">${msgHtml(e)}</div>
+          </div>`;
+        }
+        if (count > 0 && usedH + hdrH + entryH > PAGE_H) {
+          pageCountryMap.push({ code, continent: contKey });
+          pages.push({ type: 'mixed', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+          inner = ''; usedH = 0; count = 0;
+        }
+        if (hdr) { inner += hdr; usedH += hdrH; }
+        inner += entryHtml;
+        usedH += entryH + 6;
+        count++;
+      }
+      if (count > 0) {
+        pageCountryMap.push({ code, continent: contKey });
+        pages.push({ type: 'mixed', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+      }
+    }
+
+    // Separate big and small countries per continent
+    const bigCodes = countryCodes.filter(c => byContinent[cont.key][c].length > SMALL_THRESHOLD);
+    const smallCodes = countryCodes.filter(c => byContinent[cont.key][c].length <= SMALL_THRESHOLD);
+
+    // Process big countries individually
+    bigCodes.forEach(code => {
+      const entries = byContinent[cont.key][code];
+      const cd = COUNTRY_DATA[code] || { flag: '\ud83c\udf0d', name: code };
+      const { trackB, trackAImg, trackATxt, trackC } = addCountryPages(code, cd, entries, cont.key, false);
+
+      const countryLabel = `<div class="country-label">from ${cd.name} ${cd.flag}</div>`;
+
+      // Pack all B, A, ATxt entries together to avoid whitespace gaps between tracks
+      const mixedItems = [];
+      trackB.forEach(e => mixedItems.push({ entry: e, cd, type: 'b', hdr: null }));
+      const hasA = trackAImg.length > 0;
+      trackAImg.forEach((e, i) => mixedItems.push({ entry: e, cd, type: 'a', hdr: i === 0 ? countryLabel : null }));
+      trackATxt.forEach((e, i) => mixedItems.push({ entry: e, cd, type: 'aTxt', hdr: i === 0 && !hasA ? countryLabel : null }));
+      packMixedContent(mixedItems, code, cont.key);
+
+      trackC.forEach(c => {
+        const imgSrc = c.custom_page_url || '';
+        pageCountryMap.push({ code, continent: cont.key });
+        pages.push({
+          type: 'trackC',
+          html: `<div class="ebook-page page-trackC">
+            <div class="trackC-image">${imgSrc ? `<img src="${esc(imgSrc)}" loading="lazy">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;color:#ccc;">No image</div>'}</div>
+            <div class="trackC-info">
+              <div class="trackC-name">${esc(c.name)}${privateBadge(c)} <span class="trackC-country">${cd.flag} ${cd.name}</span></div>
+              ${contactHtml(c, 'trackC-contact')}
+              ${c.message ? `<div class="trackC-msg">${msgHtml(c)}</div>` : ''}
+            </div>
+          </div>`
+        });
+      });
+    });
+
+    // Combine small countries on shared pages
+    // Track B (photo) goes on separate pages; Track A + ATxt share pages; Track C standalone
+    if (smallCodes.length > 0) {
+      const PAGE_H = 676;
+
+      // 1) Collect ALL items (B + A + ATxt) in one list per country, cItems separate
+      const allItems = []; // { entry, cd, code, isFirst, type:'b'|'a'|'aTxt' }
+      const cItems = []; // { entry, cd, code }
+      const countryFirstPage = {}; // code -> page index (filled as we pack)
+
+      smallCodes.forEach(code => {
+        const entries = byContinent[cont.key][code];
+        const cd = COUNTRY_DATA[code] || { flag: '\ud83c\udf0d', name: code };
+
+        let first = true;
+        entries.forEach(e => {
+          const t = (e.track || '').toLowerCase().replace('track ', '').replace('track_', '');
+          if (t === 'c') {
+            cItems.push({ entry: e, cd, code });
+          } else if (t === 'b' && e.photo_url) {
+            allItems.push({ entry: e, cd, code, isFirst: first, type: 'b' });
+            first = false;
+          } else if (e.profile_url) {
+            allItems.push({ entry: e, cd, code, isFirst: first, type: 'a' });
+            first = false;
+          } else {
+            allItems.push({ entry: e, cd, code, isFirst: first, type: 'aTxt' });
+            first = false;
+          }
+        });
+      });
+
+      // Helper: record first page for a country
+      function recordFirst(code) {
+        if (!(code in countryFirstPage)) countryFirstPage[code] = pages.length;
+      }
+
+      // 2) Pack ALL B + A + ATxt items together on shared pages
+      {
+        let inner = '', usedH = 0, cnt = 0;
+        for (const { entry: e, cd, code, isFirst, type } of allItems) {
+          const needHdr = isFirst && !(code in countryFirstPage);
+          const hdr = isFirst ? (needHdr ? makeInlineHdr(cd, byContinent[cont.key][code].length) : `<div class="country-label">${cd.flag} ${cd.name}</div>`) : '';
+          const hdrH = isFirst ? (needHdr ? 42 : 25) : 0;
+
+          let entH, entHtml;
+          if (type === 'b') {
+            const msgH = estH(e.message, 45, 17) + (e.message_en ? estH(e.message_en, 50, 15) + 4 : 0);
+            entH = Math.max(170, 45 + msgH) + 10;
+            const photoSrc = e.photo_url || '';
+            const profSrc = e.profile_url || '';
+            entHtml = `<div class="trackB-entry">
+              ${photoSrc ? `<div class="trackB-photo"><img src="${esc(photoSrc)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
+              <div class="trackB-info">
+                <div class="trackB-header">
+                  <div class="trackB-avatar">${profSrc ? `<img src="${esc(profSrc)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\ud83d\udc64'}</div>
+                  <div>
+                    <div class="trackB-name">${esc(e.name)}${privateBadge(e)}</div>
+                    <div class="trackB-country">${cd.flag} ${cd.name}</div>
+                    ${contactHtml(e, 'trackB-contact')}
+                  </div>
+                </div>
+                <div class="trackB-msg">${msgHtml(e)}</div>
+              </div>
+            </div>`;
+          } else if (type === 'a') {
+            const msgH = estH(e.message, 85, 15) + (e.message_en ? estH(e.message_en, 90, 13) + 2 : 0);
+            entH = Math.max(48, 20 + msgH) + 6;
+            entHtml = `<div class="trackA-entry">
+              <div class="trackA-avatar">${e.profile_url ? `<img src="${esc(e.profile_url)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\ud83d\udc64'}</div>
+              <div class="trackA-content">
+                <div class="trackA-name">${esc(e.name)}${privateBadge(e)}</div>
+                ${contactHtml(e, 'trackA-contact')}
+                <div class="trackA-msg">${msgHtml(e)}</div>
+              </div>
+            </div>`;
+          } else {
+            const msgH = estH(e.message, 95, 14) + (e.message_en ? estH(e.message_en, 100, 12) + 2 : 0);
+            entH = 18 + msgH + 5;
+            entHtml = `<div class="trackATxt-entry">
+              <div class="trackATxt-name">${esc(e.name)}${privateBadge(e)}</div>
+              ${contactHtml(e, 'trackATxt-contact')}
+              <div class="trackATxt-msg">${msgHtml(e)}</div>
+            </div>`;
+          }
+
+          if (cnt > 0 && usedH + hdrH + entH > PAGE_H) {
+            pageCountryMap.push({ code: null, continent: cont.key });
+            pages.push({ type: 'mixed', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+            inner = ''; usedH = 0; cnt = 0;
+          }
+          recordFirst(code);
+          if (hdr) { inner += hdr; usedH += hdrH; }
+          inner += entHtml;
+          usedH += entH + 6; cnt++;
+        }
+        if (inner) {
+          pageCountryMap.push({ code: null, continent: cont.key });
+          pages.push({ type: 'mixed', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+        }
+      }
+
+      // 4) Track C standalone
+      cItems.forEach(({ entry: c, cd, code }) => {
+        recordFirst(code);
+        const imgSrc = c.custom_page_url || '';
+        pageCountryMap.push({ code, continent: cont.key });
+        pages.push({
+          type: 'trackC',
+          html: `<div class="ebook-page page-trackC">
+            <div class="trackC-image">${imgSrc ? `<img src="${esc(imgSrc)}" loading="lazy">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;color:#ccc;">No image</div>'}</div>
+            <div class="trackC-info">
+              <div class="trackC-name">${esc(c.name)}${privateBadge(c)} <span class="trackC-country">${cd.flag} ${cd.name}</span></div>
+              ${contactHtml(c, 'trackC-contact')}
+              ${c.message ? `<div class="trackC-msg">${msgHtml(c)}</div>` : ''}
+            </div>
+          </div>`
+        });
+      });
+
+      // 5) Register TOC + sidebar for small countries using resolved page indices
+      smallCodes.forEach(code => {
+        const entries = byContinent[cont.key][code];
+        const cd = COUNTRY_DATA[code] || { flag: '\ud83c\udf0d', name: code };
+        const pageIdx = countryFirstPage[code] || pages.length - 1;
+        tocItems.push({ type: 'country', label: `${cd.flag} ${cd.name} (${entries.length})`, page: pageIdx });
+        sidebarCountries.push({ code, continent: cont.key, pageIdx });
+      });
+    }
+  });
+
+  // Build TOC
+  let tocHtml = '';
+  tocItems.forEach(item => {
+    const cls = item.type === 'continent' ? 'toc-item toc-continent' : 'toc-item toc-country';
+    tocHtml += `<div class="${cls}" onclick="goToPage(${item.page}); toggleTOC();">${item.label}</div>`;
+  });
+  document.getElementById('toc-list').innerHTML = tocHtml;
+
+  // Build country sidebar
+  buildFanbookSidebar(sidebarCountries);
+
+  showPage(0);
+}
+
+function buildFanbookSidebar(countries) {
+  const list = document.getElementById('fb-sidebar-list');
+  let html = '';
+  let lastContinent = '';
+
+  countries.forEach(({ code, continent, pageIdx }) => {
+    if (continent !== lastContinent) {
+      const contEmoji = CONTINENT_ORDER.find(c => c.key === continent)?.emoji || '';
+      html += `<li class="fb-sb-continent">${contEmoji} ${continent}</li>`;
+      lastContinent = continent;
+    }
+    const cd = COUNTRY_DATA[code] || { flag: '\ud83c\udf0d', name: code };
+    html += `<li class="fb-sb-item" data-country="${code}" onclick="goToPage(${pageIdx})">${cd.flag} ${cd.name}</li>`;
+  });
+
+  list.innerHTML = html;
+}
+
+function showPage(idx) {
+  if (idx < 0 || idx >= pages.length) return;
+  currentPage = idx;
+  document.getElementById('viewport').innerHTML = pages[idx].html;
+  document.getElementById('page-counter').textContent = `${idx + 1} / ${pages.length}`;
+  document.getElementById('btn-prev').disabled = idx === 0;
+  document.getElementById('btn-next').disabled = idx === pages.length - 1;
+
+  // Update sidebar highlight
+  const mapping = pageCountryMap[idx];
+  const activeCode = mapping?.code;
+  document.querySelectorAll('.fb-sb-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.country === activeCode);
+  });
+  // Scroll active into view
+  const activeEl = document.querySelector('.fb-sb-item.active');
+  if (activeEl) activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function goPage(dir) { showPage(currentPage + dir); }
+function goToPage(idx) { showPage(idx); }
+
+// Lightbox: click image to view full size
+document.getElementById('viewport').addEventListener('click', function(e) {
+  const img = e.target.closest('.trackB-photo img, .trackC-image img');
+  if (img && img.src) {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+  }
+});
+
+function toggleTOC() {
+  document.getElementById('toc-overlay').classList.toggle('active');
+}
+
+function printAllPages() {
+  const MAX_PAGES = 100;
+
+  if (pages.length <= MAX_PAGES) {
+    // Normal print — within limit
+    doPrint(pages.map(p => p.html).join(''));
+    return;
+  }
+
+  // Over 100 pages — rebuild with higher density using same beautiful styles
+  if (!allSubmissions.length) { alert('No data loaded yet'); return; }
+
+  const compactPages = buildCompactPages(allSubmissions, MAX_PAGES);
+  const count = compactPages.length;
+  alert(`${pages.length} pages → ${count} pages (max ${MAX_PAGES})`);
+  doPrint(compactPages.map(p => p.html).join(''));
+}
+
+function doPrint(html) {
+  const vp = document.getElementById('viewport');
+  vp.classList.add('all-pages-print');
+  vp.style.display = 'block';
+  vp.style.padding = '0';
+  vp.innerHTML = html;
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => {
+      vp.classList.remove('all-pages-print');
+      vp.style.display = '';
+      vp.style.padding = '';
+      showPage(currentPage);
+    }, 500);
+  }, 300);
+}
+
+// ==========================================
+// COMPACT PAGES — iterative density scaling to fit maxPages
+// ==========================================
+function buildCompactPages(submissions, maxPages) {
+  const byContinent = {};
+  submissions.forEach(s => {
+    const code = s.country || 'OTHER';
+    const cont = CONTINENT_MAP[code] || 'Other';
+    if (!byContinent[cont]) byContinent[cont] = {};
+    if (!byContinent[cont][code]) byContinent[cont][code] = [];
+    byContinent[cont][code].push(s);
+  });
+
+  // Pre-sort data structure
+  const structure = [];
+  CONTINENT_ORDER.forEach(cont => {
+    if (!byContinent[cont.key]) return;
+    const countryCodes = sortCountryCodes(Object.keys(byContinent[cont.key]), cont.key, byContinent[cont.key]);
+    let totalFans = 0;
+    countryCodes.forEach(c => totalFans += byContinent[cont.key][c].length);
+
+    const countries = [];
+    countryCodes.forEach(code => {
+      const entries = byContinent[cont.key][code];
+      const cd = COUNTRY_DATA[code] || { flag: '\u{1f30d}', name: code };
+      const trackB = [], trackAImg = [], trackATxt = [], trackC = [];
+      entries.forEach(e => {
+        const t = (e.track || '').toLowerCase().replace('track ', '').replace('track_', '');
+        if (t === 'c') trackC.push(e);
+        else if (t === 'b' && e.photo_url) trackB.push(e);
+        else if (e.profile_url) trackAImg.push(e);
+        else trackATxt.push(e);
+      });
+      countries.push({ code, cd, entries, trackB, trackAImg, trackATxt, trackC });
+    });
+    structure.push({ cont, countryCodes, totalFans, countries });
+  });
+
+  // Try building pages with given density settings
+  function tryBuild(bPP, aPP, atPP, cPP, includeContinentCovers) {
+    const result = [];
+    structure.forEach(({ cont, countryCodes, totalFans, countries }) => {
+      if (includeContinentCovers) {
+        result.push({
+          type: 'continent',
+          html: `<div class="ebook-page page-continent">
+            <div class="emoji">${cont.emoji}</div>
+            <div class="title">${cont.key.toUpperCase()}</div>
+            <div class="subtitle">${cont.subtitle}</div>
+            <div class="stats">${countryCodes.length} Countries | ${totalFans} Fans</div>
+          </div>`
+        });
+      }
+
+      countries.forEach(({ code, cd, entries, trackB, trackAImg, trackATxt, trackC }) => {
+        const countryHdr = `<div style="text-align:center;padding:6px 0 3px;border-bottom:2px solid var(--brown);margin-bottom:6px;">
+          <span style="font-size:1.2rem;">${cd.flag}</span>
+          <span style="font-size:0.85rem;font-weight:700;color:var(--brown);margin-left:4px;">${cd.name}</span>
+          <span style="font-size:0.65rem;color:var(--accent-light);margin-left:6px;">${entries.length} msgs</span>
+        </div>`;
+        let firstOfCountry = true;
+
+        // Track B
+        for (let i = 0; i < trackB.length; i += bPP) {
+          let inner = firstOfCountry ? countryHdr : '';
+          firstOfCountry = false;
+          for (let j = 0; j < bPP && (i+j) < trackB.length; j++) {
+            const b = trackB[i+j];
+            inner += `<div class="trackB-entry">
+              ${b.photo_url ? `<div class="trackB-photo"><img src="${esc(b.photo_url)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
+              <div class="trackB-info">
+                <div class="trackB-header">
+                  <div class="trackB-avatar">${b.profile_url ? `<img src="${esc(b.profile_url)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\u{1f464}'}</div>
+                  <div>
+                    <div class="trackB-name">${esc(b.name)}${privateBadge(b)}</div>
+                    <div class="trackB-country">${cd.flag} ${cd.name}</div>
+                    ${contactHtml(b, 'trackB-contact')}
+                  </div>
+                </div>
+                <div class="trackB-msg">${msgHtml(b)}</div>
+              </div>
+            </div>`;
+          }
+          result.push({ type: 'trackB', html: `<div class="ebook-page page-trackB">${inner}</div>` });
+        }
+
+        // Track A with profile
+        for (let i = 0; i < trackAImg.length; i += aPP) {
+          let inner = firstOfCountry ? countryHdr : `<div class="country-label">from ${cd.name} ${cd.flag}</div>`;
+          firstOfCountry = false;
+          for (let j = 0; j < aPP && (i+j) < trackAImg.length; j++) {
+            const a = trackAImg[i+j];
+            inner += `<div class="trackA-entry">
+              <div class="trackA-avatar">${a.profile_url ? `<img src="${esc(a.profile_url)}" loading="lazy" onerror="this.parentElement.innerHTML='&#x1f464;'">` : '\u{1f464}'}</div>
+              <div class="trackA-content">
+                <div class="trackA-name">${esc(a.name)}${privateBadge(a)}</div>
+                ${contactHtml(a, 'trackA-contact')}
+                <div class="trackA-msg">${msgHtml(a)}</div>
+              </div>
+            </div>`;
+          }
+          result.push({ type: 'trackA', html: `<div class="ebook-page page-trackA">${inner}</div>` });
+        }
+
+        // Track A text only
+        for (let i = 0; i < trackATxt.length; i += atPP) {
+          let inner = firstOfCountry ? countryHdr : `<div class="country-label">from ${cd.name} ${cd.flag}</div>`;
+          firstOfCountry = false;
+          for (let j = 0; j < atPP && (i+j) < trackATxt.length; j++) {
+            const t = trackATxt[i+j];
+            inner += `<div class="trackATxt-entry">
+              <div class="trackATxt-name">${esc(t.name)}${privateBadge(t)}</div>
+              ${contactHtml(t, 'trackATxt-contact')}
+              <div class="trackATxt-msg">${msgHtml(t)}</div>
+            </div>`;
+          }
+          result.push({ type: 'trackATxt', html: `<div class="ebook-page page-trackATxt">${inner}</div>` });
+        }
+
+        // Track C
+        for (let i = 0; i < trackC.length; i += cPP) {
+          let inner = firstOfCountry ? countryHdr : '';
+          firstOfCountry = false;
+          // Multiple Track C per page
+          for (let j = 0; j < cPP && (i+j) < trackC.length; j++) {
+            const c = trackC[i+j];
+            const imgSrc = c.custom_page_url || '';
+            const h = Math.min(Math.floor(85 / cPP), 85);
+            inner += `<div style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;${j > 0 ? 'border-top:1px solid var(--border);' : ''}">
+              <div class="trackC-image" style="flex:1;min-height:0;">${imgSrc ? `<img src="${esc(imgSrc)}" loading="lazy" style="max-height:100%;width:100%;object-fit:contain;">` : ''}</div>
+              <div class="trackC-info" style="padding:4px 12px;">
+                <div class="trackC-name">${esc(c.name)}${privateBadge(c)} <span class="trackC-country">${cd.flag} ${cd.name}</span></div>
+                ${contactHtml(c, 'trackC-contact')}
+                ${c.message ? `<div class="trackC-msg" style="font-size:0.65rem;line-height:1.3;">${msgHtml(c)}</div>` : ''}
+              </div>
+            </div>`;
+          }
+          result.push({ type: 'trackC', html: `<div class="ebook-page page-trackC" style="display:flex;flex-direction:column;">${inner}</div>` });
+        }
+      });
+    });
+    return result;
+  }
+
+  // Iteratively increase density until we fit
+  const densityLevels = [
+    // bPP, aPP, atPP, cPP, includeCovers
+    { b: 3, a: 8,  at: 12, c: 2, covers: true },   // Level 1: gentle
+    { b: 4, a: 10, at: 15, c: 2, covers: true },   // Level 2: moderate
+    { b: 4, a: 12, at: 18, c: 3, covers: false },  // Level 3: no continent covers
+    { b: 5, a: 14, at: 22, c: 3, covers: false },  // Level 4: dense
+    { b: 6, a: 16, at: 25, c: 4, covers: false },  // Level 5: very dense
+    { b: 8, a: 20, at: 30, c: 4, covers: false },  // Level 6: ultra dense
+  ];
+
+  for (const lvl of densityLevels) {
+    const result = tryBuild(lvl.b, lvl.a, lvl.at, lvl.c, lvl.covers);
+    if (result.length <= maxPages) {
+      console.log(`Compact: density level b=${lvl.b} a=${lvl.a} at=${lvl.at} c=${lvl.c} → ${result.length} pages`);
+      return result;
+    }
+    console.log(`Compact: density level b=${lvl.b} a=${lvl.a} at=${lvl.at} c=${lvl.c} → ${result.length} pages (too many, trying higher density)`);
+  }
+
+  // If still over after max density, truncate
+  const final = tryBuild(8, 20, 30, 4, false);
+  return final.slice(0, maxPages);
+}
+
+// ==========================================
+// PPTX EXPORT — with base64 image preloading
+// ==========================================
+
+// Convert image URL to base64 + dimensions
+// Convert Google Drive URLs to direct image URLs that support CORS
+function toDriveDirectUrl(url) {
+  if (!url) return url;
+  // Already a direct URL
+  if (url.includes('lh3.googleusercontent.com')) return url;
+  // Extract file ID from various Drive URL formats
+  let m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (!m) m = url.match(/id=([a-zA-Z0-9_-]+)/);
+  if (m) return 'https://lh3.googleusercontent.com/d/' + m[1];
+  return url;
+}
+
+function imgToBase64(url) {
+  return new Promise(resolve => {
+    if (!url) { resolve(null); return; }
+    const directUrl = toDriveDirectUrl(url);
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        resolve({
+          data: canvas.toDataURL('image/jpeg', 0.85),
+          w: img.naturalWidth,
+          h: img.naturalHeight
+        });
+      } catch(e) { resolve(null); }
+    };
+    img.onerror = () => {
+      // Retry with original URL if direct URL failed
+      if (directUrl !== url) {
+        const img2 = new Image();
+        img2.crossOrigin = 'anonymous';
+        img2.onload = () => {
+          try {
+            const c = document.createElement('canvas');
+            c.width = img2.naturalWidth; c.height = img2.naturalHeight;
+            c.getContext('2d').drawImage(img2, 0, 0);
+            resolve({ data: c.toDataURL('image/jpeg', 0.85), w: img2.naturalWidth, h: img2.naturalHeight });
+          } catch(e2) { resolve(null); }
+        };
+        img2.onerror = () => resolve(null);
+        img2.src = url;
+      } else {
+        resolve(null);
+      }
+    };
+    img.src = directUrl;
+  });
+}
+
+// Preload all unique image URLs
+async function preloadImages(submissions, onProgress) {
+  const urls = new Set();
+  submissions.forEach(s => {
+    if (s.photo_url) urls.add(s.photo_url);
+    if (s.profile_url) urls.add(s.profile_url);
+    if (s.custom_page_url) urls.add(s.custom_page_url);
+  });
+
+  const cache = {};
+  const arr = [...urls];
+  let done = 0;
+
+  for (let i = 0; i < arr.length; i += 10) {
+    const batch = arr.slice(i, i + 10);
+    const results = await Promise.all(batch.map(u => imgToBase64(u)));
+    batch.forEach((u, idx) => { cache[u] = results[idx]; });
+    done += batch.length;
+    if (onProgress) onProgress(done, arr.length);
+  }
+  return cache;
+}
+
+async function exportPptx() {
+  if (!allSubmissions.length) { alert('No data loaded yet'); return; }
+  const btn = document.getElementById('btn-pptx');
+  btn.disabled = true;
+  btn.textContent = 'Loading images...';
+
+  try {
+    // Preload all images as base64
+    const imgCache = await preloadImages(allSubmissions, (done, total) => {
+      btn.textContent = `Images ${done}/${total}...`;
+    });
+
+    btn.textContent = 'Building PPTX...';
+
+    const pptx = new PptxGenJS();
+    pptx.defineLayout({ name: 'SQUARE', width: 7.5, height: 7.5 });
+    pptx.layout = 'SQUARE';
+
+    // Helper: create content slide with beige border + white card (matches web)
+    function makeContentSlide(pptx) {
+      const slide = pptx.addSlide();
+      slide.background = { color: 'ebe8e4' }; // beige like web --bg
+      slide.addShape('rect', {
+        x: 0.2, y: 0.2, w: 7.1, h: 7.1,
+        fill: { color: 'FFFFFF' },
+        rectRadius: 0.08
+      });
+      return slide;
+    }
+
+    // Helper: add image — use pre-calculated dimensions to preserve aspect ratio
+    function addImg(slide, url, x, y, maxW, maxH) {
+      const cached = imgCache[url];
+      if (!cached || !cached.data) return;
+      const natW = cached.w || 1;
+      const natH = cached.h || 1;
+      const ratio = natW / natH;
+      let finalW, finalH;
+      if (ratio > maxW / maxH) {
+        finalW = maxW;
+        finalH = maxW / ratio;
+      } else {
+        finalH = maxH;
+        finalW = maxH * ratio;
+      }
+      const offX = x + (maxW - finalW) / 2;
+      const offY = y + (maxH - finalH) / 2;
+      slide.addImage({ data: cached.data, x: offX, y: offY, w: finalW, h: finalH });
+    }
+
+    // Helper: crop image data to circle via offscreen canvas (PNG with transparency)
+    function circleClip(dataUrl, sizePx) {
+      sizePx = sizePx || 200;
+      const cv = document.createElement('canvas');
+      cv.width = sizePx; cv.height = sizePx;
+      const ctx = cv.getContext('2d');
+      const img = new Image();
+      return new Promise(function(resolve) {
+        img.onload = function() {
+          ctx.beginPath();
+          ctx.arc(sizePx / 2, sizePx / 2, sizePx / 2, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+          // Center-crop: pick the largest centered square from source
+          const s = Math.min(img.width, img.height);
+          const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+          ctx.drawImage(img, sx, sy, s, s, 0, 0, sizePx, sizePx);
+          resolve(cv.toDataURL('image/png'));
+        };
+        img.onerror = function() { resolve(dataUrl); };
+        img.src = dataUrl;
+      });
+    }
+
+
+    // Helper: add profile image (pre-cropped to circle for Canva compatibility)
+    // Returns true if image was placed, false if no image available
+    async function addProf(slide, url, x, y, size) {
+      const cached = url ? imgCache[url] : null;
+      if (cached && cached.data) {
+        const circled = await circleClip(cached.data, 400);
+        slide.addImage({ data: circled, x, y, w: size, h: size });
+        return true;
+      }
+      return false;
+    }
+
+    // Sanitize text for XML (strip control chars that corrupt PPTX)
+    function xmlSafe(str) {
+      if (!str) return '';
+      // Remove XML-invalid control characters (keep tab, newline, carriage return)
+      return String(str).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+    }
+
+    // Helper: get original message only (plain string, safe for PptxGenJS)
+    function pptxMsgOrig(entry) {
+      return xmlSafe(String(entry.message || '')) || ' ';
+    }
+
+    // Helper: get translation if available (empty string if none)
+    function pptxMsgTrans(entry) {
+      const lang = String(entry.language || '').toLowerCase();
+      const isEn = lang === 'english' || lang === 'en';
+      const msgEn = String(entry.message_en || '');
+      if (!msgEn.trim() || msgEn.trim() === String(entry.message || '').trim() || isEn) return '';
+      return xmlSafe('(' + msgEn + ')');
+    }
+
+    // Helper: format contact for PPTX (plain text, with TikTok label & email masking)
+    function pptxContact(entry) {
+      if (!entry.contact_info) return '';
+      const parts = String(entry.contact_info).trim().split('|').map(p => p.trim()).filter(Boolean);
+      return xmlSafe(parts.map(p => {
+        const m = p.match(/^(X|IG|TT|Email|FB|YT|TikTok|Instagram|Twitter|Facebook|YouTube)\s*[:：]\s*(.+)$/i);
+        if (!m) return p;
+        const label = m[1].toUpperCase();
+        const val = m[2].trim();
+        if (label === 'X' || label === 'TWITTER') return 'X: ' + val;
+        if (label === 'IG' || label === 'INSTAGRAM') return 'IG: ' + val;
+        if (label === 'TT' || label === 'TIKTOK') return 'TikTok: ' + val;
+        if (label === 'EMAIL') return 'Email: ' + maskEmail(val);
+        if (label === 'FB' || label === 'FACEBOOK') return 'FB: ' + val;
+        if (label === 'YT' || label === 'YOUTUBE') return 'YT: ' + val;
+        return p;
+      }).join(' · '));
+    }
+
+    const SMALL = 5; // threshold for small country (no intro slide)
+
+    const byContinent = {};
+    allSubmissions.forEach(s => {
+      const code = s.country || 'OTHER';
+      const cont = CONTINENT_MAP[code] || 'Other';
+      if (!byContinent[cont]) byContinent[cont] = {};
+      if (!byContinent[cont][code]) byContinent[cont][code] = [];
+      byContinent[cont][code].push(s);
+    });
+
+    // Estimate text height in inches for PPTX
+    function pptxEstH(text, fontSize, boxW) {
+      if (!text) return 0;
+      const s = String(text);
+      const wide = (s.match(/[\u0E00-\u0E7F\u3000-\u9FFF\uAC00-\uD7AF\uF900-\uFAFF\u0600-\u06FF\u1100-\u11FF]/g) || []).length;
+      const charsPerInch = 11 * (10 / fontSize);
+      const effectiveLen = s.length + wide * 0.8;
+      const charsPerLine = Math.max(1, Math.floor(boxW * charsPerInch));
+      const hardBreaks = (s.match(/\n/g) || []).length;
+      const lines = Math.ceil(effectiveLen / charsPerLine) + hardBreaks;
+      const lineH = fontSize * 1.6 / 72;
+      return Math.max(lineH, lines * lineH);
+    }
+
+    // Helper: add entries for one big country to slides using dynamic Y positioning
+    async function addCountryEntries(pptx, entries, cd, countryLabel) {
+      const CX = 0.35, CW = 6.8, SLIDE_H = 7.1;
+      const flagLabel = cd.flag + ' ' + countryLabel;
+      const trackB = [], trackAImg = [], trackATxt = [], trackC = [];
+      entries.forEach(e => {
+        const t = (e.track || '').toLowerCase().replace('track ', '').replace('track_', '');
+        if (t === 'c') trackC.push(e);
+        else if (t === 'b' && e.photo_url) trackB.push(e);
+        else if (e.profile_url) trackAImg.push(e);
+        else trackATxt.push(e);
+      });
+
+      // Build flat list: B first, then A, then ATxt — all use dynamic curY
+      const flatItems = [];
+      trackB.forEach(e => flatItems.push({ entry: e, type: 'b' }));
+      trackAImg.forEach(e => flatItems.push({ entry: e, type: 'a' }));
+      trackATxt.forEach(e => flatItems.push({ entry: e, type: 'aTxt' }));
+
+      let curSlide = null, curY = 0;
+      function newSlide() {
+        curSlide = makeContentSlide(pptx);
+        curSlide.addText(flagLabel, {
+          x: CX, y: 0.3, w: CW, h: 0.3,
+          fontSize: 11, bold: true, color: '7a5c3e', align: 'center', fontFace: 'Georgia'
+        });
+        curY = 0.65;
+      }
+
+      for (const { entry: e, type } of flatItems) {
+        if (type === 'b') {
+          const textW = CW - 2.5;
+          const origH = pptxEstH(pptxMsgOrig(e), 8.5, textW);
+          const trans = pptxMsgTrans(e);
+          const transH = trans ? pptxEstH(trans, 7.5, textW) : 0;
+          const totalH = 0.28 + origH + (trans ? 0.06 + transH : 0) + 0.15;
+          const entryH = Math.max(2.0, totalH);
+
+          if (!curSlide || curY + entryH > SLIDE_H) newSlide();
+          if (e.photo_url) addImg(curSlide, e.photo_url, CX, curY, 2.3, Math.min(1.9, entryH - 0.1));
+          const hasProfB = await addProf(curSlide, e.profile_url, CX + 2.5, curY, 0.32);
+          const nameXB = hasProfB ? CX + 2.88 : CX + 2.5;
+          const nameWB = hasProfB ? textW - 0.38 : textW;
+          curSlide.addText(xmlSafe(e.name || 'Fan') + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+            x: nameXB, y: curY, w: nameWB, h: 0.15,
+            fontSize: 9, bold: true, color: '3a2f2a'
+          });
+          curSlide.addText(cd.flag + ' ' + countryLabel, {
+            x: nameXB, y: curY + 0.14, w: nameWB, h: 0.14,
+            fontSize: 7, color: '8a7d74'
+          });
+          const origBoxH = Math.max(0.3, origH);
+          curSlide.addText(pptxMsgOrig(e), {
+            x: CX + 2.5, y: curY + 0.28, w: textW, h: trans ? origBoxH : Math.max(0.5, entryH - 0.45),
+            fontSize: 8.5, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+          });
+          if (trans) {
+            curSlide.addText(trans, {
+              x: CX + 2.5, y: curY + 0.28 + origBoxH + 0.06, w: textW, h: Math.max(0.25, transH),
+              fontSize: 7.5, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+            });
+          }
+          curY += entryH;
+        } else if (type === 'a') {
+          const textW = CW - 0.52;
+          const origH = pptxEstH(pptxMsgOrig(e), 8, textW);
+          const trans = pptxMsgTrans(e);
+          const transH = trans ? pptxEstH(trans, 7, textW) : 0;
+          const totalH = 0.26 + origH + (trans ? 0.05 + transH : 0) + 0.12;
+          const entryH = Math.max(0.6, totalH);
+
+          if (!curSlide || curY + entryH > SLIDE_H) newSlide();
+          const hasProfA = await addProf(curSlide, e.profile_url, CX, curY + 0.02, 0.42);
+          const txtXA = hasProfA ? CX + 0.52 : CX;
+          const txtWA = hasProfA ? textW : CW;
+          curSlide.addText(xmlSafe(e.name || 'Fan') + '  ' + cd.flag + ' ' + countryLabel + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+            x: txtXA, y: curY, w: txtWA, h: 0.24,
+            fontSize: 9, bold: true, color: '3a2f2a'
+          });
+          const origBoxH = Math.max(0.2, origH);
+          curSlide.addText(pptxMsgOrig(e), {
+            x: txtXA, y: curY + 0.26, w: txtWA, h: trans ? origBoxH : Math.max(0.3, entryH - 0.38),
+            fontSize: 8, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+          });
+          if (trans) {
+            curSlide.addText(trans, {
+              x: txtXA, y: curY + 0.26 + origBoxH + 0.05, w: txtWA, h: Math.max(0.2, transH),
+              fontSize: 7, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+            });
+          }
+          curY += entryH;
+        } else {
+          const origH = pptxEstH(pptxMsgOrig(e), 7.5, CW);
+          const trans = pptxMsgTrans(e);
+          const transH = trans ? pptxEstH(trans, 6.5, CW) : 0;
+          const totalH = 0.2 + origH + (trans ? 0.04 + transH : 0) + 0.08;
+          const entryH = Math.max(0.45, totalH);
+
+          if (!curSlide || curY + entryH > SLIDE_H) newSlide();
+          curSlide.addText(xmlSafe(e.name || 'Fan') + '  ' + cd.flag + ' ' + countryLabel + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+            x: CX, y: curY, w: CW, h: 0.2,
+            fontSize: 8, bold: true, color: '3a2f2a'
+          });
+          const origBoxH = Math.max(0.15, origH);
+          curSlide.addText(pptxMsgOrig(e), {
+            x: CX, y: curY + 0.2, w: CW, h: trans ? origBoxH : Math.max(0.2, entryH - 0.28),
+            fontSize: 7.5, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+          });
+          if (trans) {
+            curSlide.addText(trans, {
+              x: CX, y: curY + 0.2 + origBoxH + 0.04, w: CW, h: Math.max(0.15, transH),
+              fontSize: 6.5, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+            });
+          }
+          curY += entryH;
+        }
+      }
+
+      // Track C: 1 per slide (full image needs space)
+      for (const c of trackC) {
+        let slide = makeContentSlide(pptx);
+        if (c.custom_page_url) addImg(slide, c.custom_page_url, 0.3, 0.3, 6.9, 5.2);
+        const hasProfC = await addProf(slide, c.profile_url, CX, 5.68, 0.38);
+        slide.addText(cd.flag + ' ' + xmlSafe(c.name || 'Fan') + ' \u2014 ' + cd.name + (pptxContact(c) ? '  ' + pptxContact(c) : ''), {
+          x: hasProfC ? CX + 0.46 : CX, y: 5.7, w: hasProfC ? CW - 0.46 : CW, h: 0.35,
+          fontSize: 10, bold: true, color: '3a2f2a', fontFace: 'Georgia'
+        });
+        if (c.message) {
+          const cOrig = pptxMsgOrig(c);
+          const cTrans = pptxMsgTrans(c);
+          const cOrigH = pptxEstH(cOrig, 8, CW);
+          const cTransH = cTrans ? pptxEstH(cTrans, 7, CW) : 0;
+          slide.addText(cOrig, {
+            x: CX, y: 6.1, w: CW, h: cTrans ? Math.max(0.3, cOrigH) : Math.max(0.5, cOrigH),
+            fontSize: 8, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+          });
+          if (cTrans) {
+            slide.addText(cTrans, {
+              x: CX, y: 6.1 + Math.max(0.3, cOrigH) + 0.05, w: CW, h: Math.max(0.25, cTransH),
+              fontSize: 7, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+            });
+          }
+        }
+      }
+    }
+
+    for (const cont of CONTINENT_ORDER) {
+      if (!byContinent[cont.key]) continue;
+      const countryCodes = sortCountryCodes(Object.keys(byContinent[cont.key]), cont.key, byContinent[cont.key]);
+      let totalFans = 0;
+      countryCodes.forEach(c => totalFans += byContinent[cont.key][c].length);
+
+      // Continent cover slide
+      let slide = pptx.addSlide();
+      slide.background = { color: '1e1e2e' };
+      slide.addText(cont.key.toUpperCase(), {
+        x: 0, y: 2.0, w: 7.5, h: 1.2,
+        fontSize: 36, fontFace: 'Georgia', color: 'FFFFFF',
+        align: 'center', bold: true
+      });
+      slide.addText(cont.subtitle, {
+        x: 0, y: 3.2, w: 7.5, h: 0.6,
+        fontSize: 14, fontFace: 'Georgia', color: 'c8c4d0',
+        align: 'center', italic: true
+      });
+      slide.addText(countryCodes.length + ' Countries | ' + totalFans + ' Fans', {
+        x: 0, y: 4.0, w: 7.5, h: 0.5,
+        fontSize: 12, color: '9a96a6', align: 'center'
+      });
+
+      // Separate big and small countries
+      const bigCountries = countryCodes.filter(c => byContinent[cont.key][c].length > SMALL);
+      const smallCountries = countryCodes.filter(c => byContinent[cont.key][c].length <= SMALL);
+
+      // Big countries: each gets its own section
+      for (const code of bigCountries) {
+        const entries = byContinent[cont.key][code];
+        const cd = COUNTRY_DATA[code] || { flag: '', name: code };
+
+        // Country intro slide
+        slide = pptx.addSlide();
+        slide.background = { color: 'f8f4ee' };
+        slide.addText(cd.flag + ' ' + cd.name, {
+          x: 0, y: 2.5, w: 7.5, h: 1,
+          fontSize: 32, fontFace: 'Georgia', color: '3a2f2a',
+          align: 'center', bold: true
+        });
+        slide.addText(entries.length + ' messages of love', {
+          x: 0, y: 3.6, w: 7.5, h: 0.5,
+          fontSize: 13, color: '8a7d74', align: 'center'
+        });
+
+        await addCountryEntries(pptx, entries, cd, cd.name);
+      }
+
+      // Small countries: pack ALL entries per country together on shared slides
+      if (smallCountries.length > 0) {
+        // Build flat items list in country order
+        const mixedItems = [];
+        for (const code of smallCountries) {
+          const entries = byContinent[cont.key][code];
+          const cd = COUNTRY_DATA[code] || { flag: '', name: code };
+          let first = true;
+          entries.forEach(e => {
+            const t = (e.track || '').toLowerCase().replace('track ', '').replace('track_', '');
+            let type = 'aTxt';
+            if (t === 'c') type = 'c';
+            else if (t === 'b' && e.photo_url) type = 'b';
+            else if (e.profile_url) type = 'a';
+            mixedItems.push({ entry: e, cd, type, isFirst: first });
+            first = false;
+          });
+        }
+
+        // Layout constants (inches) — content area inside beige border
+        const CX = 0.35; // content left x
+        const CW = 6.8;  // content width
+        const SLIDE_H = 7.1; // usable height inside card
+        let curSlide = null;
+        let curY = 0.3;
+
+        function newSmallSlide() {
+          curSlide = makeContentSlide(pptx);
+          curY = 0.35;
+        }
+
+        for (const item of mixedItems) {
+          const { entry: e, cd, type, isFirst } = item;
+
+          // Track C: standalone slide
+          if (type === 'c') {
+            const s = makeContentSlide(pptx);
+            if (e.custom_page_url) addImg(s, e.custom_page_url, 0.3, 0.3, 6.9, 5.2);
+            const hasProfSC = await addProf(s, e.profile_url, CX, 5.68, 0.38);
+            s.addText(cd.flag + ' ' + cd.name + ' \u2014 ' + xmlSafe(e.name || 'Fan') + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+              x: hasProfSC ? CX + 0.46 : CX, y: 5.7, w: hasProfSC ? CW - 0.46 : CW, h: 0.3,
+              fontSize: 10, bold: true, color: '3a2f2a', fontFace: 'Georgia'
+            });
+            if (e.message) {
+              const scOrig = pptxMsgOrig(e);
+              const scTrans = pptxMsgTrans(e);
+              const scOrigH = pptxEstH(scOrig, 8, CW);
+              s.addText(scOrig, {
+                x: CX, y: 6.05, w: CW, h: scTrans ? Math.max(0.3, scOrigH) : Math.max(0.5, scOrigH),
+                fontSize: 8, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+              });
+              if (scTrans) {
+                s.addText(scTrans, {
+                  x: CX, y: 6.05 + Math.max(0.3, scOrigH) + 0.05, w: CW, h: Math.max(0.25, pptxEstH(scTrans, 7, CW)),
+                  fontSize: 7, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+                });
+              }
+            }
+            curSlide = null; // force new slide for next item
+            continue;
+          }
+
+          // Dynamic height estimation
+          let needH = 0;
+          if (isFirst) needH += 0.35;
+          if (type === 'b') {
+            const textW = CW - 2.5;
+            const origH = pptxEstH(pptxMsgOrig(e), 9, textW);
+            const trans = pptxMsgTrans(e);
+            const transH = trans ? pptxEstH(trans, 7.5, textW) : 0;
+            needH += Math.max(2.0, 0.3 + origH + (trans ? 0.06 + transH : 0) + 0.15);
+          } else if (type === 'a') {
+            const textW = CW - 0.52;
+            const origH = pptxEstH(pptxMsgOrig(e), 8, textW);
+            const trans = pptxMsgTrans(e);
+            const transH = trans ? pptxEstH(trans, 7, textW) : 0;
+            needH += Math.max(0.6, 0.26 + origH + (trans ? 0.05 + transH : 0) + 0.12);
+          } else {
+            const origH = pptxEstH(pptxMsgOrig(e), 7.5, CW);
+            const trans = pptxMsgTrans(e);
+            const transH = trans ? pptxEstH(trans, 6.5, CW) : 0;
+            needH += Math.max(0.45, 0.2 + origH + (trans ? 0.04 + transH : 0) + 0.08);
+          }
+
+          if (!curSlide || curY + needH > SLIDE_H) {
+            newSmallSlide();
+          }
+
+          if (isFirst) {
+            curSlide.addText(cd.flag + ' ' + cd.name + ' \u2014 ' + byContinent[cont.key][e.country || 'OTHER'].length + ' messages', {
+              x: CX, y: curY, w: CW, h: 0.3,
+              fontSize: 11, bold: true, color: '7a5c3e', align: 'center', fontFace: 'Georgia'
+            });
+            curY += 0.34;
+          }
+
+          if (type === 'b') {
+            const textW = CW - 2.5;
+            const origText = pptxMsgOrig(e);
+            const origH = Math.max(0.3, pptxEstH(origText, 9, textW));
+            const trans = pptxMsgTrans(e);
+            const transH = trans ? Math.max(0.25, pptxEstH(trans, 7.5, textW)) : 0;
+            const entH = Math.max(2.0, 0.3 + origH + (trans ? 0.06 + transH : 0) + 0.15);
+            if (e.photo_url) addImg(curSlide, e.photo_url, CX, curY, 2.3, Math.min(1.9, entH - 0.1));
+            const hasProfB2 = await addProf(curSlide, e.profile_url, CX + 2.5, curY, 0.32);
+            const nxB2 = hasProfB2 ? CX + 2.88 : CX + 2.5;
+            const nwB2 = hasProfB2 ? textW - 0.38 : textW;
+            curSlide.addText(xmlSafe(e.name || 'Fan') + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+              x: nxB2, y: curY, w: nwB2, h: 0.15,
+              fontSize: 9, bold: true, color: '3a2f2a'
+            });
+            curSlide.addText(cd.flag + ' ' + cd.name, {
+              x: nxB2, y: curY + 0.14, w: nwB2, h: 0.14,
+              fontSize: 7, color: '8a7d74'
+            });
+            curSlide.addText(origText, {
+              x: CX + 2.5, y: curY + 0.3, w: textW, h: trans ? origH : Math.max(0.5, entH - 0.45),
+              fontSize: 9, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+            });
+            if (trans) {
+              curSlide.addText(trans, {
+                x: CX + 2.5, y: curY + 0.3 + origH + 0.06, w: textW, h: transH,
+                fontSize: 7.5, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+              });
+            }
+            curY += entH;
+          } else if (type === 'a') {
+            const textW = CW - 0.52;
+            const origText = pptxMsgOrig(e);
+            const origH = Math.max(0.2, pptxEstH(origText, 8, textW));
+            const trans = pptxMsgTrans(e);
+            const transH = trans ? Math.max(0.2, pptxEstH(trans, 7, textW)) : 0;
+            const entH = Math.max(0.6, 0.26 + origH + (trans ? 0.05 + transH : 0) + 0.12);
+            const hasProfA2 = await addProf(curSlide, e.profile_url, CX, curY + 0.02, 0.42);
+            const txA2 = hasProfA2 ? CX + 0.52 : CX;
+            const twA2 = hasProfA2 ? textW : CW;
+            curSlide.addText(xmlSafe(e.name || 'Fan') + '  ' + cd.flag + ' ' + cd.name + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+              x: txA2, y: curY, w: twA2, h: 0.24,
+              fontSize: 9, bold: true, color: '3a2f2a'
+            });
+            curSlide.addText(origText, {
+              x: txA2, y: curY + 0.26, w: twA2, h: trans ? origH : Math.max(0.3, entH - 0.38),
+              fontSize: 8, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+            });
+            if (trans) {
+              curSlide.addText(trans, {
+                x: txA2, y: curY + 0.26 + origH + 0.05, w: twA2, h: transH,
+                fontSize: 7, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+              });
+            }
+            curY += entH;
+          } else {
+            const origText = pptxMsgOrig(e);
+            const origH = Math.max(0.15, pptxEstH(origText, 7.5, CW));
+            const trans = pptxMsgTrans(e);
+            const transH = trans ? Math.max(0.15, pptxEstH(trans, 6.5, CW)) : 0;
+            const entH = Math.max(0.45, 0.2 + origH + (trans ? 0.04 + transH : 0) + 0.08);
+            curSlide.addText(xmlSafe(e.name || 'Fan') + '  ' + cd.flag + ' ' + cd.name + (pptxContact(e) ? '  ' + pptxContact(e) : ''), {
+              x: CX, y: curY, w: CW, h: 0.2,
+              fontSize: 8, bold: true, color: '3a2f2a'
+            });
+            curSlide.addText(origText, {
+              x: CX, y: curY + 0.2, w: CW, h: trans ? origH : Math.max(0.2, entH - 0.28),
+              fontSize: 7.5, color: '3a2f2a', valign: 'top', wrap: true, autoFit: true
+            });
+            if (trans) {
+              curSlide.addText(trans, {
+                x: CX, y: curY + 0.2 + origH + 0.04, w: CW, h: transH,
+                fontSize: 6.5, color: '8a7d74', italic: true, valign: 'top', wrap: true, autoFit: true
+              });
+            }
+            curY += entH;
+          }
+        }
+      }
+    }
+
+    btn.textContent = 'Saving...';
+    await pptx.writeFile({ fileName: 'LBH_Global_Fanbook.pptx' });
+    btn.textContent = 'Export PPTX';
+    btn.disabled = false;
+  } catch (err) {
+    console.error('PPTX export error:', err);
+    btn.textContent = 'Export PPTX';
+    btn.disabled = false;
+    alert('PPTX export failed: ' + err.message);
+  }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') goPage(-1);
+  if (e.key === 'ArrowRight') goPage(1);
+});
+
+// Init
+loadData();
+</script>
+</body>
+</html>

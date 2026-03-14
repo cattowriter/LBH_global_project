@@ -205,6 +205,166 @@
       letter-spacing: 0.08em;
     }
 
+    /* Translation */
+    .entry-translation {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--accent-light);
+      line-height: 1.7;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border-light);
+      font-style: italic;
+    }
+    .entry-translation::before {
+      content: 'EN: ';
+      font-weight: 600;
+      font-style: normal;
+      color: var(--brown);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== Country Sidebar / Timeline ===== */
+    .photobook-layout {
+      display: flex;
+      gap: 0;
+    }
+    .country-sidebar {
+      position: sticky;
+      top: 80px;
+      align-self: flex-start;
+      width: 220px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding: 16px 0 16px 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .country-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .country-sidebar::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .sidebar-title {
+      font-family: var(--font-serif);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-light);
+      padding: 0 12px 12px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 8px;
+    }
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      position: relative;
+    }
+    /* Timeline line */
+    .sidebar-list::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-light);
+      border-radius: 2px;
+    }
+    .sidebar-item {
+      position: relative;
+      padding: 6px 12px 6px 36px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: var(--accent-light);
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Timeline dot */
+    .sidebar-item::before {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--bg-warm);
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+    .sidebar-item:hover {
+      background: var(--surface);
+      color: var(--accent);
+    }
+    .sidebar-item.active {
+      color: var(--brown);
+      font-weight: 600;
+      background: rgba(139,109,76,0.08);
+    }
+    .sidebar-item.active::before {
+      background: var(--brown);
+      border-color: var(--brown);
+      box-shadow: 0 0 0 3px rgba(139,109,76,0.15);
+    }
+    .sidebar-count {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-left: 4px;
+    }
+    .photobook-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    @media (max-width: 900px) {
+      .country-sidebar {
+        display: none;
+      }
+    }
+
+    /* Mobile country nav (horizontal, shown on small screens) */
+    .country-nav-mobile {
+      display: none;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 10px 0 16px;
+      margin-bottom: 20px;
+      gap: 6px;
+      scrollbar-width: none;
+    }
+    .country-nav-mobile::-webkit-scrollbar { display: none; }
+    .country-nav-mobile .mob-country-btn {
+      display: inline-block;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      border-radius: 50px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      color: var(--accent-light);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .country-nav-mobile .mob-country-btn.active {
+      background: var(--brown);
+      color: #fff;
+      border-color: var(--brown);
+    }
+    @media (max-width: 900px) {
+      .country-nav-mobile { display: flex; }
+    }
+
     @media (max-width: 600px) {
       .photobook-entry {
         flex-direction: column;
@@ -273,11 +433,24 @@
       </div>
       -->
 
-      <!-- Content container -->
-      <div id="photobook-content">
-        <div class="photobook-loading" id="photobook-loading">
-          <div class="loading-spinner"></div>
-          <p>Loading messages...</p>
+      <!-- Mobile country nav (horizontal scroll) -->
+      <div class="country-nav-mobile" id="country-nav-mobile"></div>
+
+      <!-- Layout with sidebar -->
+      <div class="photobook-layout">
+        <nav class="country-sidebar" id="country-sidebar">
+          <div class="sidebar-title">Countries</div>
+          <ul class="sidebar-list" id="sidebar-list"></ul>
+        </nav>
+
+        <div class="photobook-main">
+          <!-- Content container -->
+          <div id="photobook-content">
+            <div class="photobook-loading" id="photobook-loading">
+              <div class="loading-spinner"></div>
+              <p>Loading messages...</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -524,6 +697,14 @@
           ? `<div class="entry-photo"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
           : '';
 
+        // Show translation if message_en exists and original isn't already English
+        const hasTranslation = entry.message_en && entry.message_en.trim() &&
+          entry.language && entry.language.toLowerCase() !== 'english' &&
+          entry.message_en.trim() !== (entry.message || '').trim();
+        const translation = hasTranslation
+          ? `<div class="entry-translation">${escapeHtml(entry.message_en)}</div>`
+          : '';
+
         html += `
           <div class="photobook-entry">
             <div class="entry-left">
@@ -533,6 +714,7 @@
             <div class="entry-right">
               <div class="entry-name">${displayName}</div>
               <div class="entry-message">${escapeHtml(entry.message || '')}</div>
+              ${translation}
               ${photo}
             </div>
           </div>`;
@@ -551,8 +733,81 @@
 
     container.innerHTML = html;
 
+    // Build sidebar & mobile nav
+    buildCountrySidebar(codesToRender, grouped);
+
     // Trigger scroll animations
     initScrollAnimations();
+
+    // Setup scroll-tracking for sidebar
+    initCountryScrollTracking(codesToRender);
+  }
+
+  // ==========================================
+  // COUNTRY SIDEBAR
+  // ==========================================
+  function buildCountrySidebar(codes, grouped) {
+    const sidebarList = document.getElementById('sidebar-list');
+    const mobileNav = document.getElementById('country-nav-mobile');
+    if (!codes.length) return;
+
+    let sidebarHtml = '';
+    let mobileHtml = '';
+
+    codes.forEach(code => {
+      const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
+      const count = grouped[code].length;
+      sidebarHtml += `<li class="sidebar-item" data-country="${code}" onclick="scrollToCountry('${code}')">${c.flag} ${c.name}<span class="sidebar-count">(${count})</span></li>`;
+      mobileHtml += `<a class="mob-country-btn" data-country="${code}" href="#country-${code}">${c.flag} ${c.name}</a>`;
+    });
+
+    sidebarList.innerHTML = sidebarHtml;
+    mobileNav.innerHTML = mobileHtml;
+  }
+
+  function scrollToCountry(code) {
+    const section = document.getElementById('country-' + code);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function initCountryScrollTracking(codes) {
+    if (!codes.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const code = entry.target.id.replace('country-', '');
+          setActiveCountry(code);
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+    codes.forEach(code => {
+      const section = document.getElementById('country-' + code);
+      if (section) observer.observe(section);
+    });
+  }
+
+  function setActiveCountry(code) {
+    // Sidebar
+    document.querySelectorAll('.sidebar-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.country === code);
+    });
+    // Scroll active item into view in sidebar
+    const activeItem = document.querySelector('.sidebar-item.active');
+    if (activeItem) {
+      activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+    // Mobile nav
+    document.querySelectorAll('.mob-country-btn').forEach(el => {
+      el.classList.toggle('active', el.dataset.country === code);
+    });
+    const activeMob = document.querySelector('.mob-country-btn.active');
+    if (activeMob) {
+      activeMob.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    }
   }
 
   function escapeHtml(text) {

@@ -737,7 +737,12 @@ function renderTopCountries(countries) {
   const medalEmoji = ['🏆', '🥈', '🥉'];
   const maxCount = entries[0].count;
   const allCountriesLabel = dict.allCountriesLabel || 'Participating Countries';
-  const chipsHtml = allEntries.map(e =>
+  // Put Australia and Thailand first in the chips list
+  const priorityCodes = ['AU', 'TH'];
+  const priorityEntries = priorityCodes.map(c => allEntries.find(e => e.code === c)).filter(Boolean);
+  const restEntries = allEntries.filter(e => !priorityCodes.includes(e.code));
+  const orderedEntries = [...priorityEntries, ...restEntries];
+  const chipsHtml = orderedEntries.map(e =>
     `<a href="photobook.html#country-${e.code}" class="country-chip" title="${e.count} ${submWord}">${e.info.flag} ${e.info.name}</a>`
   ).join('');
   container.innerHTML = `<h3 class="top-countries-title">${heading}</h3>
