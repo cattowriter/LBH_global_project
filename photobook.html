@@ -341,21 +341,63 @@
       }
     }
 
-    /* Mobile country nav (horizontal, shown on small screens) */
+    /* Mobile country nav (collapsible dropdown, shown on small screens) */
     .country-nav-mobile {
       display: none;
-      overflow-x: auto;
-      white-space: nowrap;
-      padding: 10px 0 16px;
-      margin-bottom: 20px;
-      gap: 6px;
-      scrollbar-width: none;
+      flex-direction: column;
+      margin-bottom: 12px;
     }
-    .country-nav-mobile::-webkit-scrollbar { display: none; }
+    .mob-nav-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .mob-nav-toggle::after {
+      content: '▼';
+      font-size: 0.65rem;
+      transition: transform 0.3s;
+    }
+    .mob-nav-toggle.open::after {
+      transform: rotate(180deg);
+    }
+    .mob-nav-panel {
+      display: none;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 4px;
+      max-height: 55vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .mob-nav-panel.open {
+      display: flex;
+    }
+    .mob-continent-label {
+      width: 100%;
+      font-weight: 700;
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: 8px 4px 2px;
+      letter-spacing: 0.03em;
+    }
+    .mob-continent-label:first-child {
+      padding-top: 0;
+    }
     .country-nav-mobile .mob-country-btn {
       display: inline-block;
-      padding: 6px 14px;
-      font-size: 0.78rem;
+      padding: 9px 14px;
+      font-size: 0.82rem;
       border-radius: 50px;
       background: var(--surface);
       border: 1px solid var(--border-light);
@@ -363,6 +405,8 @@
       cursor: pointer;
       transition: all 0.3s;
       text-decoration: none;
+      min-height: 38px;
+      line-height: 1.2;
     }
     .country-nav-mobile .mob-country-btn.active {
       background: var(--brown);
@@ -370,7 +414,14 @@
       border-color: var(--brown);
     }
     @media (max-width: 900px) {
-      .country-nav-mobile { display: flex; }
+      .country-nav-mobile {
+        display: flex;
+        position: sticky;
+        top: 62px;
+        z-index: 50;
+        background: var(--bg);
+        padding: 8px 0;
+      }
     }
 
     @media (max-width: 600px) {
@@ -441,8 +492,11 @@
       </div>
       -->
 
-      <!-- Mobile country nav (horizontal scroll) -->
-      <div class="country-nav-mobile" id="country-nav-mobile"></div>
+      <!-- Mobile country nav (collapsible dropdown) -->
+      <div class="country-nav-mobile" id="country-nav-mobile">
+        <button class="mob-nav-toggle" id="mob-nav-toggle" onclick="toggleMobileNav()">🌍 Jump to country</button>
+        <div class="mob-nav-panel" id="mob-nav-panel"></div>
+      </div>
 
       <!-- Layout with sidebar -->
       <div class="photobook-layout">
@@ -785,7 +839,7 @@
   // ==========================================
   function buildCountrySidebar(codes, grouped) {
     const sidebarList = document.getElementById('sidebar-list');
-    const mobileNav = document.getElementById('country-nav-mobile');
+    const mobilePanel = document.getElementById('mob-nav-panel');
     if (!codes.length) return;
 
     let sidebarHtml = '';
@@ -799,16 +853,16 @@
         const ci = CONTINENT_ORDER.find(c => c.key === cont);
         const label = ci ? `${ci.emoji} ${cont}` : cont;
         sidebarHtml += `<li class="sidebar-continent">${label}</li>`;
-        mobileHtml += `<span style="font-weight:700;font-size:0.7rem;color:var(--accent);padding:4px 8px;white-space:nowrap;">${label}</span>`;
+        mobileHtml += `<div class="mob-continent-label">${label}</div>`;
       }
       const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
       const count = grouped[code].length;
       sidebarHtml += `<li class="sidebar-item" data-country="${code}" onclick="scrollToCountry('${code}')">${c.flag} ${c.name}<span class="sidebar-count">(${count})</span></li>`;
-      mobileHtml += `<a class="mob-country-btn" data-country="${code}" href="#country-${code}">${c.flag} ${c.name}</a>`;
+      mobileHtml += `<a class="mob-country-btn" data-country="${code}" onclick="mobNavSelect('${code}')" href="#country-${code}">${c.flag} ${c.name}</a>`;
     });
 
     sidebarList.innerHTML = sidebarHtml;
-    mobileNav.innerHTML = mobileHtml;
+    if (mobilePanel) mobilePanel.innerHTML = mobileHtml;
   }
 
   function scrollToCountry(code) {
@@ -816,6 +870,30 @@
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  }
+
+  function toggleMobileNav() {
+    const btn = document.getElementById('mob-nav-toggle');
+    const panel = document.getElementById('mob-nav-panel');
+    if (btn && panel) {
+      btn.classList.toggle('open');
+      panel.classList.toggle('open');
+    }
+  }
+
+  function mobNavSelect(code) {
+    // Close the dropdown
+    const btn = document.getElementById('mob-nav-toggle');
+    const panel = document.getElementById('mob-nav-panel');
+    if (btn) btn.classList.remove('open');
+    if (panel) panel.classList.remove('open');
+    // Update active state
+    document.querySelectorAll('.mob-country-btn').forEach(el => {
+      el.classList.toggle('active', el.dataset.country === code);
+    });
+    // Update toggle button text
+    const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
+    if (btn) btn.textContent = `${c.flag} ${c.name}`;
   }
 
   function initCountryScrollTracking(codes) {
@@ -846,14 +924,13 @@
     if (activeItem) {
       activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
-    // Mobile nav
+    // Mobile nav — update toggle button text & active pill
+    const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
+    const toggleBtn = document.getElementById('mob-nav-toggle');
+    if (toggleBtn) toggleBtn.textContent = `${c.flag} ${c.name}`;
     document.querySelectorAll('.mob-country-btn').forEach(el => {
       el.classList.toggle('active', el.dataset.country === code);
     });
-    const activeMob = document.querySelector('.mob-country-btn.active');
-    if (activeMob) {
-      activeMob.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
-    }
   }
 
   function escapeHtml(text) {
