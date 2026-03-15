@@ -322,6 +322,14 @@
       opacity: 0.6;
       margin-left: 4px;
     }
+    .sidebar-continent {
+      font-weight: 700;
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: 8px 8px 4px 10px;
+      margin-top: 4px;
+      letter-spacing: 0.03em;
+    }
     .photobook-main {
       flex: 1;
       min-width: 0;
@@ -587,6 +595,26 @@
     OTHER:{flag:'🌍',name:'Other'}
   };
 
+  const CONTINENT_MAP = {"AF":"Asia","AM":"Asia","AZ":"Asia","BH":"Asia","BD":"Asia","BT":"Asia","BN":"Asia","KH":"Asia","CN":"Asia","GE":"Asia","HK":"Asia","IN":"Asia","ID":"Asia","IR":"Asia","IQ":"Asia","IL":"Asia","JP":"Asia","JO":"Asia","KZ":"Asia","KW":"Asia","KG":"Asia","LA":"Asia","LB":"Asia","MY":"Asia","MV":"Asia","MN":"Asia","MM":"Asia","NP":"Asia","KP":"Asia","OM":"Asia","PK":"Asia","PS":"Asia","PH":"Asia","QA":"Asia","SA":"Asia","SG":"Asia","KR":"Asia","LK":"Asia","SY":"Asia","TW":"Asia","TJ":"Asia","TH":"Asia","TL":"Asia","TR":"Asia","TM":"Asia","AE":"Asia","UZ":"Asia","VN":"Asia","YE":"Asia","AL":"Europe","AD":"Europe","AT":"Europe","BY":"Europe","BE":"Europe","BA":"Europe","BG":"Europe","HR":"Europe","CZ":"Europe","DK":"Europe","EE":"Europe","FI":"Europe","FR":"Europe","DE":"Europe","GR":"Europe","HU":"Europe","IS":"Europe","IE":"Europe","IT":"Europe","XK":"Europe","LV":"Europe","LI":"Europe","LT":"Europe","LU":"Europe","MT":"Europe","MD":"Europe","MC":"Europe","ME":"Europe","NL":"Europe","MK":"Europe","NO":"Europe","PL":"Europe","PT":"Europe","RO":"Europe","RU":"Europe","SM":"Europe","RS":"Europe","SK":"Europe","SI":"Europe","ES":"Europe","SE":"Europe","CH":"Europe","UA":"Europe","GB":"Europe","VA":"Europe","AG":"North America","BS":"North America","BB":"North America","BZ":"North America","CA":"North America","CR":"North America","CU":"North America","DM":"North America","DO":"North America","SV":"North America","GD":"North America","GT":"North America","HT":"North America","HN":"North America","JM":"North America","MX":"North America","NI":"North America","PA":"North America","KN":"North America","LC":"North America","VC":"North America","TT":"North America","US":"North America","AR":"South America","BO":"South America","BR":"South America","CL":"South America","CO":"South America","EC":"South America","GY":"South America","PY":"South America","PE":"South America","SR":"South America","UY":"South America","VE":"South America","DZ":"Africa","AO":"Africa","BJ":"Africa","BW":"Africa","BF":"Africa","BI":"Africa","CV":"Africa","CM":"Africa","CF":"Africa","TD":"Africa","KM":"Africa","CG":"Africa","CD":"Africa","CI":"Africa","DJ":"Africa","EG":"Africa","GQ":"Africa","ER":"Africa","SZ":"Africa","ET":"Africa","GA":"Africa","GM":"Africa","GH":"Africa","GN":"Africa","GW":"Africa","KE":"Africa","LS":"Africa","LR":"Africa","LY":"Africa","MG":"Africa","MW":"Africa","ML":"Africa","MR":"Africa","MU":"Africa","MA":"Africa","MZ":"Africa","NA":"Africa","NE":"Africa","NG":"Africa","RW":"Africa","ST":"Africa","SN":"Africa","SL":"Africa","SO":"Africa","ZA":"Africa","SS":"Africa","SD":"Africa","TZ":"Africa","TG":"Africa","TN":"Africa","UG":"Africa","ZM":"Africa","ZW":"Africa","AU":"Oceania","FJ":"Oceania","KI":"Oceania","MH":"Oceania","FM":"Oceania","NR":"Oceania","NZ":"Oceania","PW":"Oceania","PG":"Oceania","WS":"Oceania","SB":"Oceania","TO":"Oceania","TV":"Oceania","VU":"Oceania"};
+
+  const CONTINENT_ORDER = [
+    { key: 'Oceania', emoji: '🌏', subtitle: 'From the Pacific with Love' },
+    { key: 'Asia', emoji: '🌏', subtitle: 'From East to West, United by Love' },
+    { key: 'Europe', emoji: '🌍', subtitle: 'Across Every Border, One Heart' },
+    { key: 'North America', emoji: '🌎', subtitle: 'Coast to Coast, For Byung-hun' },
+    { key: 'South America', emoji: '🌎', subtitle: 'Pasión sin Fronteras' },
+    { key: 'Africa', emoji: '🌍', subtitle: 'Ubuntu — We Are One' },
+    { key: 'Other', emoji: '🌐', subtitle: 'Fans Around the World' }
+  ];
+
+  function sortCountryCodes(codes, contKey, byContData) {
+    return codes.sort((a, b) => {
+      if (contKey === 'Oceania') { if (a === 'AU') return -1; if (b === 'AU') return 1; }
+      if (contKey === 'Asia') { if (a === 'TH') return -1; if (b === 'TH') return 1; }
+      return byContData[b].length - byContData[a].length;
+    });
+  }
+
   // ==========================================
   // FETCH & RENDER
   // ==========================================
@@ -627,11 +655,20 @@
       grouped[code].push(s);
     });
 
-    // Sort countries alphabetically by name
-    const sortedCodes = Object.keys(grouped).sort((a, b) => {
-      const nameA = COUNTRY_DATA[a]?.name || a;
-      const nameB = COUNTRY_DATA[b]?.name || b;
-      return nameA.localeCompare(nameB);
+    // Sort countries by continent order (Oceania first, Asia second, etc.)
+    const sortedCodes = [];
+    const byContinent = {};
+    CONTINENT_ORDER.forEach(c => { byContinent[c.key] = []; });
+    Object.keys(grouped).forEach(code => {
+      const cont = CONTINENT_MAP[code] || 'Other';
+      if (!byContinent[cont]) byContinent[cont] = [];
+      byContinent[cont].push(code);
+    });
+    CONTINENT_ORDER.forEach(c => {
+      if (byContinent[c.key] && byContinent[c.key].length) {
+        sortCountryCodes(byContinent[c.key], c.key, grouped);
+        sortedCodes.push(...byContinent[c.key]);
+      }
     });
 
     // Check if filtering by country (e.g. #country-TH from map)
@@ -753,8 +790,17 @@
 
     let sidebarHtml = '';
     let mobileHtml = '';
+    let currentContinent = null;
 
     codes.forEach(code => {
+      const cont = CONTINENT_MAP[code] || 'Other';
+      if (cont !== currentContinent) {
+        currentContinent = cont;
+        const ci = CONTINENT_ORDER.find(c => c.key === cont);
+        const label = ci ? `${ci.emoji} ${cont}` : cont;
+        sidebarHtml += `<li class="sidebar-continent">${label}</li>`;
+        mobileHtml += `<span style="font-weight:700;font-size:0.7rem;color:var(--accent);padding:4px 8px;white-space:nowrap;">${label}</span>`;
+      }
       const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
       const count = grouped[code].length;
       sidebarHtml += `<li class="sidebar-item" data-country="${code}" onclick="scrollToCountry('${code}')">${c.flag} ${c.name}<span class="sidebar-count">(${count})</span></li>`;
