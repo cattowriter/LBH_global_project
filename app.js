@@ -43,7 +43,7 @@ const TRANSLATIONS = {
     modalExploreBtn:'Explore on Message Board →', milestoneBadge:'🔥 {n} reached!',
     closedTitle:'Submissions Closed 💛',
     closedText:'Thank you for being part of this project!<br>We received <strong>{count} messages</strong> from <strong>{countries} countries</strong> around the world.<br><br>The fanbook is now being designed and will be presented to Lee Byung-hun in early April.<br>Stay tuned for updates! 🌍',
-    closedBtn:'Submissions Closed 🔒',
+    closedBtn:'📖 Browse the Photobook',
     closedCountdown:'Closed',
     footerDisclaimer:'This is an independent fan project. Not affiliated with Lee Byung-hun or BH Entertainment.',
   },
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
     modalExploreBtn:'ดูเพิ่มเติมบนบอร์ดข้อความ →', milestoneBadge:'🔥 ครบ {n} แล้ว!',
     closedTitle:'ปิดรับผลงานแล้ว 💛',
     closedText:'ขอบคุณที่เข้าร่วมโปรเจกต์นี้!<br>เราได้รับ <strong>{count} ข้อความ</strong> จาก <strong>{countries} ประเทศ</strong> ทั่วโลก<br><br>ตอนนี้กำลังทำรูปเล่ม Fanbook และจะนำไปมอบให้อีบยองฮอนในต้นเดือนเมษายน<br>รอติดตามอัพเดทนะคะ! 🌍',
-    closedBtn:'ปิดรับแล้ว 🔒',
+    closedBtn:'📖 ดู Photobook',
     closedCountdown:'ปิดแล้ว',
     footerDisclaimer:'โปรเจกต์แฟนอิสระ ไม่เกี่ยวข้องกับอีบยองฮอนหรือ BH Entertainment',
   },
@@ -123,7 +123,7 @@ const TRANSLATIONS = {
     modalExploreBtn:'Explorar en el tablero de mensajes →', milestoneBadge:'🔥 ¡{n} alcanzados!',
     closedTitle:'Envíos cerrados 💛',
     closedText:'¡Gracias por ser parte de este proyecto!<br>Recibimos <strong>{count} mensajes</strong> de <strong>{countries} países</strong> de todo el mundo.<br><br>El fanbook se está diseñando y se presentará a Lee Byung-hun a principios de abril.<br>¡Estén atentos a las novedades! 🌍',
-    closedBtn:'Envíos cerrados 🔒',
+    closedBtn:'📖 Ver el Photobook',
     closedCountdown:'Cerrado',
     footerDisclaimer:'Este es un proyecto independiente de fans. No está afiliado con Lee Byung-hun ni BH Entertainment.',
   },
@@ -163,7 +163,7 @@ const TRANSLATIONS = {
     modalExploreBtn:'메시지 보드에서 살펴보기 →', milestoneBadge:'🔥 {n} 달성!',
     closedTitle:'접수가 마감되었습니다 💛',
     closedText:'이 프로젝트에 참여해 주셔서 감사합니다!<br>전 세계 <strong>{countries}개국</strong>에서 <strong>{count}개의 메시지</strong>를 받았습니다.<br><br>팬북을 제작 중이며 4월 초에 이병헌에게 전달할 예정입니다.<br>업데이트를 기대해 주세요! 🌍',
-    closedBtn:'접수 마감 🔒',
+    closedBtn:'📖 포토북 보기',
     closedCountdown:'마감',
     footerDisclaimer:'이것은 독립적인 팬 프로젝트입니다. 이병헌 또는 BH 엔터테인먼트와 무관합니다.',
   }
@@ -508,11 +508,9 @@ function updateSubmitButtons(data) {
   const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
   document.querySelectorAll('.cta-submit').forEach(btn => {
     if (closed) {
-      btn.textContent = dict.closedBtn || 'Submissions Closed 🔒';
-      btn.classList.add('closed');
-      btn.setAttribute('href', '#');
-      btn.style.pointerEvents = 'none';
-    } else {
+      btn.textContent = dict.closedBtn || '📖 Browse the Photobook';
+      btn.classList.remove('closed');
+      btn.setAttribute('href', 'photobook.html');
       btn.style.pointerEvents = '';
     }
   });

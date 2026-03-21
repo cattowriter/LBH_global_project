@@ -339,6 +339,7 @@
     .country-section {
       max-width: 700px;
       margin: 0 auto 70px;
+      scroll-margin-top: 130px;
     }
     .country-header {
       font-family: var(--font-serif);
@@ -413,6 +414,9 @@
     .entry-photo img {
       width: 100%;
       display: block;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: var(--bg-warm);
     }
 
     /* Divider between entries */
@@ -767,7 +771,7 @@
   <section class="pb-intro" id="pb-intro" style="display:none;">
     <div class="pb-intro-inner">
       <div class="pb-intro-left">
-        <img src="LBH.png" alt="Lee Byung-hun" class="pb-intro-cover" loading="lazy">
+        <img src="final.png" alt="Lee Byung-hun" class="pb-intro-cover" loading="lazy">
         <div class="pb-intro-info">
           <h1 class="pb-intro-title">Global Fan Photobook</h1>
           <p class="pb-intro-subtitle">Lee Byung-hun Fan Project</p>
@@ -1143,8 +1147,7 @@
           if (typeof addCountryFilter === 'function' && document.getElementById('pb-filter-bar')) {
             addCountryFilter(code);
           } else {
-            const section = document.getElementById('country-' + code);
-            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollToCountry(code);
           }
         }
       },
@@ -1299,7 +1302,7 @@
     const first = Array.from(activeFilters)[0];
     const section = document.getElementById('country-' + first);
     if (section) {
-      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      setTimeout(() => scrollToCountry(first), 200);
     }
   }
 
@@ -1392,7 +1395,7 @@
 
       entries.forEach((entry, j) => {
         const avatar = entry.profile_url
-          ? `<img src="${escapeHtml(entry.profile_url)}" alt="${escapeHtml(entry.name)}" loading="lazy" onerror="this.parentElement.innerHTML='👤'">`
+          ? `<img src="${escapeHtml(entry.profile_url)}" alt="${escapeHtml(entry.name)}" width="130" height="130" loading="lazy" onerror="this.parentElement.innerHTML='👤'">`
           : '👤';
 
         const username = entry.contact_info
@@ -1481,7 +1484,7 @@
       const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
       const count = grouped[code].length;
       sidebarHtml += `<li class="sidebar-item" data-country="${code}" tabindex="0" role="button" onclick="scrollToCountry('${code}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToCountry('${code}')}">${c.flag} ${c.name}<span class="sidebar-count">(${count})</span></li>`;
-      mobileHtml += `<a class="mob-country-btn" data-country="${code}" onclick="mobNavSelect('${code}')" href="#country-${code}">${c.flag} ${c.name}</a>`;
+      mobileHtml += `<a class="mob-country-btn" data-country="${code}" onclick="event.preventDefault();mobNavSelect('${code}');scrollToCountry('${code}')" href="#country-${code}">${c.flag} ${c.name}</a>`;
     });
 
     sidebarList.innerHTML = sidebarHtml;
@@ -1489,10 +1492,11 @@
   }
 
   function scrollToCountry(code) {
-    const section = document.getElementById('country-' + code);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    const el = document.getElementById('country-' + code);
+    if (!el) return;
+    el.scrollIntoView({ block: 'start' });
+    // Re-scroll after lazy images may have shifted layout
+    setTimeout(() => el.scrollIntoView({ block: 'start' }), 500);
   }
 
   function toggleMobileNav() {
