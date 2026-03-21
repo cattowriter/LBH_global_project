@@ -304,36 +304,25 @@
       .pb-filter-search { width: 100%; }
     }
     @media (max-width: 600px) {
-      .pb-intro { padding: 72px 16px 16px; }
-      .pb-intro-inner { gap: 14px; }
-      /* Horizontal card: cover + info side by side */
-      .pb-intro-left {
-        flex-direction: row !important;
-        text-align: left !important;
-        gap: 14px;
-        align-items: center;
+      .pb-intro { padding: 76px 20px 20px; }
+      .pb-intro-inner { gap: 16px; }
+      .pb-intro-cover { width: 140px; height: 140px; border-radius: 12px; }
+      .pb-intro-title { font-size: 1.25rem; margin-bottom: 2px; }
+      .pb-intro-subtitle { font-size: 0.68rem; margin-bottom: 8px; }
+      /* Hide flags on mobile — cut off looks bad */
+      .pb-intro-flags { display: none !important; }
+      /* Stats centered with divider */
+      .pb-intro-stats {
+        gap: 28px;
+        justify-content: center;
+        padding: 10px 0 4px;
       }
-      .pb-intro-cover { width: 90px; height: 90px; border-radius: 10px; border-width: 2px; }
-      .pb-intro-title { font-size: 1.1rem; }
-      .pb-intro-subtitle { font-size: 0.65rem; margin-bottom: 6px; }
-      /* Compact flags — 2 rows max */
-      .pb-intro-flags {
-        font-size: 0.7rem;
-        gap: 1px;
-        max-height: 2.4em;
-        overflow: hidden;
-        justify-content: flex-start !important;
-        margin-bottom: 6px;
-      }
-      /* Stats inline */
-      .pb-intro-stats { gap: 16px; justify-content: flex-start !important; }
-      .pb-intro-stat-num { font-size: 1.1rem; }
-      .pb-intro-stat-label { font-size: 0.58rem; }
-      .pb-intro-private-note { font-size: 0.65rem; margin-top: 4px; }
-      /* Smaller map */
-      .pb-intro-right { max-width: 100%; }
-      #pb-mini-map { height: 150px; }
-      .pb-intro-legend { font-size: 0.58rem; margin-top: 4px; }
+      .pb-intro-stat-num { font-size: 1.5rem; }
+      .pb-intro-stat-label { font-size: 0.6rem; }
+      .pb-intro-private-note { font-size: 0.66rem; margin-top: 6px; }
+      /* Map */
+      #pb-mini-map { height: 160px; }
+      .pb-intro-legend { font-size: 0.6rem; margin-top: 5px; }
       .pb-filter-bar { padding: 8px 12px; top: 60px; }
     }
 
