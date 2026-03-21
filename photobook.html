@@ -304,27 +304,79 @@
       .pb-filter-search { width: 100%; }
     }
     @media (max-width: 600px) {
-      .pb-intro { padding: 68px 16px 14px; }
-      .pb-intro-inner { gap: 8px; }
-      .pb-intro-cover { width: 110px; height: 110px; border-radius: 10px; border-width: 2px; }
-      .pb-intro-title { font-size: 1.05rem; margin-bottom: 1px; }
-      .pb-intro-subtitle { font-size: 0.6rem; margin-bottom: 4px; }
+      .pb-intro { padding: 68px 16px 16px; }
+      .pb-intro-inner {
+        gap: 16px;
+        align-items: center;
+      }
+
+      /* Stack cover + info vertically, centered */
+      .pb-intro-left {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 14px;
+      }
+
+      /* Cover image: centered on top, prominent but compact */
+      .pb-intro-cover {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        border-width: 2px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+      }
+
+      /* Title group: tight internal spacing */
+      .pb-intro-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .pb-intro-title {
+        font-size: 1.15rem;
+        margin-bottom: 2px;
+      }
+      .pb-intro-subtitle {
+        font-size: 0.62rem;
+        margin-bottom: 10px;
+        letter-spacing: 0.14em;
+      }
+
+      /* Flags: centered wrap with gentle spacing */
       .pb-intro-flags {
-        font-size: 0.72rem;
-        gap: 0px;
-        line-height: 1.3;
-        margin-bottom: 4px;
-      }
-      .pb-intro-stats {
-        gap: 20px;
+        font-size: 0.78rem;
+        gap: 1px;
+        line-height: 1.4;
+        margin-bottom: 10px;
         justify-content: center;
-        padding: 2px 0;
+        max-width: 280px;
       }
-      .pb-intro-stat-num { font-size: 1.2rem; }
-      .pb-intro-stat-label { font-size: 0.55rem; }
-      .pb-intro-private-note { font-size: 0.6rem; margin-top: 2px; }
-      #pb-mini-map { height: 130px; }
-      .pb-intro-legend { font-size: 0.55rem; margin-top: 3px; }
+
+      /* Stats: clean horizontal pair with divider feel */
+      .pb-intro-stats {
+        gap: 28px;
+        justify-content: center;
+        padding: 6px 0 2px;
+      }
+      .pb-intro-stat-num { font-size: 1.3rem; }
+      .pb-intro-stat-label { font-size: 0.58rem; }
+
+      /* Private note: subtle, with breathing room */
+      .pb-intro-private-note {
+        font-size: 0.62rem;
+        margin-top: 4px;
+        text-align: center;
+      }
+
+      /* Map: compact but visible */
+      .pb-intro-right { max-width: 100%; }
+      #pb-mini-map {
+        height: 120px;
+        border-radius: 8px;
+      }
+      .pb-intro-legend { font-size: 0.55rem; margin-top: 4px; }
+
       .pb-filter-bar { padding: 8px 12px; top: 60px; }
     }
 
