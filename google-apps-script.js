@@ -59,6 +59,18 @@ function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
+
+    // --- Server-side input validation ---
+    if (!data.name || String(data.name).trim().length === 0) {
+      return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: 'Name is required' })).setMimeType(ContentService.MimeType.JSON);
+    }
+    if (String(data.name).length > 100) data.name = String(data.name).substring(0, 100);
+    if (data.message && String(data.message).length > 2000) data.message = String(data.message).substring(0, 2000);
+    var ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (data.profile_ext && ALLOWED_EXTENSIONS.indexOf(String(data.profile_ext).toLowerCase()) === -1) data.profile_ext = 'jpg';
+    if (data.photo_ext && ALLOWED_EXTENSIONS.indexOf(String(data.photo_ext).toLowerCase()) === -1) data.photo_ext = 'jpg';
+    if (data.custom_ext && ALLOWED_EXTENSIONS.indexOf(String(data.custom_ext).toLowerCase()) === -1) data.custom_ext = 'png';
+
     var folder = getOrCreateFolder(CONFIG.FOLDER_NAME);
 
     // Route edit requests to separate sheet tab — DISABLED
@@ -235,7 +247,12 @@ function doGet(e) {
 
     if (action === 'all') {
       var key = (e && e.parameter && e.parameter.key) || '';
-      var secret = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'lbh2026admin';
+      var secret = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+      if (!secret) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ error: 'ADMIN_KEY not configured in Script Properties' }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
       if (key !== secret) {
         return ContentService
           .createTextOutput(JSON.stringify({ error: 'unauthorized' }))
@@ -1091,6 +1108,10 @@ function copyImageToFolder(url, folder, baseName) {
 
 // Save a base64-encoded file to Google Drive and return the public URL
 function saveFileToDrive(folder, base64Data, filename, mimeType) {
+  // Reject payloads larger than 15MB (base64 encoded ~= 1.37x raw)
+  if (base64Data.length > 20 * 1024 * 1024) {
+    throw new Error('File too large');
+  }
   var decoded = Utilities.base64Decode(base64Data);
   var blob = Utilities.newBlob(decoded, mimeType, filename);
   var file = folder.createFile(blob);

@@ -426,25 +426,25 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .map-container { padding: 12px; }
 }
 
-/* Map tooltip override */
-.jvm-tooltip {
-  font-family: var(--font-body) !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  padding: 14px 18px !important;
-  border-radius: 12px !important;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.18) !important;
-  border: 2px solid #FF6348 !important;
-  background-color: #fff !important;
-  color: #2c2c2c !important;
-  max-width: 280px !important;
-  width: auto !important;
-  height: auto !important;
-  white-space: normal !important;
-  backdrop-filter: blur(8px) !important;
-  transition: all 0.15s ease !important;
-  z-index: 10000 !important;
-  pointer-events: none !important;
+/* Map tooltip override — high specificity to avoid !important */
+body .jvm-tooltip.jvm-tooltip {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 14px 18px;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  border: 2px solid #FF6348;
+  background-color: #fff;
+  color: #2c2c2c;
+  max-width: 280px;
+  width: auto;
+  height: auto;
+  white-space: normal;
+  backdrop-filter: blur(8px);
+  transition: all 0.15s ease;
+  z-index: 10000;
+  pointer-events: none;
 }
 
 /* Map Legend */
@@ -1022,6 +1022,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .timeline-step.done .timeline-label {
   color: var(--gold);
+}
+.timeline-connector.done {
+  background: var(--gold);
 }
 
 @keyframes pulse-ring {

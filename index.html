@@ -13,6 +13,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#f0ece6">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com;">
   <title>Lee Byung-hun Global Fan Project — Global Edition</title>
 
   <!-- Social Meta Tags -->
@@ -30,7 +32,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha384-3RT6/aAL0nKpqF8ldMoIrxz8OmRcPrKbR8MYXgvv2iKryEvn2vbfoI+FJbcpl+VW" crossorigin="anonymous">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20260223h">
+  <link rel="stylesheet" href="style.css?v=20260321">
 </head>
 <body>
 
@@ -78,7 +80,7 @@
         </div>
       </div>
 
-      <a href="submit.html" class="btn-primary cta-submit fade-in delay-4" data-i18n="heroSubmitBtn">✉️ Submit Your Page</a>
+      <a href="photobook.html" class="btn-primary cta-submit fade-in delay-4" data-i18n="heroSubmitBtn">📖 Browse the Photobook</a>
     </div>
   </section>
 
@@ -89,17 +91,17 @@
     <div class="stats-inner">
       <div class="stats-row">
         <div class="stat-item">
-          📬 <span class="stat-number" id="stat-count">0</span> / <span id="stat-cap">100</span> <span data-i18n="statSubmissions">submissions</span>
-        </div>
-        <div class="stat-item">
-          🗓️ <span class="stat-number" id="stat-countdown">—</span> <span data-i18n="statDaysLeft">days left</span>
+          📬 <span class="stat-number" id="stat-count">0</span> <span data-i18n="statSubmissions">submissions</span>
         </div>
         <div class="stat-item">
           🌍 <span class="stat-number" id="stat-countries">0</span> <span data-i18n="statCountries">countries</span>
         </div>
+        <div class="stat-item">
+          ✅ <span class="stat-number" id="stat-countdown" data-i18n="statStatus">Now printing</span>
+        </div>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" id="progress-fill"></div>
+        <div class="progress-fill" id="progress-fill" style="width:100%"></div>
       </div>
       <div class="milestone-progress-badge" id="milestone-badge"></div>
     </div>
@@ -114,25 +116,25 @@
       <div class="divider-ornament fade-in">✦ ✦ ✦</div>
       <div class="about-card fade-in delay-1">
         <p class="about-text" data-i18n="aboutText">
-          This project collects messages from fans around the world who want to say something to Lee Byung-hun — and we'll deliver it to him at his upcoming Japan fan meeting, or pass it through his staff if we don't get the chance. Everyone submits messages and photos online, then everything gets compiled into a real printed Fanbook — Global Edition to present to him in person.
+          I created this project while preparing to attend your fan meeting in Japan. As I got ready for the trip, I kept thinking that not every fan would have the chance to meet you in person — even though so many people around the world love and support you.
         </p>
         <div class="timeline">
-          <div class="timeline-step active">
+          <div class="timeline-step done">
             <div class="timeline-icon">📢</div>
-            <span class="timeline-label" data-i18n="tlOpen">Open</span>
-            <span class="timeline-date">Now</span>
+            <span class="timeline-label" data-i18n="tlOpen">Opened</span>
+            <span class="timeline-date">Jan 2026</span>
           </div>
-          <div class="timeline-connector"></div>
-          <div class="timeline-step">
+          <div class="timeline-connector done"></div>
+          <div class="timeline-step done">
             <div class="timeline-icon">📝</div>
-            <span class="timeline-label" data-i18n="tlDeadline">Deadline</span>
+            <span class="timeline-label" data-i18n="tlDeadline">Closed</span>
             <span class="timeline-date">Mar 10</span>
           </div>
-          <div class="timeline-connector"></div>
-          <div class="timeline-step">
+          <div class="timeline-connector done"></div>
+          <div class="timeline-step active">
             <div class="timeline-icon">🖨️</div>
-            <span class="timeline-label" data-i18n="tlPrint">Print</span>
-            <span class="timeline-date">Late Mar</span>
+            <span class="timeline-label" data-i18n="tlPrint">Printing</span>
+            <span class="timeline-date">Now</span>
           </div>
           <div class="timeline-connector"></div>
           <div class="timeline-step">
@@ -221,7 +223,7 @@
       </div>
 
       <div class="submit-actions fade-in delay-4">
-        <a href="submit.html" class="btn-primary cta-submit" data-i18n="btnSubmitNow">Submit Now →</a>
+        <a href="photobook.html" class="btn-primary cta-submit" data-i18n="btnSubmitNow">📖 Browse the Photobook →</a>
       </div>
     </div>
   </section>
@@ -272,7 +274,7 @@
           <p class="message-author">— Cattowriter · 🇦🇺 Australia</p>
         </div>
       </div>
-      <p class="messages-note" style="color:var(--gold);margin-top:8px;" data-i18n="msgExample">(Example — will update automatically as fans submit)</p>
+      <p class="messages-note" style="color:var(--gold);margin-top:8px;" data-i18n="msgExample"></p>
     </div>
   </section>
 
@@ -400,7 +402,7 @@
        ============================================ -->
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha384-dUo4VnkPwa5iJ/udOYY1SRDya6+2CVXYRfing32kyXbeB6HePV/YmJ3EPPvYz/Sb" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha384-QCoiowLYPphJpiHouJIJOUCcg6AxqnLAAyEjkZnJ7RQCpC3YY1kEX0PaOant/8kx" crossorigin="anonymous"></script>
-  <script src="app.js?v=20260223l"></script>
+  <script src="app.js?v=20260321"></script>
   <script>
   function copyLink() {
     navigator.clipboard.writeText('https://cattowriter.com/LBH_global_project/').then(() => {

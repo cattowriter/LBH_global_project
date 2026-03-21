@@ -13,19 +13,308 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#f0ece6">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com;">
   <title>Photobook — LBH Global Fan Project</title>
   <meta property="og:title" content="Photobook — Lee Byung-hun Global Fan Project">
   <meta property="og:description" content="Messages from fans around the world, grouped by country. Private submissions are not shown.">
+  <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260223b">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha384-3RT6/aAL0nKpqF8ldMoIrxz8OmRcPrKbR8MYXgvv2iKryEvn2vbfoI+FJbcpl+VW" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css?v=20260321">
   <style>
+    /* ============================================
+       COMPACT INTRO (Hero + Map)
+       ============================================ */
+    .pb-intro {
+      background: linear-gradient(180deg, #f7f3ee 0%, var(--bg) 100%);
+      padding: 92px 24px 28px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .pb-intro-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .pb-intro-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .pb-intro-cover {
+      width: 200px;
+      height: 200px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border: 3px solid #fff;
+      flex-shrink: 0;
+    }
+    .pb-intro-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .pb-intro-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: var(--brown);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .pb-intro-subtitle {
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .pb-intro-flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .pb-intro-stats {
+      display: flex;
+      gap: 24px;
+    }
+    .pb-intro-stat {
+      text-align: center;
+    }
+    .pb-intro-stat-num {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--brown);
+      display: block;
+      line-height: 1;
+    }
+    .pb-intro-stat-label {
+      font-size: 0.65rem;
+      color: var(--accent-light);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .pb-intro-private-note {
+      font-size: 0.72rem;
+      color: var(--accent-light);
+      margin-top: 8px;
+      font-style: italic;
+      opacity: 0.8;
+    }
+    /* Mini map */
+    .pb-intro-right {
+      flex: 1;
+      max-width: 420px;
+    }
+    #pb-mini-map {
+      width: 100%;
+      height: 220px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+    }
+    #pb-mini-map .jvm-tooltip {
+      font-family: var(--font-body);
+      background: #fff;
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 10px 14px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+      border: 1.5px solid var(--border);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      z-index: 100;
+    }
+    .pb-intro-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 0.65rem;
+      color: var(--accent-light);
+    }
+    .pb-intro-legend-bar {
+      width: 80px;
+      height: 5px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #FFD700, #FF6348, #FF006E);
+    }
+    /* Country Filter Bar — sticky under nav */
+    .pb-filter-bar {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 10px 24px;
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+      display: none;
+    }
+    .pb-filter-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pb-filter-search {
+      position: relative;
+      width: 220px;
+      flex-shrink: 0;
+    }
+    .pb-filter-input {
+      width: 100%;
+      padding: 7px 12px 7px 30px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      color: var(--accent);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pb-filter-input:focus {
+      border-color: var(--brown);
+      box-shadow: 0 0 0 3px rgba(139,109,76,0.1);
+    }
+    .pb-filter-input::placeholder { color: var(--accent-light); opacity: 0.6; }
+    .pb-filter-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+    .pb-filter-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 280px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+      display: none;
+      z-index: 200;
+      scrollbar-width: thin;
+    }
+    .pb-filter-dropdown.open { display: block; }
+    .pb-filter-option {
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.12s;
+      color: var(--accent);
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    .pb-filter-option:last-child { border-bottom: none; }
+    .pb-filter-option:hover,
+    .pb-filter-option.highlighted {
+      background: rgba(139,109,76,0.07);
+    }
+    .pb-filter-option-count {
+      font-size: 0.7rem;
+      color: var(--accent-light);
+      background: var(--bg);
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+    /* Tags area */
+    .pb-filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      flex: 1;
+      min-width: 0;
+      align-items: center;
+    }
+    .pb-filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px 4px 8px;
+      background: var(--brown);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      cursor: default;
+      animation: tagIn 0.15s ease;
+      white-space: nowrap;
+    }
+    @keyframes tagIn { from { transform: scale(0.85); opacity: 0; } }
+    .pb-filter-tag-close {
+      cursor: pointer;
+      opacity: 0.6;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 4px 6px;
+      margin: -4px -6px -4px 0;
+      transition: opacity 0.15s;
+    }
+    .pb-filter-tag-close:hover { opacity: 1; }
+    .pb-filter-clear {
+      font-size: 0.72rem;
+      color: var(--accent-light);
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .pb-filter-clear:hover {
+      background: var(--bg);
+      color: var(--accent);
+      border-color: var(--accent-light);
+    }
+    .pb-filter-empty {
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      opacity: 0.6;
+    }
+
+    @media (max-width: 900px) {
+      .pb-intro-inner { flex-direction: column; gap: 20px; }
+      .pb-intro-left { flex-direction: column; text-align: center; }
+      .pb-intro-flags { justify-content: center; }
+      .pb-intro-stats { justify-content: center; }
+      .pb-intro-right { max-width: 100%; }
+      .pb-filter-inner { flex-wrap: wrap; }
+      .pb-filter-search { width: 100%; }
+    }
+    @media (max-width: 600px) {
+      .pb-intro { padding: 24px 16px 20px; }
+      .pb-intro-cover { width: 140px; height: 140px; }
+      #pb-mini-map { height: 170px; }
+      .pb-filter-bar { padding: 8px 12px; top: 60px; }
+    }
+
     /* ============================================
        PHOTOBOOK PAGE STYLES
        ============================================ */
     .photobook-page {
-      padding-top: 100px;
+      padding-top: 24px;
       padding-bottom: 80px;
       min-height: 100vh;
     }
@@ -232,13 +521,13 @@
     }
     .country-sidebar {
       position: sticky;
-      top: 80px;
+      top: 110px;
       align-self: flex-start;
-      width: 220px;
-      max-height: calc(100vh - 100px);
+      width: 200px;
+      max-height: calc(100vh - 120px);
       overflow-y: auto;
       flex-shrink: 0;
-      padding: 16px 0 16px 8px;
+      padding: 12px 0 16px 6px;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
     }
@@ -269,24 +558,24 @@
     .sidebar-list::before {
       content: '';
       position: absolute;
-      left: 18px;
+      left: 17px;
       top: 0;
       bottom: 0;
-      width: 2px;
+      width: 1.5px;
       background: var(--border-light);
-      border-radius: 2px;
     }
     .sidebar-item {
       position: relative;
-      padding: 6px 12px 6px 36px;
+      padding: 5px 10px 5px 34px;
       cursor: pointer;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--accent-light);
       border-radius: 6px;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1.3;
     }
     /* Timeline dot */
     .sidebar-item::before {
@@ -295,40 +584,46 @@
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--bg-warm);
+      background: var(--bg);
       border: 2px solid var(--border);
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       z-index: 1;
     }
     .sidebar-item:hover {
-      background: var(--surface);
+      background: rgba(0,0,0,0.03);
       color: var(--accent);
     }
     .sidebar-item.active {
       color: var(--brown);
       font-weight: 600;
-      background: rgba(139,109,76,0.08);
+      background: rgba(139,109,76,0.06);
     }
     .sidebar-item.active::before {
       background: var(--brown);
       border-color: var(--brown);
-      box-shadow: 0 0 0 3px rgba(139,109,76,0.15);
+      box-shadow: 0 0 0 2px rgba(139,109,76,0.12);
     }
     .sidebar-count {
-      font-size: 0.7rem;
-      opacity: 0.6;
-      margin-left: 4px;
+      font-size: 0.65rem;
+      opacity: 0.5;
+      margin-left: 3px;
     }
     .sidebar-continent {
       font-weight: 700;
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       color: var(--accent);
-      padding: 8px 8px 4px 10px;
-      margin-top: 4px;
-      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 12px 8px 4px 10px;
+      margin-top: 2px;
+      border-top: 1px solid var(--border-light);
+    }
+    .sidebar-continent:first-child {
+      border-top: none;
+      padding-top: 4px;
     }
     .photobook-main {
       flex: 1;
@@ -405,7 +700,7 @@
       cursor: pointer;
       transition: all 0.3s;
       text-decoration: none;
-      min-height: 38px;
+      min-height: 44px;
       line-height: 1.2;
     }
     .country-nav-mobile .mob-country-btn.active {
@@ -417,7 +712,7 @@
       .country-nav-mobile {
         display: flex;
         position: sticky;
-        top: 62px;
+        top: 110px;
         z-index: 50;
         background: var(--bg);
         padding: 8px 0;
@@ -440,6 +735,8 @@
       }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha384-dUo4VnkPwa5iJ/udOYY1SRDya6+2CVXYRfing32kyXbeB6HePV/YmJ3EPPvYz/Sb" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha384-QCoiowLYPphJpiHouJIJOUCcg6AxqnLAAyEjkZnJ7RQCpC3YY1kEX0PaOant/8kx" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -466,25 +763,56 @@
     </div>
   </nav>
 
+  <!-- Compact Intro: Hero + World Map -->
+  <section class="pb-intro" id="pb-intro" style="display:none;">
+    <div class="pb-intro-inner">
+      <div class="pb-intro-left">
+        <img src="LBH.png" alt="Lee Byung-hun" class="pb-intro-cover" loading="lazy">
+        <div class="pb-intro-info">
+          <h1 class="pb-intro-title">Global Fan Photobook</h1>
+          <p class="pb-intro-subtitle">Lee Byung-hun Fan Project</p>
+          <div class="pb-intro-flags" id="pb-intro-flags"></div>
+          <div class="pb-intro-stats">
+            <div class="pb-intro-stat">
+              <span class="pb-intro-stat-num" id="pb-intro-total">0</span>
+              <span class="pb-intro-stat-label">Messages</span>
+            </div>
+            <div class="pb-intro-stat">
+              <span class="pb-intro-stat-num" id="pb-intro-countries">0</span>
+              <span class="pb-intro-stat-label">Countries</span>
+            </div>
+          </div>
+          <p class="pb-intro-private-note" id="pb-intro-private-note" style="display:none;"></p>
+        </div>
+      </div>
+      <div class="pb-intro-right">
+        <div id="pb-mini-map"></div>
+        <div class="pb-intro-legend">
+          <span>1</span>
+          <div class="pb-intro-legend-bar"></div>
+          <span id="pb-legend-max">10+</span> submissions
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Country Filter Bar -->
+  <div class="pb-filter-bar" id="pb-filter-bar">
+    <div class="pb-filter-inner">
+      <div class="pb-filter-search" id="pb-filter-search">
+        <span class="pb-filter-icon">🔍</span>
+        <input class="pb-filter-input" id="pb-filter-input" type="text" placeholder="Filter by country..." autocomplete="off">
+        <div class="pb-filter-dropdown" id="pb-filter-dropdown"></div>
+      </div>
+      <div class="pb-filter-tags" id="pb-filter-tags">
+        <span class="pb-filter-empty">All countries</span>
+      </div>
+      <span class="pb-filter-clear" id="pb-filter-clear" style="display:none;" onclick="clearCountryFilter()">Clear</span>
+    </div>
+  </div>
+
   <main class="photobook-page">
     <div class="container">
-
-      <div class="photobook-header fade-in">
-        <h1 class="photobook-title">Lee Byung-hun Global Fanbook 📖</h1>
-        <p class="photobook-subtitle">Messages from fans around the world, grouped by country.<br><small style="opacity:0.7;">Submissions marked as private are not displayed here.</small></p>
-      </div>
-
-      <!-- Stats -->
-      <div class="photobook-stats fade-in delay-1" id="pb-stats" style="display:none;">
-        <div class="pb-stat">
-          <div class="pb-stat-number" id="pb-total">0</div>
-          <div class="pb-stat-label">Total Messages</div>
-        </div>
-        <div class="pb-stat">
-          <div class="pb-stat-number" id="pb-countries">0</div>
-          <div class="pb-stat-label">Countries</div>
-        </div>
-      </div>
 
       <!-- Edit request trigger — DISABLED
       <div class="er-trigger-wrap">
@@ -569,7 +897,7 @@
   // ==========================================
   // CONFIG — Same URL as in app.js
   // ==========================================
-  const API_URL = 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwTtsnzKGfsm50uUQ1o9ostSe2BSa5m6RE5QvWwSgh4Rgt00CniX4GHZHA0B_d_r0LELg/exec';
 
   // Country data
   const COUNTRY_DATA = {
@@ -672,19 +1000,307 @@
   // ==========================================
   // FETCH & RENDER
   // ==========================================
+  // Store stats data globally for the intro
+  let globalStats = null;
+
   async function loadPhotobook() {
     let submissions;
 
-    try {
-      const res = await fetch(API_URL + '?action=submissions');
-      const data = await res.json();
-      submissions = data.submissions || [];
-    } catch (err) {
-      console.error('Failed to load submissions:', err);
-      submissions = [];
-    }
+    // Fetch submissions + stats in parallel
+    const [subsRes, statsRes] = await Promise.allSettled([
+      fetch(API_URL + '?action=submissions').then(r => r.json()),
+      fetch(API_URL + '?action=stats').then(r => r.json()),
+    ]);
+
+    submissions = subsRes.status === 'fulfilled' ? (subsRes.value.submissions || []) : [];
+    globalStats = statsRes.status === 'fulfilled' ? statsRes.value : null;
 
     renderPhotobook(submissions);
+  }
+
+  // ==========================================
+  // INTRO: Hero + Mini World Map
+  // ==========================================
+  function populateIntro(submissions, sortedCodes, grouped) {
+    const intro = document.getElementById('pb-intro');
+    if (!intro || !submissions.length) return;
+
+    // Flags — use all countries from stats API (includes private)
+    const flagsEl = document.getElementById('pb-intro-flags');
+    const allCountryCodes = globalStats
+      ? Object.keys(globalStats.countries).sort((a, b) => (globalStats.countries[b] || 0) - (globalStats.countries[a] || 0))
+      : sortedCodes;
+    if (flagsEl) {
+      flagsEl.innerHTML = allCountryCodes
+        .map(code => (COUNTRY_DATA[code] || {}).flag || '')
+        .filter(Boolean)
+        .join(' ');
+    }
+
+    // Stats — use stats API (total including private)
+    const totalEl = document.getElementById('pb-intro-total');
+    const countriesEl = document.getElementById('pb-intro-countries');
+    const totalCount = globalStats ? globalStats.count : submissions.length;
+    const totalCountries = globalStats ? Object.keys(globalStats.countries).length : sortedCodes.length;
+    if (totalEl) totalEl.textContent = totalCount;
+    if (countriesEl) countriesEl.textContent = totalCountries;
+
+    // Private note
+    const noteEl = document.getElementById('pb-intro-private-note');
+    if (noteEl && globalStats && totalCount > submissions.length) {
+      const privateCount = totalCount - submissions.length;
+      noteEl.textContent = privateCount + ' fan' + (privateCount > 1 ? 's' : '') + ' chose to keep their message private';
+      noteEl.style.display = '';
+    }
+
+    // Show intro
+    intro.style.display = '';
+
+    // Build mini map using stats API data (includes all countries)
+    const mapCountries = globalStats ? globalStats.countries : null;
+    initMiniMap(grouped, mapCountries);
+  }
+
+  function initMiniMap(grouped, statsCountries) {
+    const el = document.getElementById('pb-mini-map');
+    if (!el || typeof jsVectorMap === 'undefined') return;
+
+    // Use stats API countries (includes private) for map coloring
+    const counts = statsCountries || {};
+    if (!statsCountries) {
+      Object.keys(grouped).forEach(code => { counts[code] = grouped[code].length; });
+    }
+
+    let maxCount = 0;
+    Object.values(counts).forEach(n => { if (n > maxCount) maxCount = n; });
+
+    // Update legend max
+    const legendMax = document.getElementById('pb-legend-max');
+    if (legendMax) legendMax.textContent = maxCount + '+';
+
+    // Quantize into 6 buckets (same logic as app.js)
+    const values = {};
+    Object.keys(counts).forEach(code => {
+      const n = counts[code];
+      if (n <= 0) return;
+      if (maxCount <= 6) { values[code] = n; return; }
+      const ratio = n / maxCount;
+      if (ratio > 0.8) values[code] = 6;
+      else if (ratio > 0.6) values[code] = 5;
+      else if (ratio > 0.4) values[code] = 4;
+      else if (ratio > 0.2) values[code] = 3;
+      else if (ratio > 0.1) values[code] = 2;
+      else values[code] = 1;
+    });
+
+    new jsVectorMap({
+      selector: '#pb-mini-map',
+      map: 'world',
+      backgroundColor: 'transparent',
+      zoomButtons: false,
+      zoomOnScroll: false,
+      draggable: false,
+      showTooltip: true,
+      regionStyle: {
+        initial: { fill: '#f0f0f0', stroke: '#fff', strokeWidth: 0.5 },
+        hover: { fill: '#ffe0b2', cursor: 'pointer' },
+      },
+      series: {
+        regions: [{
+          attribute: 'fill',
+          scale: {
+            '1': '#FFD700',
+            '2': '#FFA502',
+            '3': '#FF6348',
+            '4': '#FF4757',
+            '5': '#FF2D55',
+            '6': '#FF006E',
+          },
+          values: values,
+          min: 1,
+          max: 6,
+        }]
+      },
+      onRegionTooltipShow(event, tooltip, code) {
+        const c = COUNTRY_DATA[code];
+        const count = counts[code];
+        if (c && count) {
+          const tipEl = document.querySelector('#pb-mini-map .jvm-tooltip');
+          const html = '<div style="font-weight:700;margin-bottom:2px">' + c.flag + ' ' + c.name + '</div>' +
+            '<div style="color:#FF4757;font-weight:600;font-size:0.8rem">' + count + ' submission' + (count > 1 ? 's' : '') + '</div>' +
+            '<div style="font-size:0.68rem;color:#aaa;margin-top:3px">Click to view</div>';
+          if (tipEl) tipEl.innerHTML = html;
+          else tooltip.text(c.flag + ' ' + c.name + ' — ' + count);
+        } else if (c) {
+          tooltip.text(c.flag + ' ' + c.name);
+        } else {
+          event.preventDefault();
+        }
+      },
+      onRegionClick(event, code) {
+        if (counts[code]) {
+          // Add to filter bar if available, otherwise just scroll
+          if (typeof addCountryFilter === 'function' && document.getElementById('pb-filter-bar')) {
+            addCountryFilter(code);
+          } else {
+            const section = document.getElementById('country-' + code);
+            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      },
+    });
+  }
+
+  // ==========================================
+  // COUNTRY FILTER
+  // ==========================================
+  let allFilterOptions = []; // [{code, flag, name, count}]
+  let activeFilters = new Set();
+  let highlightedIdx = -1;
+  let lastSubmissions = [];
+  let lastGrouped = {};
+  let lastSortedCodes = [];
+
+  function initFilterBar(sortedCodes, grouped) {
+    allFilterOptions = sortedCodes.map(code => {
+      const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
+      return { code, flag: c.flag, name: c.name, count: grouped[code].length };
+    });
+
+    const bar = document.getElementById('pb-filter-bar');
+    if (bar) bar.style.display = 'block';
+
+    const input = document.getElementById('pb-filter-input');
+    const dropdown = document.getElementById('pb-filter-dropdown');
+
+    input.addEventListener('focus', () => { renderFilterDropdown(''); dropdown.classList.add('open'); });
+    input.addEventListener('input', (e) => { highlightedIdx = -1; renderFilterDropdown(e.target.value); });
+    input.addEventListener('keydown', (e) => {
+      const items = dropdown.querySelectorAll('.pb-filter-option');
+      if (e.key === 'ArrowDown') { e.preventDefault(); highlightedIdx = Math.min(highlightedIdx + 1, items.length - 1); updateHighlight(items); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); highlightedIdx = Math.max(highlightedIdx - 1, 0); updateHighlight(items); }
+      else if (e.key === 'Enter' && highlightedIdx >= 0 && items[highlightedIdx]) { e.preventDefault(); items[highlightedIdx].click(); }
+      else if (e.key === 'Escape') { dropdown.classList.remove('open'); input.blur(); }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#pb-filter-search')) dropdown.classList.remove('open');
+    });
+  }
+
+  function updateHighlight(items) {
+    items.forEach((el, i) => el.classList.toggle('highlighted', i === highlightedIdx));
+    if (items[highlightedIdx]) items[highlightedIdx].scrollIntoView({ block: 'nearest' });
+  }
+
+  function renderFilterDropdown(query) {
+    const dropdown = document.getElementById('pb-filter-dropdown');
+    const q = query.toLowerCase().trim();
+    const filtered = allFilterOptions.filter(o =>
+      !activeFilters.has(o.code) && (o.name.toLowerCase().includes(q) || o.flag.includes(q) || o.code.toLowerCase().includes(q))
+    );
+
+    if (!filtered.length) {
+      dropdown.innerHTML = '<div style="padding:12px;color:var(--accent-light);font-size:0.82rem;text-align:center;">No countries found</div>';
+      dropdown.classList.add('open');
+      return;
+    }
+
+    dropdown.innerHTML = filtered.map(o =>
+      `<div class="pb-filter-option" data-code="${o.code}">` +
+        `<span>${o.flag} ${o.name}</span>` +
+        `<span class="pb-filter-option-count">${o.count}</span>` +
+      `</div>`
+    ).join('');
+    dropdown.classList.add('open');
+
+    dropdown.querySelectorAll('.pb-filter-option').forEach(el => {
+      el.addEventListener('click', () => {
+        addCountryFilter(el.dataset.code);
+        document.getElementById('pb-filter-input').value = '';
+        dropdown.classList.remove('open');
+      });
+    });
+  }
+
+  function addCountryFilter(code) {
+    activeFilters.add(code);
+    renderFilterTags();
+    applyCountryFilter();
+  }
+
+  function removeCountryFilter(code) {
+    activeFilters.delete(code);
+    renderFilterTags();
+    applyCountryFilter();
+  }
+
+  function clearCountryFilter() {
+    activeFilters.clear();
+    renderFilterTags();
+    applyCountryFilter();
+  }
+
+  function renderFilterTags() {
+    const tagsEl = document.getElementById('pb-filter-tags');
+    const clearEl = document.getElementById('pb-filter-clear');
+
+    if (!activeFilters.size) {
+      tagsEl.innerHTML = '<span class="pb-filter-empty">All countries</span>';
+      clearEl.style.display = 'none';
+      return;
+    }
+
+    clearEl.style.display = '';
+    tagsEl.innerHTML = Array.from(activeFilters).map(code => {
+      const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
+      return `<span class="pb-filter-tag">${c.flag} ${c.name}<span class="pb-filter-tag-close" onclick="removeCountryFilter('${code}')">&times;</span></span>`;
+    }).join('');
+  }
+
+  function applyCountryFilter() {
+    const sections = document.querySelectorAll('.country-section');
+    const dividers = document.querySelectorAll('.country-divider');
+
+    if (!activeFilters.size) {
+      sections.forEach(el => el.style.display = '');
+      dividers.forEach(el => el.style.display = '');
+      document.querySelectorAll('.sidebar-item').forEach(el => { el.style.opacity = ''; el.style.fontWeight = ''; });
+      document.querySelectorAll('.sidebar-continent').forEach(el => el.style.display = '');
+      return;
+    }
+
+    // Show/hide sections
+    sections.forEach(el => {
+      const code = el.id.replace('country-', '');
+      el.style.display = activeFilters.has(code) ? '' : 'none';
+    });
+    dividers.forEach(el => el.style.display = 'none');
+
+    // Sidebar: dim non-matching, highlight matching
+    const visibleContinents = new Set();
+    document.querySelectorAll('.sidebar-item').forEach(el => {
+      const match = activeFilters.has(el.dataset.country);
+      el.style.opacity = match ? '1' : '0.3';
+      el.style.fontWeight = match ? '700' : '';
+      if (match) {
+        const cont = CONTINENT_MAP[el.dataset.country] || 'Other';
+        visibleContinents.add(cont);
+      }
+    });
+    document.querySelectorAll('.sidebar-continent').forEach(el => {
+      const label = el.textContent;
+      const show = Array.from(visibleContinents).some(c => label.includes(c));
+      el.style.opacity = show ? '1' : '0.3';
+    });
+
+    // Scroll to first match
+    const first = Array.from(activeFilters)[0];
+    const section = document.getElementById('country-' + first);
+    if (section) {
+      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
   }
 
   function renderPhotobook(submissions) {
@@ -736,20 +1352,22 @@
       codesToRender = [filterCode];
     }
 
-    // Update stats & header visibility
-    const statsEl = document.getElementById('pb-stats');
-    const headerEl = document.querySelector('.photobook-header');
+    // Populate intro section (hero + map)
+    const introEl = document.getElementById('pb-intro');
+    const mainEl = document.querySelector('.photobook-page');
     if (filterCode && grouped[filterCode]) {
-      // Hide big header, show stats with filtered data
-      if (headerEl) headerEl.style.display = 'none';
-      document.getElementById('pb-total').textContent = grouped[filterCode].length;
-      document.getElementById('pb-countries').textContent = 1;
-      statsEl.style.display = 'flex';
+      // Hide intro when filtering by country — add top padding for fixed nav
+      if (introEl) introEl.style.display = 'none';
+      if (mainEl) mainEl.style.paddingTop = '80px';
     } else {
-      document.getElementById('pb-total').textContent = submissions.length;
-      document.getElementById('pb-countries').textContent = sortedCodes.length;
-      statsEl.style.display = 'flex';
+      populateIntro(submissions, sortedCodes, grouped);
     }
+
+    // Hide old header/stats — replaced by intro
+    const headerEl = document.querySelector('.photobook-header');
+    if (headerEl) headerEl.style.display = 'none';
+    const statsEl = document.getElementById('pb-stats');
+    if (statsEl) statsEl.style.display = 'none';
 
     // Build HTML
     let html = '';
@@ -827,6 +1445,11 @@
     // Build sidebar & mobile nav
     buildCountrySidebar(codesToRender, grouped);
 
+    // Init country filter bar (only when not filtering by hash)
+    if (!filterCode) {
+      initFilterBar(sortedCodes, grouped);
+    }
+
     // Trigger scroll animations
     initScrollAnimations();
 
@@ -857,7 +1480,7 @@
       }
       const c = COUNTRY_DATA[code] || { flag: '🌍', name: code };
       const count = grouped[code].length;
-      sidebarHtml += `<li class="sidebar-item" data-country="${code}" onclick="scrollToCountry('${code}')">${c.flag} ${c.name}<span class="sidebar-count">(${count})</span></li>`;
+      sidebarHtml += `<li class="sidebar-item" data-country="${code}" tabindex="0" role="button" onclick="scrollToCountry('${code}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToCountry('${code}')}">${c.flag} ${c.name}<span class="sidebar-count">(${count})</span></li>`;
       mobileHtml += `<a class="mob-country-btn" data-country="${code}" onclick="mobNavSelect('${code}')" href="#country-${code}">${c.flag} ${c.name}</a>`;
     });
 
@@ -1086,7 +1709,7 @@
   // ==========================================
   /*
   (function() {
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTtsnzKGfsm50uUQ1o9ostSe2BSa5m6RE5QvWwSgh4Rgt00CniX4GHZHA0B_d_r0LELg/exec';
     const modal = document.getElementById('er-modal');
     const openBtn = document.getElementById('er-open');
     const closeBtn = document.getElementById('er-close');

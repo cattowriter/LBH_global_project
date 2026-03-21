@@ -1,7 +1,11 @@
 // ==========================================
 // CONFIG — Replace with your deployed Apps Script Web App URL
 // ==========================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVpMAcRxya-KUE6K3SxAxJuLHRH0_8k7eUGpzIc7RRj22AVwn_y4zO7ezeSDriICqemA/exec';
+function escapeHtml(s) {
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+}
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTtsnzKGfsm50uUQ1o9ostSe2BSa5m6RE5QvWwSgh4Rgt00CniX4GHZHA0B_d_r0LELg/exec';
 
 // ==========================================
 // i18n TRANSLATIONS
@@ -670,7 +674,9 @@ function showClosedBanner() {
 
 function renderClosedBanner(container, count, countries) {
   const title = t('closedTitle');
-  const text = t('closedText').replace('{count}', count).replace('{countries}', countries);
+  const safeCount = escapeHtml(String(count));
+  const safeCountries = escapeHtml(String(countries));
+  const text = t('closedText').replace('{count}', safeCount).replace('{countries}', safeCountries);
   const btnText = t('closedBtn');
   container.innerHTML =
     '<div class="closed-banner">' +
