@@ -1445,7 +1445,7 @@
 
         const displayName = escapeHtml(entry.name || 'Fan');
 
-        const photoSrc = entry.photo_url || entry.custom_page_url || '';
+        const photoSrc = normalizeDriveUrl(entry.photo_url || entry.custom_page_url || '');
         const photo = photoSrc
           ? `<div class="entry-photo"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
           : '';
@@ -1599,6 +1599,20 @@
     document.querySelectorAll('.mob-country-btn').forEach(el => {
       el.classList.toggle('active', el.dataset.country === code);
     });
+  }
+
+  // Convert any Google Drive URL format to a direct embeddable image URL
+  function normalizeDriveUrl(url) {
+    if (!url) return '';
+    // Already a direct lh3 URL — works fine
+    if (url.includes('lh3.googleusercontent.com')) return url;
+    // drive.google.com/file/d/FILE_ID/...
+    const fileMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (fileMatch) return `https://drive.google.com/uc?id=${fileMatch[1]}&export=view`;
+    // drive.google.com/open?id=FILE_ID
+    const openMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (openMatch) return `https://drive.google.com/uc?id=${openMatch[1]}&export=view`;
+    return url;
   }
 
   function escapeHtml(text) {
