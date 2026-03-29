@@ -458,7 +458,47 @@
       aspect-ratio: 1 / 1;
       object-fit: contain;
       background: var(--bg-warm);
+      cursor: zoom-in;
     }
+    /* Featured photo (cattowriter) */
+    .entry-photo-featured {
+      max-width: 100%;
+    }
+    .entry-photo-featured img {
+      aspect-ratio: unset;
+      object-fit: cover;
+      max-height: 480px;
+    }
+    /* Lightbox */
+    .pb-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .pb-lightbox.active { display: flex; }
+    .pb-lightbox img {
+      max-width: 92vw;
+      max-height: 92vh;
+      border-radius: 10px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+      object-fit: contain;
+      cursor: default;
+    }
+    .pb-lightbox-close {
+      position: absolute;
+      top: 18px; right: 22px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.8;
+    }
+    .pb-lightbox-close:hover { opacity: 1; }
 
     /* Divider between entries */
     .entry-divider {
@@ -1446,8 +1486,10 @@
         const displayName = escapeHtml(entry.name || 'Fan');
 
         const photoSrc = normalizeDriveUrl(entry.photo_url || entry.custom_page_url || '');
+        const isFeatured = (entry.contact_info || '').toLowerCase().includes('@cattowriter');
+        const photoClass = isFeatured ? 'entry-photo entry-photo-featured' : 'entry-photo';
         const photo = photoSrc
-          ? `<div class="entry-photo"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+          ? `<div class="${photoClass}"><img src="${escapeHtml(photoSrc)}" alt="Fan photo" loading="lazy" onclick="openLightbox('${escapeHtml(photoSrc)}')" onerror="this.parentElement.style.display='none'"></div>`
           : '';
 
         // Show translation if message_en exists and original isn't already English
@@ -1600,6 +1642,20 @@
       el.classList.toggle('active', el.dataset.country === code);
     });
   }
+
+  function openLightbox(src) {
+    const lb = document.getElementById('pb-lightbox');
+    const img = document.getElementById('pb-lightbox-img');
+    img.src = src;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('pb-lightbox').classList.remove('active');
+    document.getElementById('pb-lightbox-img').src = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
   // Convert any Google Drive URL format to a direct embeddable image URL
   function normalizeDriveUrl(url) {
@@ -1849,5 +1905,11 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
     <span>Report Bug</span>
   </a>
+
+  <!-- Lightbox -->
+  <div class="pb-lightbox" id="pb-lightbox" onclick="closeLightbox()">
+    <span class="pb-lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="pb-lightbox-img" src="" alt="Fan photo" onclick="event.stopPropagation()">
+  </div>
 </body>
 </html>
